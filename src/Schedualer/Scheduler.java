@@ -1,4 +1,7 @@
 package Schedualer;
+import Elevator.Elevator;
+import Constants.ArrivalSensor;
+import java.util.*;
 
 /**
  * 
@@ -7,7 +10,10 @@ package Schedualer;
  */
 
 public class Scheduler implements Runnable{
-
+	List<Elevator> elevators;
+	List<ArrivalSensor> arrivalSensors;
+	
+	
 	public Scheduler() {
 		
 	}

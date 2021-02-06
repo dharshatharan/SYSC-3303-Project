@@ -1,4 +1,4 @@
-package constants;
+package Constants;
 /**
  * Direction of the elevator up or down
  * 

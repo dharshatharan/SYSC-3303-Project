@@ -1,4 +1,4 @@
-package constants;
+package Constants;
 
 /**
  * Elevator State: is the elevator moving idle or stopped
