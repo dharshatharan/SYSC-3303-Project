@@ -9,7 +9,7 @@ import Schedualer.Scheduler;
 
 /**
  * A class to handle the input from a file listing all the floors the elevator(s) have to visit
- * @author Darsh
+ * @author Alexander
  * @version 02/06/2021
  *
  */
