@@ -12,10 +12,17 @@ public class Elevator implements Runnable {
 	
 	private Scheduler scheduler;
 	
+	/**
+	 * Default constructor
+	 * @param scheduler
+	 */
 	public Elevator(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 	
+	/**
+	 * Runs the elevator pram constantly requesting  then exicuting jobs
+	 */
 	@Override
 	public void run() {
 		System.out.println("Starting floor elevator");

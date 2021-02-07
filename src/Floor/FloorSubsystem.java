@@ -9,7 +9,7 @@ import Schedualer.Scheduler;
 
 /**
  * A class to handle the input from a file listing all the floors the elevator(s) have to visit
- * @author 
+ * @author Darsh
  * @version 02/06/2021
  *
  */
@@ -18,12 +18,19 @@ public class FloorSubsystem implements Runnable{
     List<RequestElevatorEvent> floorjobs;
     Scheduler schedular;
 
+    /**
+     * Default Constructor
+     * @param schedular
+     */
     public FloorSubsystem(Scheduler schedular) {
     	this.schedular = schedular;
     	this.floorjobs = new ArrayList<>();
         parse();
     }
 
+    /**
+     * Runs a thread that retrives the jobs and sends them to the scheduler
+     */
     @Override
     public void run() {
     	System.out.println("Starting floor run");
@@ -33,6 +40,9 @@ public class FloorSubsystem implements Runnable{
         }
     }
 
+    /**
+     * Retrives the information from a txt file
+     */
     public void parse() {
         File simulation = new File("./src/input.txt");
         try {
