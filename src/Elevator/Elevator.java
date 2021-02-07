@@ -16,6 +16,7 @@ public class Elevator implements Runnable {
 		this.scheduler = scheduler;
 	}
 	
+	//Runs on thread start, executes instructions by the scheduler.
 	@Override
 	public void run() {
 		System.out.println("Starting floor elevator");
