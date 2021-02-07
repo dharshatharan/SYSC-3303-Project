@@ -7,12 +7,15 @@ import Schedualer.Scheduler;
  */
 
 /**
+ * 
  * @author Dharsh
  *
  */
 public class ElevatorSystemSimulation {
 
 	/**
+	 * Mainb method of the program. runs the simulation
+	 * Generates the instances of the schedule, floor subsystem and the elevator
 	 * @param args
 	 */
 	public static void main(String[] args) {
