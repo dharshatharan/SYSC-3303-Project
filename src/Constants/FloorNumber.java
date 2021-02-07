@@ -3,7 +3,7 @@ package Constants;
 /**
  * Enum for the Floors in the building
  * 
- * @author Quinn 
+ * @author Colin
  * @version 02/06/2021
  */
 public enum FloorNumber {
