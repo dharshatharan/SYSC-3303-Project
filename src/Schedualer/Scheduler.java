@@ -8,7 +8,7 @@ import Floor.RequestElevatorEvent;
 /**
  * Receives input from the floors and the elevator(s), then sends information to the aprorpiate thread and waits for more information to come in
  * 
- * @author Darsh
+ * @author Colin
  * @version 02/06/2021
  */
 
