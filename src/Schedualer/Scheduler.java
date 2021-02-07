@@ -58,7 +58,7 @@ public class Scheduler implements Runnable {
 	
 	/**
 	 * Sends the information the schelduler recived from the floorsubsystem
-	 * @paramElevatorInfo job
+	 * @param job
 	 */
 	public synchronized void sendElevatorInfo(ElevatorInfo job) {
 		while (activeInfo != null) {
