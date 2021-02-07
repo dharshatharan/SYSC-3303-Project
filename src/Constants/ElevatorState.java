@@ -3,7 +3,7 @@ package Constants;
 /**
  * Elevator State: is the elevator moving idle or stopped
  * 
- * @author Quinn
+ * @author Colin
  * @version 02/06/2021
  */
 public enum ElevatorState {
