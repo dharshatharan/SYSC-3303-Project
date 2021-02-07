@@ -8,7 +8,7 @@ import Schedualer.Scheduler;
 
 /**
  * 
- * @author Dharsh
+ * @author Quinn
  *
  */
 public class ElevatorSystemSimulation {
