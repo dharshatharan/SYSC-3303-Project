@@ -4,7 +4,7 @@ import Constants.Direction;
 
 /**
  * Stores the informatoin about each Elevator call for the schedulaer to use
- * @author Dharsh
+ * @author Alexander
  * @version 02/06/21
  *
  */
