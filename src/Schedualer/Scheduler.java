@@ -24,7 +24,7 @@ public class Scheduler implements Runnable {
 //	}
 	
 	/**
-	 * ??
+	 *  Sends information for the floorsubsystem
 	 */
 	public synchronized void requestElevator(RequestElevatorEvent job) {
 		while (activeJob != null) {
