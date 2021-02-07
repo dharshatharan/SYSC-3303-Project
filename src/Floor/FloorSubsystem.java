@@ -18,12 +18,14 @@ public class FloorSubsystem implements Runnable{
     List<RequestElevatorEvent> floorjobs;
     Scheduler schedular;
 
+    //Default constructor for floor subsystem
     public FloorSubsystem(Scheduler schedular) {
     	this.schedular = schedular;
     	this.floorjobs = new ArrayList<>();
         parse();
     }
 
+    //Runs on thread start
     @Override
     public void run() {
     	System.out.println("Starting floor run");
@@ -33,6 +35,7 @@ public class FloorSubsystem implements Runnable{
         }
     }
 
+    //Parses the input for commands 
     public void parse() {
         File simulation = new File("./src/input.txt");
         try {
