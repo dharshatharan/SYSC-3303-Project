@@ -1,4 +1,6 @@
 package Shared;
+import Constants.*;
+import Elevator.Elevator;
 
 /**
  * 
@@ -7,4 +9,5 @@ package Shared;
  */
 public interface RequestFloorEvent {
 
+	void handelRequestFloorEvent(String time,FloorNumber floorNum, Elevator elevator);
 }
