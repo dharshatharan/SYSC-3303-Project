@@ -59,22 +59,23 @@ Dharshatharan:
 Alexander:
 -FloorSubsystem.java
 -RequestElevatorEvent.java
--Helped with README.txt
 
 Quinn:
 -ElevatorTest.java
--Direction.java
+-ElevatorSystemSimulation.java
 
 Colin:
 -Scheduler.java
 -ElevatorState.java
 -FloorNumber.java
--Helped with README.txt
+-Direction.java
 
 Bailey:
 -Door.java
--Other classes omitted from Iteration 1 due to quick last minute restructuring of the class diagram since 
-we did more than what was asked for this iteration. His classes will be used for future iterations due to this.
+-Other classes omitted from Iteration 1 due to quick last minute restructuring of 
+the class diagram since we did more than what was asked for this iteration. His 
+classes will be used for future iterations due to this.
+-Helped with README.txt
 
 
 Combined effort:
