@@ -15,13 +15,6 @@ import Floor.RequestElevatorEvent;
 public class Scheduler implements Runnable {
 	private RequestElevatorEvent activeJob;
 	private ElevatorInfo activeInfo;
-//	private Elevator elevator;
-//	private FloorSubsystem floorSubsystem;
-
-//	public Scheduler(Elevator elevator, FloorSubsystem floorSub) {
-//		this.elevator = elevator;
-//		this.floorSubsystem = floorSub;
-//	}
 	
 	/**
 	 *  Sends information for the floorsubsystem
@@ -35,7 +28,6 @@ public class Scheduler implements Runnable {
             }
         }
 		activeJob = job;
-//        System.out.println(ingredients + " placed on the table by the agent");
         notifyAll();
 	}
 	
@@ -69,7 +61,6 @@ public class Scheduler implements Runnable {
             }
         }
 		activeInfo = job;
-//        System.out.println(ingredients + " placed on the table by the agent");
         notifyAll();
 	}
 	/**
@@ -98,9 +89,5 @@ public class Scheduler implements Runnable {
 		System.out.println("Starting floor scheduler");
 		
 	}
-	
-//	public static void main(String[] args) {
-//		
-//    }
 
 }
