@@ -1,9 +1,9 @@
 package Constants;
 
 /**
- * Floors in the building
+ * Enum for the Floors in the building
  * 
- * @author 
+ * @author Colin
  * @version 02/06/2021
  */
 public enum FloorNumber {
@@ -18,6 +18,10 @@ public enum FloorNumber {
 	
 	public int number;
 	
+	/**
+	 * creates and enum based on an int
+	 * @param number
+	 */
 	private FloorNumber(int number) {
 		this.number = number;
 	}

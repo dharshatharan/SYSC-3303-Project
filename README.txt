@@ -81,7 +81,3 @@ classes will be used for future iterations due to this.
 Combined effort:
 -UML class diagram
 -UML sequence diagram
-
-
-
-

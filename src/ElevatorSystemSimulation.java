@@ -3,16 +3,18 @@ import Floor.FloorSubsystem;
 import Schedualer.Scheduler;
 
 /**
- * 
+ * Generates the instances of the schedule, floorsubsystem and the elevator. Runs the simulation to demonstraigh the comunication between threads
  */
 
 /**
- * @author Dharsh
+ * 
+ * @author Quinn
  *
  */
 public class ElevatorSystemSimulation {
 
 	/**
+	 * Main method of the program. runs the simulation
 	 * @param args
 	 */
 	public static void main(String[] args) {

@@ -6,7 +6,7 @@ import Floor.RequestElevatorEvent;
 
 /**
  * 
- * @author 
+ * @author Darsh
  * @version 02/06/2021
  */
 public class Elevator implements Runnable {
@@ -17,10 +17,17 @@ public class Elevator implements Runnable {
     private Direction direction;
     private int curFlor, destination;
 	
+	/**
+	 * Default constructor
+	 * @param scheduler
+	 */
 	public Elevator(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 	
+	/**
+	 * Runs the elevator pram constantly requesting  then exicuting jobs
+	 */
 	@Override
 	public void run() {
 		System.out.println("Starting floor elevator");
