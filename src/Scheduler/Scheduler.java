@@ -77,6 +77,7 @@ public class Scheduler implements Runnable {
                 Thread.currentThread().interrupt(); 
             }
         }
+
 		jobRequest = job;
         notifyAll();
 	}
@@ -170,6 +171,9 @@ public class Scheduler implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Starting floor scheduler");
+		while (true) {
+			state.enter();
+		}
 		
 	}
 

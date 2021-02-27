@@ -35,20 +35,27 @@ public class Elevator implements Runnable {
 	public void run() {
 		System.out.println("Starting floor elevator");
 		while(true) {
-			setJob(scheduler.getJob());
-			//RequestElevatorEvent job = scheduler.getJob();
+			RequestElevatorEvent job = scheduler.getNextJob();
 			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
-						
 			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));timer = job.getTime();
+		    direction =  job.getDirection();
+		    curFlor =  job.getCurrentfloornumber();
+		    destination = job.getDestinationfloornumber();
+		}
+//			setJob(scheduler.getNextJob());
+//			RequestElevatorEvent job = scheduler.getNextJob();
+//			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
+//						
+//			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
 //		    
 //			setTimer();
 //            setDirection();
 //            setcurFlor();
 //            setDestination();
-            this.state = new Idle(this);
-            state.enter();
+//            this.state = new Idle(this);
+//            state.enter();
 		}
-	}
+	//}
 
 	/**
 	 * Getters and seeters for terms in elevator below
@@ -71,7 +78,7 @@ public class Elevator implements Runnable {
     }
     
     public RequestElevatorEvent getJob() {
-        return scheduler.getJob();
+        return scheduler.getNextJob();
     }
     
     public ElevatorState getState() {
