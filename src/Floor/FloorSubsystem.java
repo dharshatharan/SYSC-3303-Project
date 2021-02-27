@@ -70,15 +70,15 @@ public class FloorSubsystem implements Runnable{
         return timer;
     }
 
-    public Direction getdirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public int getcurFlor(){
+    public int getCurFloor(){
         return curFlor;
     }
 
-    public int getdestination() {
+    public int getDestination() {
         return destination;
     }
 

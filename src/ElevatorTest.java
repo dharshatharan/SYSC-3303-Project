@@ -37,9 +37,9 @@ public class ElevatorTest {
         }
 
         assertEquals(elevator.getTimer(), "19:05:15.0");
-        assertEquals(elevator.getdirection(), Direction.DOWN);
-        assertEquals(elevator.getcurFlor(), 2);
-        assertEquals(elevator.getdestination(), 0);
+        assertEquals(elevator.getDirection(), Direction.DOWN);
+        assertEquals(elevator.getCurFloor(), 2);
+        assertEquals(elevator.getDestination(), 0);
         
         try {
         	Thread.sleep(4000);
@@ -49,9 +49,9 @@ public class ElevatorTest {
         
 
         assertEquals(floorSub.getTimer(), "19:05:15.0");
-        assertEquals(floorSub.getdirection(), Direction.DOWN);
-        assertEquals(floorSub.getcurFlor(), 2);
-        assertEquals(floorSub.getdestination(), 0);
+        assertEquals(floorSub.getDirection(), Direction.DOWN);
+        assertEquals(floorSub.getCurFloor(), 2);
+        assertEquals(floorSub.getDestination(), 0);
 
     }
 

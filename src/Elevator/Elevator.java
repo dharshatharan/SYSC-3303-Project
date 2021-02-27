@@ -16,6 +16,7 @@ public class Elevator implements Runnable {
 	private String timer;
     private Direction direction;
     private int curFlor, destination;
+    private ElevatorState state;
 	
 	/**
 	 * Default constructor
@@ -41,19 +42,47 @@ public class Elevator implements Runnable {
 		}
 	}
 
+	/**
+	 * Getters and seeters for terms in elevator below
+	 */
+	
 	public String getTimer(){
         return timer;
     }
 
-    public Direction getdirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public int getcurFlor(){
+    public int getCurFloor(){
         return curFlor;
     }
 
-    public int getdestination() {
+    public int getDestination() {
         return destination;
     }
+    
+    public RequestElevatorEvent getJob() {
+        return scheduler.getJob();
+    }
+    
+    public ElevatorState getState() {
+        return state;
+    }
+    
+    public void setFloor(int floorNumber){
+    	curFlor = floorNumber;
+    }
+    
+    public void setState(ElevatorState state) {
+    	this.state = state;
+    	state.enter();
+    }
+    
+    
+    
+
+    
+    
+    
 }
