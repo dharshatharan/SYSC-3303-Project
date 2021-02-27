@@ -25,6 +25,7 @@ public class Idle extends ElevatorState{
             }
             this.job = elevator.getJob();
         }
+        startJob();
 
     }
 
@@ -41,20 +42,22 @@ public class Idle extends ElevatorState{
     }
 
     public void startJob() {
-        elevator.setJob(job); 
+        elevator.setJob(elevator.getJob()); 
         elevator.setTimer();				
         elevator.setDirection();
         elevator.setcurFlor();
         elevator.setDestination();
-
-        notifyAll();
+        System.out.println("test");
+        exit();
+        //notifyAll();
     }
 
     @Override
     public void exit() {
         elevator.setState(new Moving(elevator));
-        notifyAll();
         elevator.getState().enter();
+        notifyAll();
+        
 
     }
 

@@ -25,7 +25,7 @@ public class Elevator implements Runnable {
 	 */
 	public Elevator(Scheduler scheduler) {
 		this.scheduler = scheduler;
-		this.state = new Idle(this);
+		
 	}
 	
 	/**
@@ -40,11 +40,13 @@ public class Elevator implements Runnable {
 			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
 						
 			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));timer = job.getTime();
-		    
-			setTimer();
-            setDirection();
-            setcurFlor();
-            setDestination();
+//		    
+//			setTimer();
+//            setDirection();
+//            setcurFlor();
+//            setDestination();
+            this.state = new Idle(this);
+            state.enter();
 		}
 	}
 

@@ -25,7 +25,7 @@ public class Stopped extends ElevatorState{
 	public void openDoors() {
 		System.out.println("Doors open");
 		// Sleep or wait for new job or for set time
-		closeDoors();
+		
 		
 	}
 	
@@ -35,18 +35,19 @@ public class Stopped extends ElevatorState{
 	public void closeDoors() {
 		System.out.println("Doors closed");
 		if (elevator.getJob().equals(null)) {
-			idel();
+			idle();
 		}
 		else {
 			moving();		// TODO Desides to change state to idel or moving
 		}
+		
 		exit();
 	}
 	
 	/**
 	 * Sets state to idel when there are no more jobs
 	 */
-	public void idel() {
+	public void idle() {
 		//elevator.changeState();
 		elevator.setState(new Idle(elevator));
 		exit();
