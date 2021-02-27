@@ -70,6 +70,14 @@ public class Elevator implements Runnable {
         return state;
     }
     
+    public void setDestination(int destination){
+    	this.destination = destination;
+    }
+    
+    public void setDirection(Direction direction){
+    	this.direction = direction;
+    }
+    
     public void setFloor(int floorNumber){
     	curFlor = floorNumber;
     }
