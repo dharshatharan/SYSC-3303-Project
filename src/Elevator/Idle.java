@@ -41,8 +41,8 @@ public class Idle extends ElevatorState{
     }
 
     public void startJob() {
-        //elevator.setJob(job); 			not a variable
-        elevator.setTimer();				// TODO Set up Jop input iteration 3
+        elevator.setJob(job); 
+        elevator.setTimer();				
         elevator.setDirection();
         elevator.setcurFlor();
         elevator.setDestination();
