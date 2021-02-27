@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Constants.Direction;
 import Schedualer.Scheduler;
 
 /**
@@ -17,6 +18,10 @@ public class FloorSubsystem implements Runnable{
 
     List<RequestElevatorEvent> floorjobs;
     Scheduler schedular;
+    
+    private String timer;
+    private Direction direction;
+    private int curFlor, destination;
 
     public FloorSubsystem(Scheduler schedular) {
     	this.schedular = schedular;
@@ -30,6 +35,10 @@ public class FloorSubsystem implements Runnable{
         for(RequestElevatorEvent job: floorjobs) {
         	schedular.requestElevator(job);
         	System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
+        	timer =  job.getTime();
+        	direction =  job.getDirection();
+		    curFlor =  job.getCurrentfloornumber();
+		    destination = job.getDestinationfloornumber();
         }
     }
 
@@ -45,6 +54,22 @@ public class FloorSubsystem implements Runnable{
         catch (FileNotFoundException ex) {
             System.out.println("Error: File not found.");
         }
+    }
+    
+    public String getTimer(){
+        return timer;
+    }
+
+    public Direction getdirection() {
+        return direction;
+    }
+
+    public int getcurFlor(){
+        return curFlor;
+    }
+
+    public int getdestination() {
+        return destination;
     }
 
 }
