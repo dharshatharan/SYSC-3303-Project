@@ -4,9 +4,6 @@ import Schedualer.Scheduler;
 
 /**
  * Generates the instances of the schedule, floorsubsystem and the elevator. Runs the simulation to demonstraigh the comunication between threads
- */
-
-/**
  * 
  * @author Quinn
  *

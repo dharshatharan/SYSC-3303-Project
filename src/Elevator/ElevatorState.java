@@ -9,13 +9,18 @@ package Elevator;
  *
  */
 public abstract class ElevatorState {
-	private Elevator elevator;
+	Elevator elevator;
 	
-	public ElevatorState() {
+	/**
+	 * Default constructor for the Abstarct parent state class
+	 * @param elevator
+	 */
+	public ElevatorState(Elevator elevator) {
+		this.elevator = elevator;
 	}
 	
 	public abstract void enter();
 	
-	public abstract void exti();
+	public abstract void exit();
 	
 }
