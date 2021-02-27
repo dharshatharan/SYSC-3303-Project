@@ -24,6 +24,7 @@ public class Elevator implements Runnable {
 	 */
 	public Elevator(Scheduler scheduler) {
 		this.scheduler = scheduler;
+		this.state = new Idel(this);
 	}
 	
 	/**
