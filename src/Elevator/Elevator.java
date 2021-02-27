@@ -12,6 +12,7 @@ import Floor.RequestElevatorEvent;
 public class Elevator implements Runnable {
 	
 	private Scheduler scheduler;
+	private RequestElevatorEvent job;
 	
 	private String timer;
     private Direction direction;
@@ -24,7 +25,7 @@ public class Elevator implements Runnable {
 	 */
 	public Elevator(Scheduler scheduler) {
 		this.scheduler = scheduler;
-		this.state = new Idel(this);
+		this.state = new Idle(this);
 	}
 	
 	/**
@@ -34,12 +35,16 @@ public class Elevator implements Runnable {
 	public void run() {
 		System.out.println("Starting floor elevator");
 		while(true) {
-			RequestElevatorEvent job = scheduler.getJob();
+			setJob(scheduler.getJob());
+			//RequestElevatorEvent job = scheduler.getJob();
 			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
+						
 			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));timer = job.getTime();
-		    direction =  job.getDirection();
-		    curFlor =  job.getCurrentfloornumber();
-		    destination = job.getDestinationfloornumber();
+		    
+			setTimer();
+            setDirection();
+            setcurFlor();
+            setDestination();
 		}
 	}
 
@@ -71,17 +76,30 @@ public class Elevator implements Runnable {
         return state;
     }
     
-    public void setDestination(int destination){
-    	this.destination = destination;
+    public void setJob(RequestElevatorEvent job) {
+        this.job = job;
     }
-    
-    public void setDirection(Direction direction){
-    	this.direction = direction;
+
+    public void setTimer(){
+        timer = job.getTime();
     }
+
+    public void setDirection() {
+        direction =  job.getDirection();
+    }
+
+    public void setcurFlor(){
+        curFlor =  job.getCurrentfloornumber();
+    }
+
+    public void setDestination() {
+        destination = job.getDestinationfloornumber();
+    } 
     
     public void setFloor(int floorNumber){
     	curFlor = floorNumber;
     }
+    
     
     public void setState(ElevatorState state) {
     	this.state = state;

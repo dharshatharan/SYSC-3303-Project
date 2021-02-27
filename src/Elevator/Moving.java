@@ -93,6 +93,7 @@ public class Moving extends ElevatorState{
 	
 	public void exit() {
 		elevator.setState(new Stopped(elevator));
+		elevator.getState().enter();
 	}
 	
 	

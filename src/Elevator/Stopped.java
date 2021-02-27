@@ -38,7 +38,7 @@ public class Stopped extends ElevatorState{
 			idel();
 		}
 		else {
-			move();		// TODO Desides to change state to idel or moving
+			moving();		// TODO Desides to change state to idel or moving
 		}
 		exit();
 	}
@@ -48,15 +48,14 @@ public class Stopped extends ElevatorState{
 	 */
 	public void idel() {
 		//elevator.changeState();
-		elevator.setState(new idel(elevator));
-		
+		elevator.setState(new Idle(elevator));
 		exit();
 	}
 	
 	/**
 	 * Sets state to Move when there are jobs
 	 */
-	public void move() {
+	public void moving() {
 		//elevator.changeState();
 		elevator.setState(new Moving(elevator));
 		exit();
