@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import Elevator.Elevator;
 import Floor.FloorSubsystem;
-import Schedualer.Scheduler;
+import Scheduler.Scheduler;
 import Constants.Direction;
 
 /**

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import Constants.Direction;
-import Schedualer.Scheduler;
+import Scheduler.Scheduler;
 
 /**
  * A class to handle the input from a file listing all the floors the elevator(s) have to visit

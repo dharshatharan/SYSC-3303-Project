@@ -1,8 +1,8 @@
 package Elevator;
 
-import Schedualer.Scheduler;
 import Constants.Direction;
 import Floor.RequestElevatorEvent;
+import Scheduler.Scheduler;
 
 /**
  * 
