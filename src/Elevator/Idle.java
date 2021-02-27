@@ -2,6 +2,7 @@ package Elevator;
 
 import Constants.Direction;
 import Floor.RequestElevatorEvent;
+import Scheduler.Scheduler;
 
 public class Idle extends ElevatorState{
 
@@ -16,20 +17,22 @@ public class Idle extends ElevatorState{
 
     @Override
     public void enter() {
-
-        while (this.job != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-            this.job = elevator.getJob();
-        }
         startJob();
 
     }
 
-    public void requestJob(RequestElevatorEvent job) {
+    public void requestJob() {
+    	Scheduler scheduler = elevator.getScheduler();
+    	this.job = scheduler.getNextJob();
+		elevator.setJob(job);
+		//RequestElevatorEvent job = scheduler.getNextJob();
+		System.out.println(Thread.currentThread() + " is serving job " + job.toString());
+					
+		scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+	    
+		startJob();
+		exit();
+		
         while (this.job != null) {
             try { 
                 wait();
@@ -42,14 +45,11 @@ public class Idle extends ElevatorState{
     }
 
     public void startJob() {
-        elevator.setJob(elevator.getJob()); 
         elevator.setTimer();				
         elevator.setDirection();
         elevator.setcurFlor();
         elevator.setDestination();
-        System.out.println("test");
-        exit();
-        //notifyAll();
+        
     }
 
     @Override

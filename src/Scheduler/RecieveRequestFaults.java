@@ -19,6 +19,13 @@ public class RecieveRequestFaults extends SchedulerState {
 	@Override
 	public void enter() {
 		System.out.println("Reacieve Request Faults State");
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		while(true) {
 			if (context.faultExists()) {
 				context.setState(new ProcessFault(context));

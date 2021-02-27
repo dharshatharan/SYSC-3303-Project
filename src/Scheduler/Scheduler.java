@@ -21,11 +21,11 @@ public class Scheduler implements Runnable {
 		this.state = new RecieveRequestFaults(this);
 	}
 	
-	public boolean faultExists() {
+	public synchronized boolean faultExists() {
 		return fault != null;
 	}
 	
-	public boolean jobRequestExists() {
+	public synchronized boolean jobRequestExists() {
 		return jobRequest != null;
 	}
 		
