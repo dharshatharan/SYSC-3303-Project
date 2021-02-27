@@ -14,6 +14,7 @@ public class RequestElevatorEvent {
     private int currentfloornumber;
     private Direction direction;
     private int destinationfloornumber;
+    private int secondsSinceMidnight;
 
     /**
      * Default constructor
@@ -33,6 +34,14 @@ public class RequestElevatorEvent {
         }
         
         this.destinationfloornumber = Integer.parseInt(inputs[3]);
+        
+        String time[] = inputs[0].split(":");
+        
+        int hrs = Integer.parseInt(time[0]);
+        int minutes = Integer.parseInt(time[1]);
+        int secs = Integer.parseInt(time[2]);
+        
+        this.secondsSinceMidnight = hrs*3600 + minutes*60 + secs;
     }
 
     /**
@@ -66,12 +75,21 @@ public class RequestElevatorEvent {
 	public int getDestinationfloornumber() {
 		return destinationfloornumber;
 	}
+
+    /**
+     * Getter for the SecondsSinceMidnight
+     * @return SecondsSinceMidnight
+     */	
+	public int getSecondsSinceMidnight() {
+		return secondsSinceMidnight;
+	}
+	
 	
 	/**
 	 * Returns the string of information to be printed
 	 * @return ElevatorInfromation
 	 */
-	@Override 
+	@Override
 	public String toString() {
 		return time + " " + currentfloornumber + " " + direction + " " + destinationfloornumber;
 	}

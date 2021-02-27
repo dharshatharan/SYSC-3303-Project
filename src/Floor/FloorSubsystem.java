@@ -39,14 +39,36 @@ public class FloorSubsystem implements Runnable{
     @Override
     public void run() {
     	System.out.println("Starting floor run");
-        for(RequestElevatorEvent job: floorjobs) {
-        	schedular.requestElevator(job);
-        	System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
-        	timer =  job.getTime();
-        	direction =  job.getDirection();
-		    curFlor =  job.getCurrentfloornumber();
-		    destination = job.getDestinationfloornumber();
-        }
+//<<<<<<< HEAD
+//        for(RequestElevatorEvent job: floorjobs) {
+//        	schedular.requestElevator(job);
+//        	System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
+//        	timer =  job.getTime();
+//        	direction =  job.getDirection();
+//		    curFlor =  job.getCurrentfloornumber();
+//		    destination = job.getDestinationfloornumber();
+//        }
+//=======
+    	int count = 0;
+    	while(true) {
+    		for(RequestElevatorEvent job: floorjobs) {
+    			if(count == job.getSecondsSinceMidnight()) {
+    				schedular.requestElevator(job);
+    				System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
+    			}
+    		}
+    		if(count == 86400) {
+    			count = 0;
+    		} else {
+    		count++;
+    		}
+    		try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
 
     /**
