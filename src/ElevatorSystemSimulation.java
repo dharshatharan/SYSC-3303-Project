@@ -1,6 +1,6 @@
 import Elevator.Elevator;
 import Floor.FloorSubsystem;
-import Schedualer.Scheduler;
+import Scheduler.Scheduler;
 
 /**
  * Generates the instances of the schedule, floorsubsystem and the elevator. Runs the simulation to demonstraigh the comunication between threads
