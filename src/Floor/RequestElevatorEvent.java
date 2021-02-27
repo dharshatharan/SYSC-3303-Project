@@ -8,6 +8,7 @@ public class RequestElevatorEvent {
     private int currentfloornumber;
     private Direction direction;
     private int destinationfloornumber;
+    private int secondsSinceMidnight;
 
     public RequestElevatorEvent(String job) {
         String inputs[] = job.split(" ");
@@ -23,6 +24,14 @@ public class RequestElevatorEvent {
         }
         
         this.destinationfloornumber = Integer.parseInt(inputs[3]);
+        
+        String time[] = inputs[0].split(":");
+        
+        int hrs = Integer.parseInt(time[0]);
+        int minutes = Integer.parseInt(time[1]);
+        int secs = Integer.parseInt(time[2]);
+        
+        this.secondsSinceMidnight = hrs*3600 + minutes*60 + secs;
     }
 
 	public String getTime() {
@@ -39,6 +48,10 @@ public class RequestElevatorEvent {
 
 	public int getDestinationfloornumber() {
 		return destinationfloornumber;
+	}
+	
+	public int getSecondsSinceMidnight() {
+		return secondsSinceMidnight;
 	}
 	
 	@Override
