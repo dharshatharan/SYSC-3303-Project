@@ -7,7 +7,7 @@ import Scheduler.Scheduler;
 /**
  * An elevator that cycles through states completing Jobs
  * 
- * @author Darsh
+ * @author Darsh, Quinn
  * @version 02/27/2021
  */
 public class Elevator implements Runnable {
