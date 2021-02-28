@@ -19,8 +19,14 @@ public abstract class ElevatorState {
 		this.elevator = elevator;
 	}
 	
+	/**
+	 * Start Task for elevator for state
+	 */
 	public abstract void enter();
 	
+	/**
+	 * End Task for elevator for state and switch state
+	 */
 	public abstract void exit();
 	
 }

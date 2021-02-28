@@ -5,7 +5,7 @@ import Constants.Direction;
 /**
  * Stores the informatoin about each Elevator call for the schedulaer to use
  * @author Alexander
- * @version 02/06/21
+ * @version 02/27/21
  *
  */
 public class RequestElevatorEvent {

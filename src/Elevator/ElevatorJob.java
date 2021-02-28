@@ -7,7 +7,7 @@ import Constants.Direction;
 import Constants.FloorNumber;
 
 /**
- * Stores the informatoin about each job created for the elevator to exicute
+ * Stores the informatoin about each job created for the elevator to execute
  * @author Dharsh
  * @version 02/06/21
  *
