@@ -12,9 +12,9 @@ import Elevator.Stopped;
 import Scheduler.Scheduler;
 
 /**
- * 
- * @author 
- *
+ * Test the Diffrent states of the elevators.
+ * @author Darsh Alex
+ * @Version 02/27/2021
  */
 public class ElevatorStatesTest {
 	static private Elevator elevator;
