@@ -69,6 +69,9 @@ public class Stopped extends ElevatorState{
 	}
 
 
+	/**
+	 * Starts task for Stopped state, notifies scheduler that the elevator has arrived
+	 */
 	@Override
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
@@ -84,6 +87,9 @@ public class Stopped extends ElevatorState{
 			
 	}
 
+	/**
+	 * Notifies The Scheduler that the elevator has arrived
+	 */
 	private void notifyElevatorArrival() {
 		RequestElevatorEvent job = elevator.getJob();
 		elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
