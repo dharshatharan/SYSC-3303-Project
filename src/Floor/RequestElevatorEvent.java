@@ -123,7 +123,7 @@ public class RequestElevatorEvent {
 
     	if (!this.time.equals(c.time)) return false;
     	if (this.currentfloornumber != c.currentfloornumber) return false;
-    	if (this.direction.equals(c.direction)) return false;
+    	if (!this.direction.equals(c.direction)) return false;
     	if (this.destinationfloornumber != c.destinationfloornumber) return false;
     	if (this.secondsSinceMidnight != c.secondsSinceMidnight) return false;
     	

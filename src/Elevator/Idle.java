@@ -53,7 +53,6 @@ public class Idle extends ElevatorState{
      * Determins if the elevator has to move to start the next job, stores a job to get to the floor or gets all thge information for the job 
      */
     public void startJob() {
-    	System.out.println(job);
     	
     	if(elevator.getCurFloor() != job.getCurrentfloornumber()) {
     		elevator.setPreJob(new RequestElevatorEvent("0", elevator.getCurFloor(), checkToGoDirection(elevator.getCurFloor(), job.getCurrentfloornumber()), job.getCurrentfloornumber(), 0));
@@ -63,6 +62,7 @@ public class Idle extends ElevatorState{
             elevator.setDestination(elevator.getPreJob().getDestinationfloornumber());
             elevator.setJob(job);
     	} else {
+    		System.out.println("Next Job:" + job);
     		elevator.setJob(job);
     		elevator.setTimer(elevator.getJob().getTime());				
             elevator.setDirection(elevator.getJob().getDirection());

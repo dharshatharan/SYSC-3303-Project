@@ -5,10 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import Elevator.Elevator;
-import Elevator.Idle;
-import Elevator.Moving;
-import Elevator.Stopped;
 import Scheduler.ProcessFault;
 import Scheduler.ReceiveRequestsAndFaults;
 import Scheduler.ScheduleRequest;
