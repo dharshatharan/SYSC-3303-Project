@@ -5,9 +5,10 @@ import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
 /**
+ * An elevator that cycles through states completing Jobs
  * 
  * @author Darsh
- * @version 02/06/2021
+ * @version 02/27/2021
  */
 public class Elevator implements Runnable {
 	
