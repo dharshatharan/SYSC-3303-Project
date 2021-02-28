@@ -4,17 +4,29 @@ import Constants.Direction;
 import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
+
+/**
+ * Notifies the scheduler that is is waiting for a job and starts the elevator
+ * @author Colin
+ * @Version 02/27/2021
+ */
 public class Idle extends ElevatorState{
 
 
     private RequestElevatorEvent job;
 
+     /**
+     * Default Constructor calls parent class
+     * @param elevator
+     */
     public Idle(Elevator elevator) {
         super(elevator);
 
 
     }
-
+    /**
+     * Starts task for Idle state
+     */
     @Override
     public void enter() {
     	System.out.println("---------------------Elevator State changed to: IDLE-STATE---------------------");
@@ -23,7 +35,9 @@ public class Idle extends ElevatorState{
     	exit();
 
     }
-
+    /**
+     * Request Job from scheduler then exits when it receives the job
+     */
     public void requestJob() {
     	if (elevator.getPreJob() == null && elevator.getJob() == null ) {
 	    	Scheduler scheduler = elevator.getScheduler();
@@ -35,7 +49,9 @@ public class Idle extends ElevatorState{
 		startJob();
 		exit();
     }
-
+    /**
+     * Determins if the elevator has to move to start the next job, stores a job to get to the floor or gets all thge information for the job 
+     */
     public void startJob() {
     	System.out.println(job);
     	
@@ -55,12 +71,16 @@ public class Idle extends ElevatorState{
     	}
         
     }
-    
+    /**
+     * checks the direction the elevator has to go to get to the job
+     */    
     private Direction checkToGoDirection(int fromFloor, int toFloor) {
     	if (fromFloor < toFloor) return Direction.UP;
     	return Direction.DOWN;
     }
-
+    /**
+     * Switches stare to moving and notfiesAll
+     */
     @Override
     public void exit() {
         elevator.setState(new Moving(elevator));
