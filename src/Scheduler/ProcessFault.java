@@ -18,7 +18,7 @@ public class ProcessFault extends SchedulerState {
 
 	@Override
 	public void enter() {
-		System.out.println("Process Fault State");
+		System.out.println("---------------------Scheduler State changed to: PROCESS FAULT---------------------");
 		processFault(context.getFault());
 		exit();
 	}
@@ -29,7 +29,7 @@ public class ProcessFault extends SchedulerState {
 
 	@Override
 	public void exit() {
-		context.setState(new RecieveRequestFaults(context));
+		context.setState(new RecieveRequestsAndFaults(context));
 	}
 
 }

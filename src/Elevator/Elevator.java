@@ -75,7 +75,7 @@ public class Elevator implements Runnable {
     }
     
     public RequestElevatorEvent getJob() {
-        return scheduler.getNextJob();
+        return job;
     }
     
     public ElevatorState getState() {

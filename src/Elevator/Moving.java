@@ -34,31 +34,47 @@ public class Moving extends ElevatorState{
 	public void accelerate() {
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
-				Thread.sleep(250);
+				System.out.println("The elevator is accelerating "+ elevator.getDirection());
+				Thread.sleep(300);
 			}catch (InterruptedException e){
 			}
 			System.out.println("Elevator has now accelerated to max speed");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			MoveFloors();
 			state = elevatorSpeed.maxSpeed;
 		}
-		else {
-			System.out.println("The elevator is already at max speed. Going: "+ elevator.getDirection());
-		}	
+				
 		}
 	
 	
 	
 	//To emulate moving between floors this function will be called
-	public void move() {
+	public void moveAtMaxSpeed() {
 		try {
-			Thread.sleep(250);
+			Thread.sleep(1000);
 		}catch (InterruptedException e) {
 			//Will include arrival sensors HERE in the future!
 		}
+		MoveFloors();
+	}
+	
+	
+	/**
+	 * 
+	 */
+	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
 			elevator.setFloor( elevator.getCurFloor() +1);
+			System.out.println("Elevator went from " + (elevator.getCurFloor() - 1) + " to " + elevator.getCurFloor() );
+			
 		}
 		if (elevator.getDirection().equals(Direction.DOWN)) {
 			elevator.setFloor(elevator.getCurFloor() -1);
+			System.out.println("Elevator went from " + (elevator.getCurFloor() + 1) + " to " + elevator.getCurFloor() );
 		}
 	}
 
@@ -66,10 +82,10 @@ public class Moving extends ElevatorState{
 	public void deccelerate() {
 		if(state.equals(elevatorSpeed.maxSpeed)) {
 			try {
-				Thread.sleep(250);
+				Thread.sleep(1000);
 			}catch (InterruptedException e) {
 			}
-			System.out.println("Elevator has deccelerated to a stop. Going: "+ elevator.getDirection());
+			System.out.println("Elevator has deccelerated to a stop. Direction: "+ elevator.getDirection());
 			state = elevatorSpeed.stopped;
 		}
 		
@@ -80,12 +96,13 @@ public class Moving extends ElevatorState{
 	 * If there's only a single floor, it only moves for the duration of a single floor. 
 	 */
 	public void enter() {
+		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
 		accelerate();
 		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
-			move();
+			moveAtMaxSpeed();
 		}
 		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
-			move();
+			moveAtMaxSpeed();
 			deccelerate();
 		}
 		exit();

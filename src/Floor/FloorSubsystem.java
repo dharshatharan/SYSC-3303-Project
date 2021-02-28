@@ -43,9 +43,8 @@ public class FloorSubsystem implements Runnable{
     	while(true) {
     		for(RequestElevatorEvent job: floorjobs) {
     			if(count == job.getSecondsSinceMidnight()) {
-    				System.out.println("test");
     				schedular.requestElevator(job);
-    				System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
+    				System.out.println("Floor has been notified that the Elevator for Job " + schedular.getElevatorInfo().toString());
     			}
     		}
     		if(count == 86400) {
@@ -54,7 +53,7 @@ public class FloorSubsystem implements Runnable{
     		count++;
     		}
     		try {
-				Thread.sleep(1);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

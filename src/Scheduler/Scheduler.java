@@ -18,7 +18,7 @@ public class Scheduler implements Runnable {
 	private Fault fault;
 	
 	public Scheduler() {
-		this.state = new RecieveRequestFaults(this);
+		this.state = new RecieveRequestsAndFaults(this);
 	}
 	
 	public synchronized boolean faultExists() {

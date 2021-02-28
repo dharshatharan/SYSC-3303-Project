@@ -20,7 +20,7 @@ public class ScheduleRequest extends SchedulerState {
 
 	@Override
 	public void enter() {
-		System.out.println("Schedule Request State");
+		System.out.println("---------------------Scheduler State changed to: REQUEST ELEVATOR EVENT---------------------");
 		scheduleJob(context.getJobRequest());
 		exit();
 	}
@@ -31,7 +31,7 @@ public class ScheduleRequest extends SchedulerState {
 
 	@Override
 	public void exit() {
-		context.setState(new RecieveRequestFaults(context));
+		context.setState(new RecieveRequestsAndFaults(context));
 	}
 
 }

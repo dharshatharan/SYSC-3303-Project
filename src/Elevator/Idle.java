@@ -17,7 +17,10 @@ public class Idle extends ElevatorState{
 
     @Override
     public void enter() {
+    	System.out.println("---------------------Elevator State changed to: IDLE-STATE---------------------");
+    	requestJob();
         startJob();
+    	exit();
 
     }
 
@@ -26,9 +29,9 @@ public class Idle extends ElevatorState{
     	this.job = scheduler.getNextJob();
 		elevator.setJob(job);
 		//RequestElevatorEvent job = scheduler.getNextJob();
-		System.out.println(Thread.currentThread() + " is serving job " + job.toString());
+		//System.out.println(Thread.currentThread() + " is serving job " + job.toString());
 					
-		scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+		//scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
 	    
 		startJob();
 		exit();

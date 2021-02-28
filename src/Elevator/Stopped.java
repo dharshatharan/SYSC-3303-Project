@@ -1,5 +1,6 @@
 package Elevator;
 import Constants.*;
+import Floor.RequestElevatorEvent;
 
 /**
  * A state of the elevator for when it is stoped at a floor. Opens and closes the doors, changes to move or idle
@@ -34,14 +35,7 @@ public class Stopped extends ElevatorState{
 	 */
 	public void closeDoors() {
 		System.out.println("Doors closed");
-		if (elevator.getJob().equals(null)) {
-			idle();
-		}
-		else {
-			moving();		// TODO Desides to change state to idel or moving
-		}
-		
-		exit();
+		idle();
 	}
 	
 	/**
@@ -77,16 +71,23 @@ public class Stopped extends ElevatorState{
 
 	@Override
 	public void enter() {
+		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
+		notifyElevatorArrival();
 		openDoors();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		closeDoors();
 			
 			
+	}
+
+	private void notifyElevatorArrival() {
+		RequestElevatorEvent job = elevator.getJob();
+		elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+		
 	}
 		
 }

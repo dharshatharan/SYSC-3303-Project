@@ -7,18 +7,18 @@ package Scheduler;
  * @author Dharsh
  *
  */
-public class RecieveRequestFaults extends SchedulerState {
+public class RecieveRequestsAndFaults extends SchedulerState {
 
 	/**
 	 * 
 	 */
-	public RecieveRequestFaults(Scheduler context) {
+	public RecieveRequestsAndFaults(Scheduler context) {
 		super(context);
 	}
 
 	@Override
 	public void enter() {
-		System.out.println("Reacieve Request Faults State");
+		System.out.println("---------------------Scheduler State changed to: RECIEVE REQUESTS AND FAULTS---------------------");
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -29,12 +29,10 @@ public class RecieveRequestFaults extends SchedulerState {
 		while(true) {
 			if (context.faultExists()) {
 				context.setState(new ProcessFault(context));
-				System.out.println("test3");
 				break;
 			}
 			if (context.jobRequestExists()) {
 				context.setState(new ScheduleRequest(context));
-				System.out.println("test2");
 				break;
 			}
 			
