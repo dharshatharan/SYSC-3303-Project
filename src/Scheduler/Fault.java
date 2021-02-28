@@ -6,7 +6,7 @@ import Constants.Direction;
 /**
  * Stores the faults
  * @author Dharsh
- *
+ * @Version 02/27/2021
  */
 public class Fault {
 
