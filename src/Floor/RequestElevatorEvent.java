@@ -43,6 +43,18 @@ public class RequestElevatorEvent {
         
         this.secondsSinceMidnight = hrs*3600 + minutes*60 + secs;
     }
+    
+    /**
+     * Test constructor
+     * @param job
+     */
+    public RequestElevatorEvent(String time, int currentFloorNumber, Direction direction, int destinationFloorNumber, int secondsSinceMidnight) {
+        this.time = time;
+        this.direction = direction;
+        this.currentfloornumber = currentFloorNumber;
+        this.destinationfloornumber = destinationFloorNumber;
+        this.secondsSinceMidnight = secondsSinceMidnight;
+    }
 
     /**
      * Getter for the time
@@ -93,5 +105,29 @@ public class RequestElevatorEvent {
 	public String toString() {
 		return time + " " + currentfloornumber + " " + direction + " " + destinationfloornumber;
 	}
+	
+	// Overriding equals() to compare two RequestElevatorEvent objects
+    @Override
+    public boolean equals(Object o) { 
+    	
+    	if (o == this) { 
+            return true; 
+        } 
+  
+    	if (!(o instanceof RequestElevatorEvent)) { 
+            return false; 
+        } 
+    	
+    	RequestElevatorEvent c = (RequestElevatorEvent) o;
+    	
+
+    	if (!this.time.equals(c.time)) return false;
+    	if (this.currentfloornumber != c.currentfloornumber) return false;
+    	if (this.direction.equals(c.direction)) return false;
+    	if (this.destinationfloornumber != c.destinationfloornumber) return false;
+    	if (this.secondsSinceMidnight != c.secondsSinceMidnight) return false;
+    	
+    	return true;
+    } 
 
 }

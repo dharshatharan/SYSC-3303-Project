@@ -18,7 +18,7 @@ public class Scheduler implements Runnable {
 	private Fault fault;
 	
 	public Scheduler() {
-		this.state = new RecieveRequestsAndFaults(this);
+		this.state = new ReceiveRequestsAndFaults(this);
 	}
 	
 	public synchronized boolean faultExists() {
@@ -31,7 +31,10 @@ public class Scheduler implements Runnable {
 		
 	public void setState(SchedulerState state) {
 		this.state = state;
-		state.enter();
+	}
+	
+	public SchedulerState getState() {
+		return state;
 	}
 	
 	/**

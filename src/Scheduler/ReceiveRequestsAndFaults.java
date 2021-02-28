@@ -7,12 +7,12 @@ package Scheduler;
  * @author Dharsh
  *
  */
-public class RecieveRequestsAndFaults extends SchedulerState {
+public class ReceiveRequestsAndFaults extends SchedulerState {
 
 	/**
 	 * 
 	 */
-	public RecieveRequestsAndFaults(Scheduler context) {
+	public ReceiveRequestsAndFaults(Scheduler context) {
 		super(context);
 	}
 
@@ -42,8 +42,7 @@ public class RecieveRequestsAndFaults extends SchedulerState {
 
 	@Override
 	public void exit() {
-		// TODO Auto-generated method stub
-		
+		context.getState().enter();
 	}
 
 }

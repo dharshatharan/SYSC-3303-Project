@@ -25,34 +25,40 @@ public class Idle extends ElevatorState{
     }
 
     public void requestJob() {
-    	Scheduler scheduler = elevator.getScheduler();
-    	this.job = scheduler.getNextJob();
-		elevator.setJob(job);
-		//RequestElevatorEvent job = scheduler.getNextJob();
-		//System.out.println(Thread.currentThread() + " is serving job " + job.toString());
-					
-		//scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+    	if (elevator.getPreJob() == null && elevator.getJob() == null ) {
+	    	Scheduler scheduler = elevator.getScheduler();
+	    	this.job = scheduler.getNextJob();
+    	} else if (elevator.getPreJob() == null && elevator.getJob() != null ) {
+    		this.job = elevator.getJob();
+    	}
 	    
 		startJob();
 		exit();
-		
-        while (this.job != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-        }
-        this.job = job;
-        notifyAll();
     }
 
     public void startJob() {
-        elevator.setTimer();				
-        elevator.setDirection();
-        elevator.setcurFlor();
-        elevator.setDestination();
+    	System.out.println(job);
+    	
+    	if(elevator.getCurFloor() != job.getCurrentfloornumber()) {
+    		elevator.setPreJob(new RequestElevatorEvent("0", elevator.getCurFloor(), checkToGoDirection(elevator.getCurFloor(), job.getCurrentfloornumber()), job.getCurrentfloornumber(), 0));
+    		elevator.setTimer(elevator.getPreJob().getTime());				
+            elevator.setDirection(elevator.getPreJob().getDirection());
+            elevator.setcurFlor(elevator.getPreJob().getCurrentfloornumber());
+            elevator.setDestination(elevator.getPreJob().getDestinationfloornumber());
+            elevator.setJob(job);
+    	} else {
+    		elevator.setJob(job);
+    		elevator.setTimer(elevator.getJob().getTime());				
+            elevator.setDirection(elevator.getJob().getDirection());
+            elevator.setcurFlor(elevator.getJob().getCurrentfloornumber());
+            elevator.setDestination(elevator.getJob().getDestinationfloornumber());
+    	}
         
+    }
+    
+    private Direction checkToGoDirection(int fromFloor, int toFloor) {
+    	if (fromFloor < toFloor) return Direction.UP;
+    	return Direction.DOWN;
     }
 
     @Override

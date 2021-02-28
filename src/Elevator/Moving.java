@@ -8,17 +8,15 @@ import Constants.Direction;
  * @Version 02/27/2021
  */
 
-public class Moving extends ElevatorState{
-	
-	
+public class Moving extends ElevatorState{	
 	
 	//Assumes that going accelerating to maxspeed going downwards is the same as going up.
 	public enum elevatorSpeed{
 		maxSpeed,
 		stopped
 	}
-	elevatorSpeed state = elevatorSpeed.stopped;
-	Direction direction;
+	private elevatorSpeed state = elevatorSpeed.stopped;
+	private Direction direction;
 	
 	
 	
@@ -27,7 +25,22 @@ public class Moving extends ElevatorState{
     }
 	
 	
-	
+	/*
+	 * When the move state is entered, it accelerates, moves at a constant speed, and deccelerates. 
+	 * If there's only a single floor, it only moves for the duration of a single floor. 
+	 */
+	public void enter() {
+		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
+		accelerate();
+		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
+			moveAtMaxSpeed();
+		}
+		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
+			moveAtMaxSpeed();
+			deccelerate();
+		}
+		exit();
+	}
 	
 	
 	//Sleeps to mimic the acceleration period
@@ -89,23 +102,6 @@ public class Moving extends ElevatorState{
 			state = elevatorSpeed.stopped;
 		}
 		
-	}
-
-	/*
-	 * When the move state is entered, it accelerates, moves at a constant speed, and deccelerates. 
-	 * If there's only a single floor, it only moves for the duration of a single floor. 
-	 */
-	public void enter() {
-		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
-		accelerate();
-		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
-			moveAtMaxSpeed();
-		}
-		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
-			moveAtMaxSpeed();
-			deccelerate();
-		}
-		exit();
 	}
 	
 	public void exit() {

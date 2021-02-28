@@ -29,7 +29,8 @@ public class ProcessFault extends SchedulerState {
 
 	@Override
 	public void exit() {
-		context.setState(new RecieveRequestsAndFaults(context));
+		context.setState(new ReceiveRequestsAndFaults(context));
+		context.getState().enter();
 	}
 
 }

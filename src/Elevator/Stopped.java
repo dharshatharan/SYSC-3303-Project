@@ -63,9 +63,8 @@ public class Stopped extends ElevatorState{
 	 */
 	@Override
 	public void exit() {
-		notifyAll();
+		elevator.setState(new Idle(elevator));
 		elevator.getState().enter();
-		
 	}
 
 
@@ -80,14 +79,18 @@ public class Stopped extends ElevatorState{
 			e1.printStackTrace();
 		}
 		closeDoors();
-			
+		exit();
 			
 	}
 
 	private void notifyElevatorArrival() {
-		RequestElevatorEvent job = elevator.getJob();
-		elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
-		
+		if (elevator.getPreJob() == null && elevator.getJob() != null) {
+			RequestElevatorEvent job = elevator.getJob();
+			elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+			elevator.setJob(null);
+		} else {
+			elevator.setPreJob(null);
+		}
 	}
 		
 }

@@ -1,3 +1,4 @@
+package Tests;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -13,6 +14,16 @@ import Constants.Direction;
  *
  */
 public class ElevatorTest {
+	
+//	@Test
+//    public void communicationTest() {
+//		Scheduler scheduler = new Scheduler();
+//        Elevator elevator = new Elevator(scheduler);
+//        FloorSubsystem floorSub = new FloorSubsystem(scheduler);
+//        floorSub.parse();
+//        
+//        scheduler.req
+//	}
 
     @Test
     public void test() {

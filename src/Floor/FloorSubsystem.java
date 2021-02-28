@@ -53,7 +53,7 @@ public class FloorSubsystem implements Runnable{
     		count++;
     		}
     		try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,6 +93,10 @@ public class FloorSubsystem implements Runnable{
 
     public int getDestination() {
         return destination;
+    }
+    
+    public List<RequestElevatorEvent> getFloorJobs() {
+    	return floorjobs;
     }
 
 }

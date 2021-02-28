@@ -13,6 +13,7 @@ import Scheduler.Scheduler;
 public class Elevator implements Runnable {
 	
 	private Scheduler scheduler;
+	private RequestElevatorEvent preJob;
 	private RequestElevatorEvent job;
 	
 	private String timer;
@@ -25,8 +26,9 @@ public class Elevator implements Runnable {
 	 * @param scheduler
 	 */
 	public Elevator(Scheduler scheduler) {
+		this.curFlor = 1;
 		this.scheduler = scheduler;
-		
+		this.state = new Idle(this);
 	}
 	
 	/**
@@ -36,15 +38,6 @@ public class Elevator implements Runnable {
 	public void run() {
 		System.out.println("Starting floor elevator");
 		while(true) {
-//			RequestElevatorEvent job = scheduler.getNextJob();
-//			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
-//			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));timer = job.getTime();
-//		    direction =  job.getDirection();
-//		    curFlor =  job.getCurrentfloornumber();
-//		    destination = job.getDestinationfloornumber();
-//		}
-
-            this.state = new Idle(this);
             state.enter();
 		}
 	}
@@ -79,6 +72,10 @@ public class Elevator implements Runnable {
         return job;
     }
     
+    public RequestElevatorEvent getPreJob() {
+        return preJob;
+    }
+    
     public ElevatorState getState() {
         return state;
     }
@@ -86,37 +83,34 @@ public class Elevator implements Runnable {
     public void setJob(RequestElevatorEvent job) {
         this.job = job;
     }
-
-    public void setTimer(){
-        timer = job.getTime();
+    
+    public void setPreJob(RequestElevatorEvent job) {
+        this.preJob = job;
     }
 
-    public void setDirection() {
-        direction =  job.getDirection();
+    public void setTimer(String timer){
+        this.timer = timer;
     }
 
-    public void setcurFlor(){
-        curFlor =  job.getCurrentfloornumber();
+    public void setDirection(Direction direction) {
+        this.direction =  direction;
     }
 
-    public void setDestination() {
-        destination = job.getDestinationfloornumber();
+    public void setcurFlor(int curFlor){
+        this.curFlor =  curFlor;
+    }
+
+    public void setDestination(int destination) {
+        this.destination = destination;
     } 
     
     public void setFloor(int floorNumber){
-    	curFlor = floorNumber;
+    	this.curFlor = floorNumber;
     }
     
     
     public void setState(ElevatorState state) {
     	this.state = state;
-    	state.enter();
     }
-    
-    
-    
-
-    
-    
     
 }
