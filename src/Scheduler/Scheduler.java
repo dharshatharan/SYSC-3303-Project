@@ -6,7 +6,7 @@ import Floor.RequestElevatorEvent;
 /**
  * Receives input from the floors and the elevator(s), then sends information to the aprorpiate thread and waits for more information to come in
  * 
- * @author Colin
+ * @author Darsh
  * @version 02/06/2021
  */
 
@@ -17,22 +17,37 @@ public class Scheduler implements Runnable {
 	private SchedulerState state;
 	private Fault fault;
 	
+	/**
+	 * Default constructor
+	 */	
 	public Scheduler() {
 		this.state = new ReceiveRequestsAndFaults(this);
 	}
-	
+	/**
+	 * Checks for fault
+	 * @return True if there is a fault
+	 */	
 	public synchronized boolean faultExists() {
 		return fault != null;
 	}
-	
+	/**
+	 * Checks for Job
+	 * @return True if there is a Job
+	 */	
 	public synchronized boolean jobRequestExists() {
 		return jobRequest != null;
 	}
-		
+	/**
+	 * sets the state of the scheduler
+	 * @param state
+	 */		
 	public void setState(SchedulerState state) {
 		this.state = state;
 	}
-	
+	/**
+	 * gets the state of the scheduler
+	 * @return state
+	 */	
 	public SchedulerState getState() {
 		return state;
 	}
