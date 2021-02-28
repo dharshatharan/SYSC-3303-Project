@@ -10,7 +10,11 @@ import Constants.Direction;
 
 public class Moving extends ElevatorState{	
 	
-	//Assumes that going accelerating to maxspeed going downwards is the same as going up.
+	/**
+	 * Enum for checking if the elevator is at max speed
+	 *
+	 * @Author Bailey Lyster 101115419
+	 */
 	public enum elevatorSpeed{
 		maxSpeed,
 		stopped
@@ -19,13 +23,17 @@ public class Moving extends ElevatorState{
 	private Direction direction;
 	
 	
-	
+	/**
+	 * Default Constructo calls partent class
+	 * @param elevator
+	 */	
 	public Moving(Elevator elevator) {
         super(elevator);
     }
 	
 	
-	/*
+	/**
+	 * Starts task for Moving state
 	 * When the move state is entered, it accelerates, moves at a constant speed, and deccelerates. 
 	 * If there's only a single floor, it only moves for the duration of a single floor. 
 	 */
@@ -43,7 +51,9 @@ public class Moving extends ElevatorState{
 	}
 	
 	
-	//Sleeps to mimic the acceleration period
+	/**
+	 * Emulates accelerates the elevator to max speed and continues to next floor
+	 */
 	public void accelerate() {
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
@@ -64,8 +74,9 @@ public class Moving extends ElevatorState{
 		}
 	
 	
-	
-	//To emulate moving between floors this function will be called
+	/**
+	 * Emulates moving between floors this function will be called
+	 */
 	public void moveAtMaxSpeed() {
 		try {
 			Thread.sleep(1000);
@@ -77,7 +88,7 @@ public class Moving extends ElevatorState{
 	
 	
 	/**
-	 * 
+	 * Increments Floor number and prints results
 	 */
 	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
@@ -91,7 +102,9 @@ public class Moving extends ElevatorState{
 		}
 	}
 
-	//Sleeps to mimic the deceleration period
+	/**
+	 * Emulates deccelerating the elevator to a stop
+	 */
 	public void deccelerate() {
 		if(state.equals(elevatorSpeed.maxSpeed)) {
 			try {
@@ -103,7 +116,9 @@ public class Moving extends ElevatorState{
 		}
 		
 	}
-	
+	/**
+	 * Changes to Stop State and ends tasks
+	 */	
 	public void exit() {
 		elevator.setState(new Stopped(elevator));
 		elevator.getState().enter();
