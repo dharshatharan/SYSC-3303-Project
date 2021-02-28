@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Tests;
 
 import static org.junit.Assert.*;
@@ -16,8 +13,9 @@ import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
 /**
- * @author Dharsh
- *
+ * Test the input file and pasing
+ * @author Dharsh, Alex
+ * @Version 02/27/2021
  */
 public class InputFileParsingTest {
 	static private Scheduler scheduler;
