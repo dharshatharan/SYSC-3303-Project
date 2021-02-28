@@ -15,9 +15,9 @@ import Scheduler.ScheduleRequest;
 import Scheduler.Scheduler;
 
 /**
- * 
- * @author 
- *
+ * Test States for Scheduler
+ * @author Darsh, Alex
+ * @Version 02/27/2021
  */
 public class SchedulerStatesTest {
 	static private Scheduler scheduler;
