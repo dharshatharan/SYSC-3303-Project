@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import Constants.Direction;
-import Schedualer.Scheduler;
+import Scheduler.Scheduler;
 
 /**
  * A class to handle the input from a file listing all the floors the elevator(s) have to visit
  * @author Alexander
- * @version 02/06/2021
+ * @version 02/27/2021
  *
  */
 public class FloorSubsystem implements Runnable{
@@ -39,14 +39,27 @@ public class FloorSubsystem implements Runnable{
     @Override
     public void run() {
     	System.out.println("Starting floor run");
-        for(RequestElevatorEvent job: floorjobs) {
-        	schedular.requestElevator(job);
-        	System.out.println(Thread.currentThread() + "has noticed that the job " + schedular.getElevatorInfo().toString());
-        	timer =  job.getTime();
-        	direction =  job.getDirection();
-		    curFlor =  job.getCurrentfloornumber();
-		    destination = job.getDestinationfloornumber();
-        }
+    	int count = 0;
+    	while(true) {
+    		for(RequestElevatorEvent job: floorjobs) {
+    			if(count == job.getSecondsSinceMidnight()) {
+    				schedular.requestElevator(job);
+    				System.out.println("Floor has been notified that the Elevator for Job " + schedular.getElevatorInfo().toString());
+    			}
+    		}
+    		if(count == 86400) {
+    			count = 0;
+    		} else {
+    		count++;
+    		}
+    		try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    	}
     }
 
     /**
@@ -65,21 +78,29 @@ public class FloorSubsystem implements Runnable{
             System.out.println("Error: File not found.");
         }
     }
-    
+	
+    /**
+     * Getters and Setters for the FloorSubsystem Class below
+     */
+	
     public String getTimer(){
         return timer;
     }
 
-    public Direction getdirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public int getcurFlor(){
+    public int getCurFloor(){
         return curFlor;
     }
 
-    public int getdestination() {
+    public int getDestination() {
         return destination;
+    }
+    
+    public List<RequestElevatorEvent> getFloorJobs() {
+    	return floorjobs;
     }
 
 }
