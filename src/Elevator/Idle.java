@@ -47,7 +47,7 @@ public class Idle extends ElevatorState{
     	}
 	    
 		startJob();
-		exit();
+//		exit();
     }
     /**
      * Determins if the elevator has to move to start the next job, stores a job to get to the floor or gets all thge information for the job 
