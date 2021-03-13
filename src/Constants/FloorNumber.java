@@ -25,4 +25,25 @@ public enum FloorNumber {
 	private FloorNumber(int number) {
 		this.number = number;
 	}
+	
+	public FloorNumber checkFloor(int number) {
+		int i = 0;
+		for (FloorNumber f : FloorNumber.values()){
+			if(i == number) {
+				return f;
+			}
+			i++;
+		}
+		return null;
+	}
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
 }
