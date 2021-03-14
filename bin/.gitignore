@@ -1,8 +1,4 @@
-/.classpath
-/.project
-/Constants/
-/Elevator/
-/Floor/
 /Scheduler/
+/Elevator/
 /Tests/
-/input.txt
+/Floor/

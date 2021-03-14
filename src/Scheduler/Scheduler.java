@@ -1,6 +1,15 @@
 package Scheduler;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import Constants.Direction;
 import Elevator.ElevatorInfo;
+import Elevator.ElevatorJob;
 import Floor.RequestElevatorEvent;
 
 /**
@@ -11,9 +20,17 @@ import Floor.RequestElevatorEvent;
  */
 
 public class Scheduler implements Runnable {
-	private RequestElevatorEvent activeJob;
-	private ElevatorInfo activeInfo;
-	private RequestElevatorEvent jobRequest;
+	private final int NO_OF_ELEVATORS = 2;
+	
+	private Map<String, List<ElevatorJob>> elevatorJobDatabase;
+	private Map<String, ElevatorInfo> elevatorInfoDatabase;
+	
+//	private List<ElevatorJob> readyJobsQueue;
+//	private List<ElevatorInfo> elevatorInfoQueue;
+	private ProcessJobRequestsThread processJobRequestsThread;
+	private ProcessElevatorInfoThread processElevatorInfoThread;
+	private SchedulerElevatorCommunicator schedulerElevatorCommunicator;
+	private SchedulerFloorCommunicator schedulerFloorCommunicator;
 	private SchedulerState state;
 	private Fault fault;
 	
@@ -22,6 +39,19 @@ public class Scheduler implements Runnable {
 	 */	
 	public Scheduler() {
 		this.state = new ReceiveRequestsAndFaults(this);
+//		this.elevatorInfoQueue = Collections.synchronizedList(new ArrayList<>());
+		this.processJobRequestsThread = new ProcessJobRequestsThread(this);
+		this.processElevatorInfoThread = new ProcessElevatorInfoThread(this);
+		this.schedulerElevatorCommunicator = new SchedulerElevatorCommunicator(this);
+		this.schedulerFloorCommunicator = new SchedulerFloorCommunicator(this);
+		
+		LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
+		this.elevatorJobDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
+		this.elevatorInfoDatabase = Collections.synchronizedMap(new HashMap<String, ElevatorInfo>());
+		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
+			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
+			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i), 1, Direction.UP));
+		}
 	}
 	/**
 	 * Checks for fault
@@ -30,13 +60,7 @@ public class Scheduler implements Runnable {
 	public synchronized boolean faultExists() {
 		return fault != null;
 	}
-	/**
-	 * Checks for Job
-	 * @return True if there is a Job
-	 */	
-	public synchronized boolean jobRequestExists() {
-		return jobRequest != null;
-	}
+	
 	/**
 	 * sets the state of the scheduler
 	 * @param state
@@ -52,134 +76,86 @@ public class Scheduler implements Runnable {
 		return state;
 	}
 	
-	/**
-	 *  Sends information for the floorsubsystem
-	 */
-	public synchronized void reportFault(Fault fault) {
-		while (this.fault != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-        }
-		this.fault = fault;
-        notifyAll();
+	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {
+		return elevatorJobDatabase;
 	}
 	
-	/**
-	 * Gets a fault;
-	 */
-	public synchronized Fault getFault() {
-		while (this.fault == null){
-			try {
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
+	public Map<String, ElevatorInfo> getElevatorInfoDatabase() {
+		return elevatorInfoDatabase;
+	}
+	
+	public void addJobToElevatorQueue(String elevatorID, ElevatorJob job) {
+		synchronized (elevatorJobDatabase) {
+			if (elevatorJobDatabase.containsKey(elevatorID)) {
+				elevatorJobDatabase.get(elevatorID).add(job);
+			}
 		}
-		Fault nextFault = this.fault;
-		this.fault = null;
-		notifyAll();
-		return nextFault;
+	}
+	
+	public ElevatorJob getNextJobFromElevatorQueue(String elevatorID) {
+		synchronized (elevatorJobDatabase) {
+			if (elevatorJobDatabase.containsKey(elevatorID)) {
+				while (elevatorJobDatabase.get(elevatorID).isEmpty()){
+					try {
+		                wait();
+		            } catch (InterruptedException e)  {
+		                Thread.currentThread().interrupt(); 
+		            }
+				}
+				ElevatorJob nextJob = elevatorJobDatabase.get(elevatorID).remove(0);
+				notifyAll();
+				return nextJob;
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	public void updateElevatorInfo(String elevatorID, ElevatorInfo info) {
+		synchronized (elevatorInfoDatabase) {
+			if (elevatorInfoDatabase.containsKey(elevatorID)) {
+				elevatorInfoDatabase.put(elevatorID, info);
+			}
+		}
+	}
+	
+	public ElevatorInfo getInfoForElevator(String elevatorID) {
+		synchronized (elevatorInfoDatabase) {
+			if (elevatorInfoDatabase.containsKey(elevatorID)) {
+				return elevatorInfoDatabase.get(elevatorID);
+			} else {
+				return null;
+			}
+		}
 	}
 	
 	/**
 	 *  Sends information for the floorsubsystem
 	 */
-	public synchronized void requestElevator(RequestElevatorEvent job) {
-		while (jobRequest != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-        }
-
-		jobRequest = job;
-        notifyAll();
+	public synchronized void addElevatorRequest(RequestElevatorEvent job) {
+		processJobRequestsThread.enqueueJobRequest(job);
 	}
 	
 	/**
 	 * Waits for elevator to notify that it has arrived at the floor. sets the next job for the floor and clears the task
 	 */
-	public synchronized RequestElevatorEvent getJobRequest() {
-		while (jobRequest == null){
-			try {
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-		}
-		RequestElevatorEvent nextJob = jobRequest;
-		jobRequest = null;
-		notifyAll();
-		return nextJob;
+	public ElevatorJob getNextReadyJob() {
+		return processJobRequestsThread.dequeueReadyJob();
 	}
 	
 	/**
-	 *  Sends information for the floorsubsystem
-	 */
-	public synchronized void putNextJob(RequestElevatorEvent job) {
-		while (activeJob != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-        }
-		activeJob = job;
-        notifyAll();
-	}
-	
-	/**
-	 * Waits for elevator to notify that it has arrived at the floor. sets the next job for the floor and clears the task
-	 */
-	public synchronized RequestElevatorEvent getNextJob() {
-		while (activeJob == null){
-			try {
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-		}
-		RequestElevatorEvent nextJob = activeJob;
-		activeJob = null;
-		notifyAll();
-		return nextJob;
-	}
-	
-	/**
-	 * Sends the information the schelduler recived from the floorsubsystem
+	 * Adds elevator info to the queue that will be sent to the floor
 	 * @param job
 	 */
-	public synchronized void sendElevatorInfo(ElevatorInfo job) {
-		while (activeInfo != null) {
-            try { 
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-        }
-		activeInfo = job;
-        notifyAll();
+	public void addElevatorInfo(ElevatorInfo info) {
+		processElevatorInfoThread.enqueueInfo(info);
 	}
 	
 	/**
-	 * Waits until the information from the floor is updated. the scheduler creates next elevator job and clears the input data.
+	 * Gets the next elevator info from the queue that will be sent to the floor
 	 */
-	public synchronized ElevatorInfo getElevatorInfo() {
-		while (activeInfo == null){
-			try {
-                wait();
-            } catch (InterruptedException e)  {
-                Thread.currentThread().interrupt(); 
-            }
-		}
-		ElevatorInfo nextJob = activeInfo;
-		activeInfo = null;
-		notifyAll();
-		return nextJob;
+	public synchronized ElevatorInfo getNextElevatorInfo() {
+		return processElevatorInfoThread.dequeueProcessedInfo();
 	}
 	
 	/**
@@ -189,9 +165,37 @@ public class Scheduler implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Starting floor scheduler");
-		while (true) {
-			state.enter();
-		}
+		processJobRequestsThread.start();
+		processElevatorInfoThread.start();
+		
+		Thread recieveElevatorRequestThread = new Thread(){
+		   public void run(){
+			   while(true) {
+			   		schedulerFloorCommunicator.recieveElevatorRequest();
+			   }
+		   }
+	   };
+	   Thread receiveElevatorInfoThread = new Thread(){
+		   public void run(){
+			   while(true) {
+			   		schedulerFloorCommunicator.receiveElevatorInfoRequest();
+			   }
+		   }
+	   };
+	   Thread recieveElevatorInfoThread = new Thread(){
+		   public void run(){
+			   while(true) {
+			   		schedulerElevatorCommunicator.recieveElevatorInfo();
+			   }
+		   }
+	   };
+	   Thread receiveElevatorJobRequestThread = new Thread(){
+		   public void run(){
+			   while(true) {
+				   schedulerElevatorCommunicator.receiveElevatorJobRequest();
+			   }
+		   }
+	   };
 		
 	}
 
