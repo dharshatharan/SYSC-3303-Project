@@ -1,5 +1,6 @@
 package Floor;
 
+import Elevator.ElevatorInfo;
 /**
  * Will contain information about the floors   TODO
  * @author 
@@ -8,6 +9,10 @@ package Floor;
 public class Floor {
 
 	public Floor() {
+		
+	}
+	
+	public void addElevatorInfo(ElevatorInfo info) {
 		
 	}
 }
