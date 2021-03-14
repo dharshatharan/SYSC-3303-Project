@@ -4,6 +4,8 @@ import java.net.*;
 import Constants.Direction;
 import Constants.FloorNumber;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -20,27 +22,21 @@ public class ElevatorSchedulerCommunicator {
 	DatagramSocket sendSocket, receiveSocket;
 	DatagramPacket sendPacket, receivePacket;
 	
-	
+	private String elevatorID;
+	private int fromFloor;
+	private int toFloor;
+	private Direction directionSeeking;
+	private Boolean arrived;
+	private String elevatorID;
+    private int currentFloor;
+    private Direction direction;
+
+    private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [1-9] [1-2] ");
+	private Pattern elevatorJobPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] ");
 	
 	byte data[];
-	byte zero = 0;
-	byte one = 1;
-	byte two = 2;
-	byte three = 3;
-	byte four = 4;
-	byte five = 5;
-	byte six = 6;
-	byte seven = 7;
-	byte eight = 8;
-	byte nine = 9;
 	
-	public enum dataTypes{
-		requestJob,
-		replyJob,
-		sendElevatorInfo,
-		replyElevatorInfo,
-		invalid;
-	}
+	
 	//Queues for receiving and Sending data
     Queue<byte[]> sendQueue = new LinkedList<byte[]>();
     Queue<byte[]> receiveQueue = new LinkedList<byte[]>();
@@ -96,153 +92,65 @@ public class ElevatorSchedulerCommunicator {
 		}
 	}
 
+	
+	
+	
+	//This method adds the Requests of anysort meant for the Scheduler into a QUEUE to be send.
+	//Assumes Data is properly formatted
+	public void addToSendQueue(byte data[]) {
+		if(data != null) {
+			sendQueue.add(data);
+		}
+	}
+	
+	
 
-	public void replyElevatorInfo(byte data[]) {
-		if(parse(data) == dataTypes.replyElevatorInfo) {
-			//communicates with whatever thread requested info about an ID
-	}
-	}
+		
 	
-	
-	//Takes a VALID job and sets it as the next Job.
-	public void replyJob(byte data[]) {
-		ElevatorJob newJob = null;
-		if(data[7] == (byte) 1 ) {
-			newJob = new ElevatorJob(floors.checkFloor((int) data[9]), Direction.UP);
-		}
-		if(data[7]== (byte) 2) {
-			newJob = new ElevatorJob(floors.checkFloor((int) data[9]), Direction.DOWN);
-		}
-		//Placeholder until threading is accounted for.
-		elevator.setJob(newJob);
-		//Probably going to set return type to Elevator Job which can then become a synchronized method which will check the ID somehow.
-	}
+
 	
 	
 	
 	
-	
-	
+	//This method checks the FRONT of the RECEIVED(from SCHEDULER) queue for the most recent datagram and PARSES it then sends it where it needs to go.
 	public void process(){
-		byte data[] = receiveQueue.remove();
-		if(parse(data) == dataTypes.replyJob) {
-			replyJob(data);
-		}
-		if(parse(data) == dataTypes.replyElevatorInfo) {
-			//
-		}
-	}
-	
-	
-
-	
-	//Creates a request Job formatted byte array for sending
-	public byte[] createRequestJob(int elevatorId) {
-		byte data[] = new byte[6];
-		data[0] = zero;
-		data[1] = three;
-		data[2] = zero;
-		data[3] = (byte) elevatorId;
-		data[4] = zero;
-		if (parse(data) == dataTypes.requestJob) {
-			return data;
-		}
-		return null;
-	}
-
-	
-	//Creates an elevator info formatted byte array for sending.
-	public byte[] createSendElevatorInfo(int type, int elevatorId, int floor, int direction) {
-		byte data[] = new byte[11];
-		data[0] = zero;
-		data[1] = five;
-		data[2] = zero;
-		data[3] = (byte) type;
-		data[4] = zero;
-		data[5] = (byte) elevatorId;
-		data[6] = zero;
-		data[7] = (byte) floor;
-		data[8] = zero;
-		data[9] = (byte) direction;
-		data[10] = zero;
-		if (parse(data) == dataTypes.sendElevatorInfo) {
-			return data;
-		}
-		return null;
-	}
-	
-	
-	
-	
-	//Verifies that the byte arrays being received or sent are valid.
-	public dataTypes parse(byte data[]) {
-		/*
-		 * Request Elevator Job from Elevator to Scheduler
-			03
-			0
-			Elevator Id
-			0
-		 */
-		if(data[0] == zero && data[1] == three) {
-			if((data[2] == zero) && (data[4] == zero)) {
-				return dataTypes.requestJob;
-			}
-			return dataTypes.invalid;
+		try {
+			byte data[] = receiveQueue.remove();
+		}catch{
+			(InterruptedException e)
 		}
 		
-		/*
-		Reply Elevator Job from Scheduler to Elevator
-		04
-		0 
-		Elevator Id
-		0
-		Current Floor
-		0
-		Direction - (1 -> down, 2 -> up)
-		0
-		Destination Floor
-		0
-		*/
-		if((data[0]== zero) && (data[1]== four)) {
-			if((data[2]== zero) && (data[4]== zero) && (data[6]== zero) && (data[8]== zero) && (data[10] == zero)) {
-				return dataTypes.replyJob;
+		if(data != null){
+			String s = new String(data);
+			System.out.println(s);
+			Matcher matcherInfo = elevatorJobPattern.matcher(s);
+			Matcher matcherJob = elevatorInfoPattern.matcher(s);
+			if (matcherInfo.find()) {
+				String[] sa = s.split(" ");
+				this.arrived = sa[1].equals("1");
+		        this.elevatorID = sa[2];
+		    	this.currentFloor = Integer.parseInt(sa[3]);
+		        this.direction = sa[4].equals("1") ? Direction.UP : Direction.DOWN;
+		        
+		        //Call method that sends the info to the object
 			}
-			return dataTypes.invalid;
-		}
-		
-		/*
-		 * Send Elevator Info from Elevator to Scheduler
-			05
-			0
-			Type -> 1 (Arrival) -> 2 (Crossing)
-			0
-			Elevator ID
-			0
-			Floor
-			0 
-			Direction - (1 -> down, 2 -> up)
-			0
-		 */
-		if((data[0]== zero) && (data[1]== five)) {
-			if((data[2]== zero) && (data[4]== zero) && (data[6]== zero) && (data[8]== zero) && (data[10] == zero)) {
-				return dataTypes.sendElevatorInfo;
+			if (matcherJob.find()) {
+				String[] sa = s.split(" ");
+				this.elevatorID = sa[1];
+		        this.fromFloor = Integer.parseInt(sa[2]);
+		    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
+		        this.toFloor = Integer.parseInt(sa[4]);
+		        
+		        //Call method that sends the job to the object
 			}
-			return dataTypes.invalid;
 		}
-		/*
-		 * Reply Elevator Info from Scheduler to Elevator
-			06
-			0
-		 */
-		if((data[0]== zero) && (data[1]== six)) {
-			if((data[2]== zero)) {
-				return dataTypes.replyElevatorInfo;
-			}
-			return dataTypes.invalid;
-		}
-		return dataTypes.invalid;
 	}
 
+	
+	
+
+	
+	
 	
 	
 	
