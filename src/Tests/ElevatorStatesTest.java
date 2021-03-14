@@ -1,10 +1,5 @@
 package Tests;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import Elevator.Elevator;
 import Elevator.Idle;
 import Elevator.Moving;

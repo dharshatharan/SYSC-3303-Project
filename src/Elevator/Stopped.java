@@ -74,13 +74,13 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
-		openDoors();
+		elevator.openDoors();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		closeDoors();
+		elevator.closeDoors();
 		exit();
 			
 	}

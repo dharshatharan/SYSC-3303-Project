@@ -14,7 +14,7 @@ import Constants.FloorNumber;
  */
 public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	
-	private FloorNumber floorNumber;
+	private int floorNumber;
 	private Direction directionSeeking;
 	
 
@@ -24,7 +24,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @param directionSeeking
 	 * 
 	 */
-	public ElevatorJob(FloorNumber floorNumber, Direction directionSeeking) {
+	public ElevatorJob(int floorNumber, Direction directionSeeking) {
 		this.floorNumber = floorNumber;
 		this.directionSeeking = directionSeeking;
 	}
@@ -34,7 +34,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * Getter for the direction of the job
 	 * @return directionSeeking
 	 */
-	public Direction getDirectionSeeking() {
+	public Direction getDirection() {
 		return directionSeeking;
 	}
 
@@ -42,7 +42,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * Getter for the floorNumber of the job
 	 * @return floorNumber
 	 */
-	public FloorNumber getFloorNumber() {
+	public int getFloorNumber() {
 		return floorNumber;
 	}
 
@@ -54,7 +54,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 */
 	@Override
 	public int compareTo(ElevatorJob o) {
-		return this.getFloorNumber().number - o.getFloorNumber().number;
+		return this.getFloorNumber() - o.getFloorNumber();
 	}
 	
 	/**
