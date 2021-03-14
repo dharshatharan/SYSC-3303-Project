@@ -12,22 +12,23 @@ import Scheduler.Scheduler;
  */
 public class Elevator implements Runnable {
 	
-	private Scheduler scheduler;
-	private RequestElevatorEvent preJob;
-	private RequestElevatorEvent job;
-	
+	private int currentFloor;
+	private ElevatorSubsystem elevatorSubsystem;
 	private String timer;
     private Direction direction;
     private int curFlor, destination;
     private ElevatorState state;
+    
+    private ElevatorJob preJob;
+    private ElevatorJob job;
 	
 	/**
 	 * Default constructor
 	 * @param scheduler
 	 */
-	public Elevator(Scheduler scheduler) {
+	public Elevator(ElevatorSubsystem elevatorSubsystem) {
+		this.elevatorSubsystem = elevatorSubsystem;
 		this.curFlor = 1;
-		this.scheduler = scheduler;
 		this.state = new Idle(this);
 	}
 	
@@ -43,15 +44,42 @@ public class Elevator implements Runnable {
 	}
 
 	/**
-	 * Getters and seeters for terms in elevator below
+	 * Simulates closing Doors
 	 */
-	
-	
-	public Scheduler getScheduler() {
-		return scheduler;
-		
+	public void closeDoors() {
+		System.out.println("Doors Closing");
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("Doors Closed");
 	}
 	
+	/**
+	 * Simulates closing Doors
+	 */
+	public void openDoors() {
+		System.out.println("Doors Opening");
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("Doors opened");
+	}
+	
+	
+	public void updateJob(ElevatorJob job) {
+		this.job = job;
+			
+	}
+	
+	
+	
+	/**
+	 * Getters and seeters for terms in elevator below
+	 */
 	public String getTimer(){
         return timer;
     }
@@ -68,11 +96,11 @@ public class Elevator implements Runnable {
         return destination;
     }
     
-    public RequestElevatorEvent getJob() {
+    public ElevatorJob getJob() {
         return job;
     }
     
-    public RequestElevatorEvent getPreJob() {
+    public ElevatorJob getPreJob() {
         return preJob;
     }
     
@@ -80,11 +108,15 @@ public class Elevator implements Runnable {
         return state;
     }
     
-    public void setJob(RequestElevatorEvent job) {
+    public ElevatorSubsystem getElevatorSubsystem() {
+    	return elevatorSubsystem;
+    }
+    
+    public void setJob(ElevatorJob job) {
         this.job = job;
     }
     
-    public void setPreJob(RequestElevatorEvent job) {
+    public void setPreJob(ElevatorJob job) {
         this.preJob = job;
     }
 

@@ -26,7 +26,6 @@ public class ProcessElevatorInfoThread extends Thread {
 		this.scheduler = scheduler;
 		this.elevetorInfoUnprocessed = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
 		this.elevetorInfoProcessed = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
-		this.start();
 	}
 	
 	public final void enqueueInfo(ElevatorInfo request) {

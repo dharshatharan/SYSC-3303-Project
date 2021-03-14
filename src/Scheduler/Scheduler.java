@@ -31,14 +31,14 @@ public class Scheduler implements Runnable {
 	private ProcessElevatorInfoThread processElevatorInfoThread;
 	private SchedulerElevatorCommunicator schedulerElevatorCommunicator;
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
-	private SchedulerState state;
+//	private SchedulerState state;
 	private Fault fault;
 	
 	/**
 	 * Default constructor
 	 */	
 	public Scheduler() {
-		this.state = new ReceiveRequestsAndFaults(this);
+//		this.state = new ReceiveRequestsAndFaults(this);
 //		this.elevatorInfoQueue = Collections.synchronizedList(new ArrayList<>());
 		this.processJobRequestsThread = new ProcessJobRequestsThread(this);
 		this.processElevatorInfoThread = new ProcessElevatorInfoThread(this);
@@ -65,17 +65,17 @@ public class Scheduler implements Runnable {
 	 * sets the state of the scheduler
 	 * @param state
 	 */		
-	public void setState(SchedulerState state) {
-		this.state = state;
-	}
+//	public void setState(SchedulerState state) {
+//		this.state = state;
+//	}
 	/**
 	 * gets the state of the scheduler
 	 * @return state
 	 */	
-	public SchedulerState getState() {
-		return state;
-	}
-	
+//	public SchedulerState getState() {
+//		return state;
+//	}
+//	
 	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {
 		return elevatorJobDatabase;
 	}
@@ -196,7 +196,18 @@ public class Scheduler implements Runnable {
 			   }
 		   }
 	   };
-		
+	   
+	   recieveElevatorRequestThread.start();
+	   receiveElevatorInfoThread.start();
+	   recieveElevatorInfoThread.start();
+	   receiveElevatorJobRequestThread.start();
+	   
+	}
+	
+	public static void main(String[] args) {
+		Scheduler s = new Scheduler();
+		Thread schedularThread = new Thread(s, "SchedularThread");
+		schedularThread.start();
 	}
 
 }

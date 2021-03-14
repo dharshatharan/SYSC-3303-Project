@@ -31,8 +31,8 @@ public class SchedulerFloorCommunicator {
 	public SchedulerFloorCommunicator(Scheduler scheduler) {
 		this.scheduler = scheduler;
 		try {
-			elevatorRequestJobReceiveSocket = new DatagramSocket(69);
-			elevatorInfoRSendSocket = new DatagramSocket(96);
+			elevatorRequestJobReceiveSocket = new DatagramSocket(77);
+			elevatorInfoRSendSocket = new DatagramSocket(84);
 	      } catch (SocketException se) {
 	         se.printStackTrace();
 	         System.exit(1);

@@ -23,10 +23,10 @@ public class ProcessJobRequestsThread extends Thread {
 	 * 
 	 */
 	public ProcessJobRequestsThread(Scheduler scheduler) {
+		super();
 		this.scheduler = scheduler;
 		this.jobRequestQueue = Collections.synchronizedList(new LinkedList<RequestElevatorEvent>());
 		this.readyJobQueue = Collections.synchronizedList(new LinkedList<ElevatorJob>());
-		this.start();
 	}
 	
 	public final void enqueueJobRequest(RequestElevatorEvent request) {
@@ -64,7 +64,6 @@ public class ProcessJobRequestsThread extends Thread {
 		readyJobQueue.add(job);
 	}
 	
-	@Override
 	public void run() {
 		RequestElevatorEvent request = null;
 		while(true) {

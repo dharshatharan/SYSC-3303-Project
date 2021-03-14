@@ -90,8 +90,8 @@ public class Stopped extends ElevatorState{
 	 */
 	private void notifyElevatorArrival() {
 		if (elevator.getPreJob() == null && elevator.getJob() != null) {
-			RequestElevatorEvent job = elevator.getJob();
-			elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
+			ElevatorJob job = elevator.getJob();
+			elevator.getElevatorSubsystem().getElevatorSchedulerComminicator().sendElevatorInfo(new ElevatorInfo(true, job.getElevatorID(), job.getToFloor(), job.getDirectionSeeking()));
 			elevator.setJob(null);
 		} else {
 			elevator.setPreJob(null);
