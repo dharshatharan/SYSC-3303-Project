@@ -17,18 +17,33 @@ public class Scheduler implements Runnable {
 	private SchedulerState state;
 	private Fault fault;
 	
+	/**
+	 * Default constructor
+	 */
 	public Scheduler() {
 		this.state = new RecieveRequestsAndFaults(this);
 	}
 	
+	/**
+	 * Checks for fault
+	 * @return True if there is a fault
+	 */
 	public synchronized boolean faultExists() {
 		return fault != null;
 	}
 	
+	/**
+	 * Checks for Job
+	 * @return True if there is a Job
+	 */
 	public synchronized boolean jobRequestExists() {
 		return jobRequest != null;
 	}
 		
+	/**
+	 * sets the state of the scheduler
+	 * @param state
+	 */
 	public void setState(SchedulerState state) {
 		this.state = state;
 		state.enter();

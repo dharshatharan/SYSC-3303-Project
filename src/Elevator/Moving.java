@@ -4,14 +4,18 @@ import Constants.Direction;
 /**
  * A state of the elevator, while moving between floors simulates the downtime.
  * 
- * @ Author Bailey Lyster 101115419
+ * @Author Bailey Lyster 101115419
  * @Version 02/27/2021
  */
 
 public class Moving extends ElevatorState{
 	
 	
-	
+	/**
+	 * Enum for checking if the elevator is at max speed
+	 *
+	 * @Author Bailey Lyster 101115419
+	 */
 	//Assumes that going accelerating to maxspeed going downwards is the same as going up.
 	public enum elevatorSpeed{
 		maxSpeed,
@@ -22,6 +26,10 @@ public class Moving extends ElevatorState{
 	
 	
 	
+	/**
+	 * Default Constructo calls partent class
+	 * @param elevator
+	 */
 	public Moving(Elevator elevator) {
         super(elevator);
     }
@@ -29,8 +37,10 @@ public class Moving extends ElevatorState{
 	
 	
 	
+	/**
+	 * Emulates accelerates the elevator to max speed and continues to next floor
+	 */
 	
-	//Sleeps to mimic the acceleration period
 	public void accelerate() {
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
@@ -51,8 +61,9 @@ public class Moving extends ElevatorState{
 		}
 	
 	
-	
-	//To emulate moving between floors this function will be called
+	/**
+	 * Emulates moving between floors this function will be called
+	 */
 	public void moveAtMaxSpeed() {
 		try {
 			Thread.sleep(1000);
@@ -64,7 +75,7 @@ public class Moving extends ElevatorState{
 	
 	
 	/**
-	 * 
+	 * Increments Floor number and prints results
 	 */
 	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
@@ -78,7 +89,9 @@ public class Moving extends ElevatorState{
 		}
 	}
 
-	//Sleeps to mimic the deceleration period
+	/**
+	 * Emulates deccelerating the elevator to a stop
+	 */
 	public void deccelerate() {
 		if(state.equals(elevatorSpeed.maxSpeed)) {
 			try {
@@ -91,7 +104,8 @@ public class Moving extends ElevatorState{
 		
 	}
 
-	/*
+	/**
+	 * Starts task for Moving state
 	 * When the move state is entered, it accelerates, moves at a constant speed, and deccelerates. 
 	 * If there's only a single floor, it only moves for the duration of a single floor. 
 	 */
@@ -108,6 +122,9 @@ public class Moving extends ElevatorState{
 		exit();
 	}
 	
+	/**
+	 * Changes to Stop State and ends tasks
+	 */
 	public void exit() {
 		elevator.setState(new Stopped(elevator));
 		elevator.getState().enter();

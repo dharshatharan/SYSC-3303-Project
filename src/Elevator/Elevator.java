@@ -5,9 +5,9 @@ import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
 /**
- * An elevator that cycles through states completing Jobs
+ * An elevator that cycles through states Requesting and completing Jobs (notifies Scheduler when the job is complete)
  * 
- * @author Darsh
+ * @author Quinn
  * @version 02/27/2021
  */
 public class Elevator implements Runnable {
@@ -36,14 +36,6 @@ public class Elevator implements Runnable {
 	public void run() {
 		System.out.println("Starting floor elevator");
 		while(true) {
-//			RequestElevatorEvent job = scheduler.getNextJob();
-//			System.out.println(Thread.currentThread() + " is serving job " + job.toString());
-//			scheduler.sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));timer = job.getTime();
-//		    direction =  job.getDirection();
-//		    curFlor =  job.getCurrentfloornumber();
-//		    destination = job.getDestinationfloornumber();
-//		}
-
             this.state = new Idle(this);
             state.enter();
 		}
