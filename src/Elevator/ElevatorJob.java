@@ -55,7 +55,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.toFloor = Integer.parseInt(sa[4]);
 		} else {
-			throw new Exception("Invalid byte array!");
+			throw new Exception("Invalid byte array for ElevatorJob!");
 		}
     }
 	

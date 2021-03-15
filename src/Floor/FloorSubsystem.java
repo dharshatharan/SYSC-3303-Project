@@ -54,7 +54,7 @@ public class FloorSubsystem implements Runnable{
     		for(RequestElevatorEvent job: floorjobs) {
     			if(count == job.getSecondsSinceMidnight()) {
     				floorComm.sendElevatorRequest(job);
-    				System.out.println("Floor has been notified that the Elevator for Job " + job.toString());
+//    				System.out.println("Floor has been notified that the Elevator for Job " + job.toString());
     			}
     		}
     		if(count == 86400) {

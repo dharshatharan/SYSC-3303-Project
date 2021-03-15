@@ -44,7 +44,7 @@ public class ElevatorInfo {
 	    	this.currentFloor = Integer.parseInt(sa[3]);
 	        this.direction = sa[4].equals("1") ? Direction.UP : Direction.DOWN;
 		} else {
-			throw new Exception("Invalid byte array!");
+			throw new Exception("Invalid byte array for ElevatorInfo!");
 		}
     }
     

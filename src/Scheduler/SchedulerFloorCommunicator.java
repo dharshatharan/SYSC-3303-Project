@@ -40,9 +40,9 @@ public class SchedulerFloorCommunicator {
 	}
 	
 	public void recieveElevatorRequest() {
-		   byte msg[] = new byte[17];
+		   byte msg[] = new byte[9];
 		   elevatorRequestReceivePacket = new DatagramPacket(msg, msg.length);
-		   System.out.println("Host: Waiting for Response from Server.\n");
+		   System.out.println("Waiting for RequestElevatorEvent from Floor\n");
 		   
 		   try {        
 			   System.out.println("Waiting..."); // so we know we're waiting
@@ -62,7 +62,7 @@ public class SchedulerFloorCommunicator {
 		   try {
 			   scheduler.addElevatorRequest(new RequestElevatorEvent(msg));
 		   } catch (Exception e) {
-			   System.out.println("Invalid byte array!");
+			   System.out.println(e);
 			   return;
 		   }
 
@@ -77,7 +77,7 @@ public class SchedulerFloorCommunicator {
 		   }
 	      
 //		   printDetails(true, true, receiveAckPacket);
-		   System.out.println("Sent data request from Server");
+		   System.out.println("Recieved RequestElevatorEvent from Floor");
 		   System.out.println();
 		   
 		   try {
@@ -89,9 +89,9 @@ public class SchedulerFloorCommunicator {
 	   }
 	
 	public void receiveElevatorInfoRequest() {
-		   byte msg[] = new byte[17];
+		   byte msg[] = new byte[5];
 		   elevatorInfoSendPacket = new DatagramPacket(msg, msg.length);
-		   System.out.println("Host: Waiting for Packet.\n");
+		   System.out.println("Waiting for ElevatorInfo request.\n");
 		   
 		   try {        
 			   System.out.println("Waiting..."); // so we know we're waiting
@@ -105,7 +105,7 @@ public class SchedulerFloorCommunicator {
 		   
 //		   printDetails(false, false, jobSendPacket);
 		   
-		   System.out.println("Received data request from Server");
+		   System.out.println("Received ElevatorInfo request from Floor");
 		   System.out.println();
 		   
 		   String received = new String(msg,0,elevatorInfoSendPacket.getLength());   
@@ -124,7 +124,7 @@ public class SchedulerFloorCommunicator {
 			   }
 		      
 	//		   printDetails(true, true, requestDataPacket);
-			   System.out.println("Sent data to Server");
+			   System.out.println("Sent ElevatorInfo to Floor");
 			   System.out.println();
 			   
 			   try {
@@ -133,6 +133,8 @@ public class SchedulerFloorCommunicator {
 				   e.printStackTrace(); 
 				   System.exit(1);
 			   }
+		   } else {
+			   System.out.println("Invalid ElevatorInfo request from Floor\n");
 		   }
 	   }
 }

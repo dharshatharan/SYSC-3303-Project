@@ -40,19 +40,20 @@ public class ProcessJobRequestsThread extends Thread {
 		synchronized (readyJobQueue) {
 			while (readyJobQueue.isEmpty()) {
 				try {
-	                wait();
+					readyJobQueue.wait();
 	            } catch (InterruptedException e)  {
 	                Thread.currentThread().interrupt(); 
 	            }
 			}
 			ElevatorJob nextJob = readyJobQueue.remove(0);
-			notifyAll();
+			readyJobQueue.notify();
 			return nextJob;
 		}
 	}
 	
 	private void processRequest(RequestElevatorEvent request) {
 		// TODO: Redo this logic
+		System.out.println("Processing Elevator Request");
 		ElevatorJob job;
 		if (scheduler.getElevatorJobDatabase().get("2").size() >= scheduler.getElevatorJobDatabase().get("1").size()) {
 			job = new ElevatorJob(request, "1");
@@ -61,7 +62,10 @@ public class ProcessJobRequestsThread extends Thread {
 			job = new ElevatorJob(request, "2");
 			scheduler.addJobToElevatorQueue("2", job);
 		}
-		readyJobQueue.add(job);
+		synchronized (readyJobQueue) {
+			readyJobQueue.add(job);
+			readyJobQueue.notify();
+		}
 	}
 	
 	public void run() {

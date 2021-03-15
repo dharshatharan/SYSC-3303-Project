@@ -45,10 +45,10 @@ public class Scheduler implements Runnable {
 		this.schedulerElevatorCommunicator = new SchedulerElevatorCommunicator(this);
 		this.schedulerFloorCommunicator = new SchedulerFloorCommunicator(this);
 		
-		LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
 		this.elevatorJobDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
 		this.elevatorInfoDatabase = Collections.synchronizedMap(new HashMap<String, ElevatorInfo>());
 		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
+			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
 			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
 			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i), 1, Direction.UP));
 		}

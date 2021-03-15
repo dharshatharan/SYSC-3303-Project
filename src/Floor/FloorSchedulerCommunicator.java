@@ -47,7 +47,7 @@ public class FloorSchedulerCommunicator {
 	 * @param job
 	 */
 	public void sendElevatorRequest(RequestElevatorEvent job) {
-		byte msg[] = job.getByteArray("01 ");
+		byte msg[] = job.getByteArray("01");
 		
 		System.out.println("Preparing to send elevator request to Scheduler...\n");
 		
@@ -68,7 +68,7 @@ public class FloorSchedulerCommunicator {
 			System.exit(1);
 		}
 		
-		byte reply[] = new byte[20];
+		byte reply[] = new byte[3];
 		replyElevatorRequestPacket = new DatagramPacket(reply, reply.length);
 		
 		System.out.println("Waiting to receive reply...\n");

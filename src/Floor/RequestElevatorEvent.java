@@ -66,11 +66,11 @@ public class RequestElevatorEvent {
 		Matcher matcher = elevatorRequestPattern.matcher(s);
 		if (matcher.find()) {
 			String[] sa = s.split(" ");
-	        this.currentfloornumber = Integer.parseInt(sa[2]);
-	    	this.direction = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
-	        this.destinationfloornumber = Integer.parseInt(sa[4]);
+	        this.currentfloornumber = Integer.parseInt(sa[1]);
+	    	this.direction = sa[2].equals("1") ? Direction.UP : Direction.DOWN;
+	        this.destinationfloornumber = Integer.parseInt(sa[3]);
 		} else {
-			throw new Exception("Invalid byte array!");
+			throw new Exception("Invalid byte array for RequestElevatorEvent!");
 		}
     }
 	

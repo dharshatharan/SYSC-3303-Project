@@ -43,7 +43,7 @@ public class Idle extends ElevatorState{
      * Request Job from scheduler then exits when it receives the job
      */
     public void requestJob() {
-    	while (elevator.getJob().equals(null)) {
+    	while (elevator.getJob() == null) {
     		try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {

@@ -45,7 +45,7 @@ public class ElevatorSchedulerComminicator {
 	 */
 	public void recieveElevatorJob() {
 		
-		String request_string = "03 0 ";
+		String request_string = "03 ";
 		byte[] msg = request_string.getBytes();
 		
 		try {
@@ -82,7 +82,7 @@ public class ElevatorSchedulerComminicator {
 		try {
 			elevatorSubsystem.addJob(new ElevatorJob(reply));
 		} catch (Exception e) {
-			System.out.println("Invalid byte array!");
+			System.out.println(e);
 			return;
 		}
 		

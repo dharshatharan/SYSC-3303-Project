@@ -23,6 +23,11 @@ public class ElevatorSubsystem implements Runnable{
 		this.numElevators = numElevators;
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
+		this.jobs = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
+		for (int i = 0; i < numElevators; i++) {
+			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
+			this.jobs.put(String.valueOf(i + 1), jobList);
+		}
 		//elevatorThreads = new ArrayList<Thread>();
 		//comunicator = new ElevatorSchedulerCommunicato();
 		this.run();

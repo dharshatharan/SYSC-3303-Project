@@ -17,7 +17,7 @@ import Elevator.ElevatorInfo;
  *
  */
 public class SchedulerElevatorCommunicator {
-	private Pattern elevatorJobRequestPattern = Pattern.compile("^03 [1-9] ");
+	private Pattern elevatorJobRequestPattern = Pattern.compile("^03 ");
 	
 	private Scheduler scheduler;
 	
@@ -39,12 +39,12 @@ public class SchedulerElevatorCommunicator {
 	}
 	
 	public void receiveElevatorJobRequest() {
-		   byte msg[] = new byte[17];
+		   byte msg[] = new byte[3];
 		   elevatorJobSendPacket = new DatagramPacket(msg, msg.length);
 		   System.out.println("Host: Waiting for Packet.\n");
 		   
 		   try {        
-			   System.out.println("Waiting..."); // so we know we're waiting
+			   System.out.println("Waiting for ElevatorJob Request..."); // so we know we're waiting
 			   elevatorJobRequestSocket.receive(elevatorJobSendPacket);
 		   } catch (IOException e) {
 			   System.out.print("IO Exception: likely:");
@@ -55,7 +55,7 @@ public class SchedulerElevatorCommunicator {
 		   
 //		   printDetails(false, false, jobSendPacket);
 		   
-		   System.out.println("Received data request from Server");
+		   System.out.println("Received ElevatorJob Request from Elevator");
 		   System.out.println();
 		   
 		   String received = new String(msg,0,elevatorJobSendPacket.getLength());   
@@ -74,7 +74,7 @@ public class SchedulerElevatorCommunicator {
 			   }
 		      
 	//		   printDetails(true, true, requestDataPacket);
-			   System.out.println("Sent data to Server");
+			   System.out.println("Sent ElevatorJob to Elevator");
 			   System.out.println();
 			   
 			   try {
@@ -83,13 +83,15 @@ public class SchedulerElevatorCommunicator {
 				   e.printStackTrace(); 
 				   System.exit(1);
 			   }
+		   } else {
+			   System.out.println("Invalid Job Request From Elevator\n");
 		   }
 	   }
 	
 	public void recieveElevatorInfo() {
-		   byte msg[] = new byte[17];
+		   byte msg[] = new byte[11];
 		   elevatorInfoReceivePacket = new DatagramPacket(msg, msg.length);
-		   System.out.println("Host: Waiting for Response from Server.\n");
+		   System.out.println("Waiting for ElevatorInfo from Elevator...\n");
 		   
 		   try {        
 			   System.out.println("Waiting..."); // so we know we're waiting
@@ -109,7 +111,7 @@ public class SchedulerElevatorCommunicator {
 		   try {
 			   scheduler.addElevatorInfo(new ElevatorInfo(msg));
 		   } catch (Exception e) {
-			   System.out.println("Invalid byte array!");
+			   System.out.println(e);
 			   return;
 		   }
 
@@ -124,7 +126,7 @@ public class SchedulerElevatorCommunicator {
 		   }
 	      
 //		   printDetails(true, true, receiveAckPacket);
-		   System.out.println("Sent data request from Server");
+		   System.out.println("Recieved ElevatorInfo from Elevator");
 		   System.out.println();
 		   
 		   try {
