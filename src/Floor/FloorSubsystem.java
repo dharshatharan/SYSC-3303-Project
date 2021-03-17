@@ -85,7 +85,7 @@ public class FloorSubsystem implements Runnable{
             sc.close();
             }
         catch (FileNotFoundException ex) {
-            System.out.println("Error: File not found.");
+            System.out.println("Error: File not found!");
         }
     }
     

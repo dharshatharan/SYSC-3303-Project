@@ -8,7 +8,7 @@ import Scheduler.Scheduler;
 /**
  * Notifies the scheduler that is is waiting for a job and starts the elevator
  * @author Colin
- * @Version 02/27/2021
+ * @Version 03/16/2021
  */
 public class Idle extends ElevatorState{
 
@@ -59,21 +59,34 @@ public class Idle extends ElevatorState{
 //    	}
 	    
 		startJob();
-//		exit();
+		exit();
     }
 
     /**
      * Determins if the elevator has to move to start the next job, stores a job to get to the floor or gets all thge information for the job 
      */
     public void startJob() {
-    	elevator.setDirection(elevator.getJob().getDirectionSeeking());
-        elevator.setDestination(elevator.getJob().getToFloor());
+    	if (elevator.getCurFloor()== elevator.getJob().getFromFloor()) {
+    		elevator.setDirection(elevator.getJob().getDirectionSeeking());
+            elevator.setDestination(elevator.getJob().getToFloor());
+    	}
+    	else {
+            elevator.setDestination(elevator.getJob().getToFloor());
+            elevator.setDirection(getPreJobDirection());
+    	}
     	
         
     }
 
     
-    /**
+    private Direction getPreJobDirection() {
+    	if ((elevator.getCurFloor() - elevator.getJob().getToFloor()) > 0) {
+    		return Direction.UP;
+    	}
+		return Direction.DOWN;
+		
+	}
+	/**
      * checks the direction the elevator has to go to get to the job
      */    
     private Direction checkToGoDirection(int fromFloor, int toFloor) {

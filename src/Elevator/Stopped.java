@@ -63,7 +63,14 @@ public class Stopped extends ElevatorState{
 	 */
 	@Override
 	public void exit() {
-		elevator.setState(new Idle(elevator));
+		if (elevator.getCurFloor() == elevator.getJob().getFromFloor()) {
+			elevator.setDestination(elevator.getJob().getToFloor());
+			elevator.setDirection(elevator.getJob().getDirectionSeeking());
+			elevator.setState(new Moving(elevator));
+		}
+		else {
+			elevator.setState(new Idle(elevator));
+		}
 		elevator.getState().enter();
 	}
 

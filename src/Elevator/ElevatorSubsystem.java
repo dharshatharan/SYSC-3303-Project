@@ -60,11 +60,10 @@ public class ElevatorSubsystem implements Runnable{
 			elevatorThread.start();
 			
 			elevators.put(i+"",temp);
-			
-//			elevatorThreads.add(elevatorThread);
 		}
-		
-		
+		StartJobs sendJob = new StartJobs(this);
+		Thread startJob = new Thread(sendJob, "Start Job");
+		startJob.start();
 		
 		while(true) {
 			comunicator.recieveElevatorJob();
