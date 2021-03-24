@@ -93,12 +93,12 @@ public class Moving extends ElevatorState{
 	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
 			elevator.setFloor( elevator.getCurFloor() +1);
-			System.out.println("Elevator went from " + (elevator.getCurFloor() - 1) + " to " + elevator.getCurFloor() );
+			System.out.println("Elevator " + elevator.getId() + " went from " + (elevator.getCurFloor() - 1) + " to " + elevator.getCurFloor() );
 			
 		}
 		if (elevator.getDirection().equals(Direction.DOWN)) {
 			elevator.setFloor(elevator.getCurFloor() -1);
-			System.out.println("Elevator went from " + (elevator.getCurFloor() + 1) + " to " + elevator.getCurFloor() );
+			System.out.println("Elevator " + elevator.getId() + " went from " + (elevator.getCurFloor() + 1) + " to " + elevator.getCurFloor() );
 		}
 	}
 

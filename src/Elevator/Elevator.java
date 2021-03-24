@@ -11,7 +11,7 @@ import Scheduler.Scheduler;
  * @version 03/16/2021
  */
 public class Elevator implements Runnable {
-	
+	private String id;
 	private int currentFloor;
 	private ElevatorSubsystem elevatorSubsystem;
 	private String timer;
@@ -26,7 +26,8 @@ public class Elevator implements Runnable {
 	 * Default constructor
 	 * @param scheduler
 	 */
-	public Elevator(ElevatorSubsystem elevatorSubsystem) {
+	public Elevator(ElevatorSubsystem elevatorSubsystem, String id) {
+		this.id = id;
 		this.elevatorSubsystem = elevatorSubsystem;
 		this.curFlor = 1;
 		this.state = new Idle(this);
@@ -38,9 +39,9 @@ public class Elevator implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Starting floor elevator");
-		while(true) {
+//		while(true) {
             state.enter();
-		}
+//		}
 	}
 
 	/**
@@ -144,5 +145,12 @@ public class Elevator implements Runnable {
     public void setState(ElevatorState state) {
     	this.state = state;
     }
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
     
 }

@@ -15,6 +15,8 @@ public class ElevatorSubsystem implements Runnable{
 	
 	private Map<String, List<ElevatorJob>> jobs;
 	
+	private List<ElevatorInfo> notifyElevatorInfoList;
+	
 	//private ArrayList<Thread> elevatorThreads;
 	
 	private ElevatorSchedulerComminicator comunicator;
@@ -28,8 +30,7 @@ public class ElevatorSubsystem implements Runnable{
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
 			this.jobs.put(String.valueOf(i + 1), jobList);
 		}
-		//elevatorThreads = new ArrayList<Thread>();
-		//comunicator = new ElevatorSchedulerCommunicato();
+		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
 		this.run();
 		
 	}
@@ -55,19 +56,34 @@ public class ElevatorSubsystem implements Runnable{
 		// TODO Auto-generated method stub
 		
 		for (int i =0; i<numElevators; i++) {
-			Elevator temp = new Elevator(this);
+			Elevator temp = new Elevator(this, i + 1 + "");
 			Thread elevatorThread = new Thread(temp, "ElevatorThread-" +(i+1));
 			elevatorThread.start();
 			
-			elevators.put(i+"",temp);
+			elevators.put(i + 1 +"",temp);
 		}
 		StartJobs sendJob = new StartJobs(this);
 		Thread startJob = new Thread(sendJob, "Start Job");
 		startJob.start();
 		
-		while(true) {
-			comunicator.recieveElevatorJob();
-		}
+		Thread receiveElevatorJobThread = new Thread(){
+			   public void run(){
+				   while(true) {
+					   comunicator.recieveElevatorJob();
+				   }
+			   }
+		   };
+		   
+		   Thread sendElevatorInfoThread = new Thread(){
+			   public void run(){
+				   while(true) {
+					   comunicator.sendElevatorInfo();
+				   }
+			   }
+		   };
+		   
+		   receiveElevatorJobThread.start();
+		   sendElevatorInfoThread.start();
 	}
 	
 	public void addJob(ElevatorJob job) {
@@ -93,6 +109,28 @@ public class ElevatorSubsystem implements Runnable{
 	
 	public ElevatorSchedulerComminicator getElevatorSchedulerComminicator() {
 		return getElevatorSchedulerComminicator();
+	}
+	
+	public ElevatorInfo getNextElevatorInfo() {
+		synchronized (notifyElevatorInfoList) {
+			while (notifyElevatorInfoList.isEmpty()) {
+				try {
+					notifyElevatorInfoList.wait();
+	            } catch (InterruptedException e)  {
+	                Thread.currentThread().interrupt(); 
+	            }
+			}
+			ElevatorInfo nextInfo = notifyElevatorInfoList.remove(0);
+			notifyElevatorInfoList.notify();
+			return nextInfo;
+		}
+	}
+	
+	public void addElevatorInfoList(ElevatorInfo info) {
+		synchronized (notifyElevatorInfoList) {
+			notifyElevatorInfoList.add(info);
+			notifyElevatorInfoList.notify();
+		}
 	}
 	
 	

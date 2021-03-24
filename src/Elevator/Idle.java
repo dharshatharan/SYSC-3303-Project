@@ -51,13 +51,25 @@ public class Idle extends ElevatorState{
 			}
     	}
     	
+//    	if (elevator.getCurFloor() == elevator.getJob().getFromFloor()) {
+//			elevator.setDestination(elevator.getJob().getToFloor());
+//			elevator.setDirection(elevator.getJob().getDirectionSeeking());
+//			elevator.setPreJob(null);
+//			elevator.setState(new Moving(elevator));
+//		}
+//		else {
+//			elevator.setState(new Idle(elevator));
+//			elevator.setJob(null);
+//		}
+	    
+    	
 //    	if (elevator.getPreJob() == null && elevator.getJob() == null ) {
 //	    	Scheduler scheduler = elevator.getScheduler();
 //	    	this.job = scheduler.getNextJob();
 //    	} else if (elevator.getPreJob() == null && elevator.getJob() != null ) {
 //    		this.job = elevator.getJob();
 //    	}
-	    
+    	
 		startJob();
 		exit();
     }
@@ -80,7 +92,7 @@ public class Idle extends ElevatorState{
 
     
     private Direction getPreJobDirection() {
-    	if ((elevator.getCurFloor() - elevator.getJob().getToFloor()) > 0) {
+    	if ((elevator.getCurFloor() - elevator.getJob().getToFloor()) < 0) {
     		return Direction.UP;
     	}
 		return Direction.DOWN;

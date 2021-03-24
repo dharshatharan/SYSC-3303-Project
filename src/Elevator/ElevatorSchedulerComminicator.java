@@ -20,7 +20,7 @@ public class ElevatorSchedulerComminicator {
 	private DatagramPacket receiveElevatorJobPacket, sendElevatorInfoPacket;
 	private DatagramSocket receiveElevatorJobSocket, sendElevatorInfoSocket;
 	
-	private Pattern elevatorInfoReplyPattern = Pattern.compile("^06 0");
+	private Pattern elevatorInfoReplyPattern = Pattern.compile("^06 ");
 	
 	private ElevatorSubsystem elevatorSubsystem;
 	
@@ -93,7 +93,8 @@ public class ElevatorSchedulerComminicator {
 	 * is in the correct format
 	 * @param info
 	 */
-	public void sendElevatorInfo(ElevatorInfo info) {
+	public void sendElevatorInfo() {
+		ElevatorInfo info = elevatorSubsystem.getNextElevatorInfo();
 		byte msg[] = info.getByteArray("01");
 		
 		System.out.println("Preparing to send elevator request to Scheduler...\n");

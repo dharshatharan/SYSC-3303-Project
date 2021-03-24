@@ -49,6 +49,8 @@ public class FloorSubsystem implements Runnable{
 			   }
 		   }
 	   };
+	   
+	   requestElevatorInfoThread.start();
     	
     	while(true) {
     		for(RequestElevatorEvent job: floorjobs) {

@@ -22,7 +22,7 @@ public class FloorSchedulerCommunicator {
 	private DatagramSocket sendElevatorRequestSocket;
 	private DatagramSocket receiveElevatorInfoSocket;
 	
-	private Pattern elevatorRequestReplyPattern = Pattern.compile("^02 0");
+	private Pattern elevatorRequestReplyPattern = Pattern.compile("^02 ");
 	
 	private FloorSubsystem floorSubsystem;
 	
