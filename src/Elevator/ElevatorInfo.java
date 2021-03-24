@@ -1,5 +1,8 @@
 package Elevator;
 import java.lang.String;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Constants.Direction;
 
 /**
@@ -9,11 +12,12 @@ import Constants.Direction;
  *
  */
 public class ElevatorInfo {
-
-    private String time;
-    private int currentfloornumber;
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [1-9] [1-2] ");
+	
+	private Boolean arrived;
+	private String elevatorID;
+    private int currentFloor;
     private Direction direction;
-    private int destinationfloornumber;
 
     /**
      * Default constructor
@@ -22,26 +26,55 @@ public class ElevatorInfo {
      * @param direction
      * @param destinationFloor
      */
-    public ElevatorInfo(String time, int currentFloor, Direction direction, int destinationFloor) {
-        this.time = time;
-        this.currentfloornumber = currentFloor;
+    public ElevatorInfo(Boolean arrived, String elevatorID, int currentFloor, Direction direction) {
+        this.arrived = arrived;
+        this.elevatorID = elevatorID;
+    	this.currentFloor = currentFloor;
         this.direction = direction;
-        this.destinationfloornumber = destinationFloor;
+    }
+    
+    public ElevatorInfo(byte[] data) throws Exception {
+    	String s = new String(data);
+    	System.out.println(s);
+		Matcher matcher = elevatorInfoPattern.matcher(s);
+		if (matcher.find()) {
+			String[] sa = s.split(" ");
+			this.arrived = sa[1].equals("1");
+	        this.elevatorID = sa[2];
+	    	this.currentFloor = Integer.parseInt(sa[3]);
+	        this.direction = sa[4].equals("1") ? Direction.UP : Direction.DOWN;
+		} else {
+			throw new Exception("Invalid byte array for ElevatorInfo!");
+		}
+    }
+    
+    public byte[] getByteArray(String byteCode) {
+    	String s = byteCode + " " + this.toStringForByteArray();
+    	return s.getBytes();
+    }
+    
+    /**
+     * Getter for is arriving
+     * @return isArriving
+     */
+    public Boolean getIsArriving() {
+    	return arrived;
+    }
+    
+    /**
+     * Getter for elevator ID
+     * @return elevatorID
+     */
+    public String getElevatorID() {
+    	return elevatorID;
     }
 
-    /**
-     * Getter for the time of the call
-     * @return time
-     */
-	public String getTime() {
-		return time;
-	}
     /**
      * Getter for the current floor number of the call
      * @return currentfloornumber
      */
-	public int getCurrentfloornumber() {
-		return currentfloornumber;
+	public int getCurrentfloor() {
+		return currentFloor;
 	}
     /**
      * Getter for the direction of the call
@@ -50,12 +83,13 @@ public class ElevatorInfo {
 	public Direction getDirection() {
 		return direction;
 	}
-    /**
-     * Getter for the destination floor number of the call
-     * @return destinationfloornumber
-     */
-	public int getDestinationfloornumber() {
-		return destinationfloornumber;
+	
+	/**
+	 * Returns the informatioon about the elevator in a string 
+	 * @return strElevatorInfo
+	 */
+	public String toStringForByteArray() {
+		return (arrived ? "1" : "0")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " ";
 	}
 	
 	/**
@@ -64,7 +98,7 @@ public class ElevatorInfo {
 	 */
 	@Override
 	public String toString() {
-		return time + " " + currentfloornumber + " " + direction + " " + destinationfloornumber + " ARRIVED";
+		return elevatorID + " " + currentFloor + " " + direction + " " + (arrived ? "ARRIVED" : "");
 	}
 
 }

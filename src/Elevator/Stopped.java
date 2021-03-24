@@ -63,6 +63,16 @@ public class Stopped extends ElevatorState{
 	 */
 	@Override
 	public void exit() {
+//		if (elevator.getCurFloor() == elevator.getJob().getFromFloor()) {
+//			elevator.setDestination(elevator.getJob().getToFloor());
+//			elevator.setDirection(elevator.getJob().getDirectionSeeking());
+//			elevator.setPreJob(null);
+//			elevator.setState(new Moving(elevator));
+//		}
+//		else {
+//			elevator.setState(new Idle(elevator));
+//			elevator.setJob(null);
+//		}
 		elevator.setState(new Idle(elevator));
 		elevator.getState().enter();
 	}
@@ -90,11 +100,8 @@ public class Stopped extends ElevatorState{
 	 */
 	private void notifyElevatorArrival() {
 		if (elevator.getPreJob() == null && elevator.getJob() != null) {
-			RequestElevatorEvent job = elevator.getJob();
-			elevator.getScheduler().sendElevatorInfo(new ElevatorInfo(job.getTime(), job.getCurrentfloornumber(), job.getDirection(), job.getDestinationfloornumber()));
-			elevator.setJob(null);
-		} else {
-			elevator.setPreJob(null);
+			ElevatorJob job = elevator.getJob();
+			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, job.getElevatorID(), job.getToFloor(), job.getDirectionSeeking()));
 		}
 	}
 		

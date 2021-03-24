@@ -1,5 +1,8 @@
 package Floor;
 import java.lang.String;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Constants.Direction;
 
 /**
@@ -9,6 +12,7 @@ import Constants.Direction;
  *
  */
 public class RequestElevatorEvent {
+	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] ");
 
     private String time;
     private int currentfloornumber;
@@ -55,6 +59,25 @@ public class RequestElevatorEvent {
         this.destinationfloornumber = destinationFloorNumber;
         this.secondsSinceMidnight = secondsSinceMidnight;
     }
+    
+    public RequestElevatorEvent(byte[] data) throws Exception {
+    	String s = new String(data);
+    	System.out.println(s);
+		Matcher matcher = elevatorRequestPattern.matcher(s);
+		if (matcher.find()) {
+			String[] sa = s.split(" ");
+	        this.currentfloornumber = Integer.parseInt(sa[1]);
+	    	this.direction = sa[2].equals("1") ? Direction.UP : Direction.DOWN;
+	        this.destinationfloornumber = Integer.parseInt(sa[3]);
+		} else {
+			throw new Exception("Invalid byte array for RequestElevatorEvent!");
+		}
+    }
+	
+	public byte[] getByteArray(String byteCode) {
+    	String s = byteCode + " " + this.toStringForByteArray();
+    	return s.getBytes();
+    }
 
     /**
      * Getter for the time
@@ -94,6 +117,10 @@ public class RequestElevatorEvent {
      */	
 	public int getSecondsSinceMidnight() {
 		return secondsSinceMidnight;
+	}
+	
+	public String toStringForByteArray() {
+		return  currentfloornumber + " " + (direction == Direction.UP ? "1" : "2") + " " + destinationfloornumber + " ";
 	}
 	
 	

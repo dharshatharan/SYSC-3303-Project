@@ -3,8 +3,11 @@
  */
 package Elevator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Constants.Direction;
-import Constants.FloorNumber;
+import Floor.RequestElevatorEvent;
 
 /**
  * Stores the informatoin about each job created for the elevator to exicute
@@ -13,8 +16,11 @@ import Constants.FloorNumber;
  *
  */
 public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] ");
 	
-	private FloorNumber floorNumber;
+	private String elevatorID;
+	private int fromFloor;
+	private int toFloor;
 	private Direction directionSeeking;
 	
 
@@ -24,10 +30,39 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @param directionSeeking
 	 * 
 	 */
-	public ElevatorJob(FloorNumber floorNumber, Direction directionSeeking) {
-		this.floorNumber = floorNumber;
+	public ElevatorJob(String elevatorID, int fromFloor, int toFloor, Direction directionSeeking) {
+		this.elevatorID = elevatorID;
+		this.fromFloor = fromFloor;
+		this.toFloor = toFloor;
 		this.directionSeeking = directionSeeking;
 	}
+	
+	public ElevatorJob(RequestElevatorEvent event, String elevatorID) {
+		this.elevatorID = elevatorID;
+		this.fromFloor = event.getCurrentfloornumber();
+		this.toFloor = event.getDestinationfloornumber();
+		this.directionSeeking = event.getDirection();
+	}
+	
+	public ElevatorJob(byte[] data) throws Exception {
+    	String s = new String(data);
+    	System.out.println(s);
+		Matcher matcher = elevatorInfoPattern.matcher(s);
+		if (matcher.find()) {
+			String[] sa = s.split(" ");
+			this.elevatorID = sa[1];
+	        this.fromFloor = Integer.parseInt(sa[2]);
+	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
+	        this.toFloor = Integer.parseInt(sa[4]);
+		} else {
+			throw new Exception("Invalid byte array for ElevatorJob!");
+		}
+    }
+	
+	public byte[] getByteArray(String byteCode) {
+    	String s = byteCode + " " + this.toStringForByteArray();
+    	return s.getBytes();
+    }
 
 
 	/**
@@ -38,14 +73,6 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 		return directionSeeking;
 	}
 
-	/**
-	 * Getter for the floorNumber of the job
-	 * @return floorNumber
-	 */
-	public FloorNumber getFloorNumber() {
-		return floorNumber;
-	}
-
 
 	/**
 	 * Compares job with the job passed in
@@ -54,16 +81,47 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 */
 	@Override
 	public int compareTo(ElevatorJob o) {
-		return this.getFloorNumber().number - o.getFloorNumber().number;
+		if (directionSeeking == Direction.UP)
+			return o.getToFloor() - this.getToFloor();
+		return this.getToFloor() - o.getToFloor();
 	}
 	
+	/**
+	 * @return the elevatorID
+	 */
+	public String getElevatorID() {
+		return elevatorID;
+	}
+	
+	/**
+	 * @return the fromFloor
+	 */
+	public int getFromFloor() {
+		return fromFloor;
+	}
+	
+	/**
+	 * @return the toFloor
+	 */
+	public int getToFloor() {
+		return toFloor;
+	}
+	
+	/**
+	 * prepares a string to be printed to represen the data transferd for the byte array
+	 * @return Information about the job
+	 */
+	public String toStringForByteArray() {
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
+	}
+
 	/**
 	 * prepares a string to be printed to represen the data transferd
 	 * @return Information about the job
 	 */
 	@Override
 	public String toString() {
-		return floorNumber + directionSeeking.toString();
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
 	}
 	
 }
