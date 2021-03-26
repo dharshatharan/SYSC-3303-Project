@@ -1,6 +1,7 @@
 package Elevator;
 import Constants.*;
 import Floor.RequestElevatorEvent;
+import java.util.Date;
 
 /**
  * A state of the elevator for when it is stoped at a floor. Opens and closes the doors, changes to move or idle
@@ -19,11 +20,18 @@ public class Stopped extends ElevatorState{
 		super(elevator);
 	}
 	
+	
+	enum 
+	
 	Direction d = Direction.UP;
+	Date date;
+	private boolean doorStatus;
+	
 	/**
 	 * Simulates arrival and opens door. Runs set task, wait, closedoor
 	 */
 	public void openDoors() {
+		
 		System.out.println("Doors open");
 		// Sleep or wait for new job or for set time
 		
@@ -84,6 +92,19 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
+		long time1 = 0;
+		long time2 = 0;
+		if(!elevator.getJob().hasFault()){
+			try {
+				Thread.sleep(1000);
+			}catch(InterruptedException e7) {
+			}	
+		}
+		
+		}
+		
+		
+		
 		openDoors();
 		try {
 			Thread.sleep(1000);
