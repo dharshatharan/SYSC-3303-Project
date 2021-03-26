@@ -21,11 +21,10 @@ public class Stopped extends ElevatorState{
 	}
 	
 	
-	enum 
 	
+
 	Direction d = Direction.UP;
 	Date date;
-	private boolean doorStatus;
 	
 	/**
 	 * Simulates arrival and opens door. Runs set task, wait, closedoor

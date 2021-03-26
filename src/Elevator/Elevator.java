@@ -23,6 +23,14 @@ public class Elevator implements Runnable {
     private ElevatorJob job;
     private boolean operationalStatus;   //True means it is operational.
     
+    private doorStatus doorState;
+   
+    public enum doorStatus{
+		open,
+		closed;
+	}
+    
+    
     
 	
 	/**
