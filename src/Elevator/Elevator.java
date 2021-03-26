@@ -97,6 +97,36 @@ public class Elevator implements Runnable {
 	public String getTimer(){
         return timer;
     }
+	
+	public doorStatus getDoorState() {
+		return doorState;
+	}
+	
+	//true = open
+	//false = close
+	public void setDoorState(boolean door) {
+		if(door) {
+			doorState = doorState.open;
+		}
+		if(!door) {
+			doorState = doorState.closed;
+		}
+	}
+	
+	//True mean Operational
+	public void setOperationalStatus(boolean temp) {
+		if(temp){
+			operationalStatus = temp;
+		}
+		if(!temp) {
+			operationalStatus = temp;
+		}
+	}
+	
+	public boolean getOperationalStatus() {
+		return operationalStatus;
+	}
+	
 
     public Direction getDirection() {
         return direction;

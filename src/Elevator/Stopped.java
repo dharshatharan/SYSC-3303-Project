@@ -32,6 +32,7 @@ public class Stopped extends ElevatorState{
 	public void openDoors() {
 		
 		System.out.println("Doors open");
+		elevator.setDoorState(true);
 		// Sleep or wait for new job or for set time
 		
 		
@@ -95,15 +96,14 @@ public class Stopped extends ElevatorState{
 		Timer timer = new Timer();
 		long time1 = 0;
 		long time2 = 0;
-		if(!elevator.getJob().hasFault()){
+		if(elevator.getJob().hasFault()){
+			
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(5000);
 			}catch(InterruptedException e7) {
 			}	
 		}
-		
-		}
-		
+		if
 		
 		
 		openDoors();
