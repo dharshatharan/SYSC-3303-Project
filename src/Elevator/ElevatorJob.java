@@ -22,6 +22,8 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	private int fromFloor;
 	private int toFloor;
 	private Direction directionSeeking;
+	private boolean hasFault;
+	
 	
 
 	/**
@@ -35,6 +37,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 		this.fromFloor = fromFloor;
 		this.toFloor = toFloor;
 		this.directionSeeking = directionSeeking;
+		this.hasFault = false;
 	}
 	
 	public ElevatorJob(RequestElevatorEvent event, String elevatorID) {
@@ -42,6 +45,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 		this.fromFloor = event.getCurrentfloornumber();
 		this.toFloor = event.getDestinationfloornumber();
 		this.directionSeeking = event.getDirection();
+		
 	}
 	
 	public ElevatorJob(byte[] data) throws Exception {
@@ -54,6 +58,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	        this.fromFloor = Integer.parseInt(sa[2]);
 	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.toFloor = Integer.parseInt(sa[4]);
+	        this.hasFault = Interger.parseInt(sa[5]);
 		} else {
 			throw new Exception("Invalid byte array for ElevatorJob!");
 		}
