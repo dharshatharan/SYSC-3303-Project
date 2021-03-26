@@ -15,6 +15,7 @@ public class RequestElevatorEvent {
     private Direction direction;
     private int destinationfloornumber;
     private int secondsSinceMidnight;
+    private boolean fault;
 
     /**
      * Default constructor
@@ -34,6 +35,10 @@ public class RequestElevatorEvent {
         }
         
         this.destinationfloornumber = Integer.parseInt(inputs[3]);
+        this.fault = false;
+        if(inputs[3] == 2) {
+        	this.fault = true;
+        }
         
         String time[] = inputs[0].split(":");
         
