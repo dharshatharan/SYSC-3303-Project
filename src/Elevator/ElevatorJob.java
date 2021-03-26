@@ -114,6 +114,14 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	}
 	
 	/**
+	 * Getter for the fault boolean(if this job has a fault- returns true)
+	 */
+	public boolean getFault() {
+		return fault;
+	}
+	
+	
+	/**
 	 * prepares a string to be printed to represen the data transferd for the byte array
 	 * @return Information about the job
 	 */

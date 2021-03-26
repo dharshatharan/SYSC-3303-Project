@@ -21,6 +21,9 @@ public class Elevator implements Runnable {
     
     private ElevatorJob preJob;
     private ElevatorJob job;
+    private boolean operationalStatus;   //True means it is operational.
+    
+    
 	
 	/**
 	 * Default constructor
@@ -30,7 +33,9 @@ public class Elevator implements Runnable {
 		this.id = id;
 		this.elevatorSubsystem = elevatorSubsystem;
 		this.curFlor = 1;
+		this.operationalStatus = true;
 		this.state = new Idle(this);
+		
 	}
 	
 	/**
