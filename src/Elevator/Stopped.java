@@ -92,7 +92,41 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
-
+		Date d0 = new Date();
+		long t0 = d0.getTime();
+		long t1;
+		
+		if(!checkForFaults()){
+			try {
+				Thread.sleep(1000);
+				Date d1 = new Date();
+				t1 = d1.getTime()
+			}catch(InterruptedException e7) {
+			}	
+		} else {
+			try {
+				Thread.sleep(5000);
+				Date d2 = new Date();
+				t1 = d2.getTime()
+			}catch(InterruptedException e7) {
+			}
+		}
+		
+		tryOpenCloseDoor(t0, t1, 2000, true) // timeout set for 2s
+		
+		
+		
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		tryOpenCloseDoor(tc0, tc1, 2000, false)
+		
+		closeDoors();
+		exit();
 			
 	}
 
@@ -104,6 +138,28 @@ public class Stopped extends ElevatorState{
 			ElevatorJob job = elevator.getJob();
 			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, job.getElevatorID(), job.getToFloor(), job.getDirectionSeeking()));
 		}
+	}
+	
+	public boolean checkForFaults() {
+		
+		return elevator.getJob().hasFault();
+		
+	}
+	
+	public void tryOpenCloseDoor(long initTime, long endTime, long timeout, boolean toOpen) {
+		
+		if(endTime > (initTime + timeout)){
+			if(toOpen) {
+				openDoors();
+			}
+			else {
+				closeDoors();
+			}
+			
+		} else {
+			elevator.setOperationalStatus(false);
+		}
+		
 	}
 		
 }
