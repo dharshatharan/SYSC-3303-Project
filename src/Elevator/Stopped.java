@@ -92,28 +92,7 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
-		// start timer countdown
-		Timer timer = new Timer();
-		long time1 = 0;
-		long time2 = 0;
-		if(elevator.getJob().hasFault()){
-			
-			try {
-				Thread.sleep(5000);
-			}catch(InterruptedException e7) {
-			}	
-		}
-		if
-		
-		
-		openDoors();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		closeDoors();
-		exit();
+
 			
 	}
 
