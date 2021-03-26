@@ -92,12 +92,19 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
-		Date t0 = new Date();
+		Date d0 = new Date();
+		long t0 = d0.getTime();
+		Date d1 = new Date();
+		long t1;
+		
 		if(!elevator.getJob().hasFault()){
 			try {
 				Thread.sleep(1000);
+				t1 = d1.getTime()
 			}catch(InterruptedException e7) {
 			}	
+		} else {
+			Thread.
 		}
 		
 		}
