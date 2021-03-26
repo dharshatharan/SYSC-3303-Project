@@ -12,7 +12,7 @@ import Constants.Direction;
  *
  */
 public class RequestElevatorEvent {
-	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] ");
+	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] [1-2] ");
 
     private String time;
     private int currentfloornumber;
@@ -91,6 +91,13 @@ public class RequestElevatorEvent {
      */
 	public String getTime() {
 		return time;
+	}
+	
+	/**
+	 * Getter for fault
+	 */
+	public boolean getFault() {
+		return fault;
 	}
 
     /**
