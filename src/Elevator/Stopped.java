@@ -224,7 +224,7 @@ public class Stopped extends ElevatorState{
 				}
 			}
 		} else {
-			if (!elevator.getOperationalStatus()){
+			if (!elevator.getOperationalStatus()){ //if true ?
 				
 				System.out.println("This Elevator should be suspended as the door is Faulty.")
 				this.wait();
