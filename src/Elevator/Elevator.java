@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import Constants.Direction;
+import Constants.DoorStatus;
 import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
@@ -25,7 +26,10 @@ public class Elevator extends Thread {
     
     private List<ElevatorJob> jobs;
     private List<ElevatorJob> activeJobs;
-    	
+    private boolean operationalStatus;   //True means it is operational.
+    
+    private DoorStatus doorState;
+    
 	/**
 	 * Default constructor
 	 * @param scheduler
@@ -35,7 +39,7 @@ public class Elevator extends Thread {
 		this.elevatorSubsystem = elevatorSubsystem;
 		this.currentFloor = 1;
 		this.direction = Direction.Idle;
-//		this.state = new Idle(this);
+		this.operationalStatus = true;
 		this.jobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 		this.activeJobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 	}
@@ -73,19 +77,6 @@ public class Elevator extends Thread {
 		synchronized (jobs) {
 			synchronized(activeJobs) {
 				Integer bestJob = null;
-//				if(direction == Direction.UP) {
-//					for(ElevatorJob job: jobs) {
-//						if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > curFlor && job.getFromFloor() < bestJob) {
-//							bestJob = job.getFromFloor();
-//						}
-//					}
-//				}
-//				bestJob
-//				if (bestJob == null && direction == Direction.Idle) {
-//					bestJob = !activeJobs.isEmpty() ? activeJobs.get(0).getToFloor() : jobs.get(0).getFromFloor();
-//				} else if (bestJob == null) {
-//					bestJob = 
-//				}
 				for(ElevatorJob job: jobs) {
 					if(job.getDirectionSeeking() == direction) {
 						if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > currentFloor){
@@ -192,6 +183,36 @@ public class Elevator extends Thread {
 	public String getTimer(){
         return timer;
     }
+	
+	public DoorStatus getDoorState() {
+		return doorState;
+	}
+	
+	//true = open
+	//false = close
+	public void setDoorState(boolean door) {
+		if(door) {
+			doorState = doorState.open;
+		}
+		if(!door) {
+			doorState = doorState.closed;
+		}
+	}
+	
+	//True mean Operational
+	public void setOperationalStatus(boolean temp) {
+		if(temp){
+			operationalStatus = temp;
+		}
+		if(!temp) {
+			operationalStatus = temp;
+		}
+	}
+	
+	public boolean getOperationalStatus() {
+		return operationalStatus;
+	}
+	
 
     public Direction getDirection() {
         return direction;
