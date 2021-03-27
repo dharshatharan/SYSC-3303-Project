@@ -51,6 +51,13 @@ public class FloorSubsystem implements Runnable{
 	   };
 	   
 	   requestElevatorInfoThread.start();
+	   
+	   try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	while(true) {
     		for(RequestElevatorEvent job: floorjobs) {

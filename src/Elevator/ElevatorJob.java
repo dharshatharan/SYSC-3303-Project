@@ -112,7 +112,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @return Information about the job
 	 */
 	public String toStringForByteArray() {
-		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " ";
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 */
 	@Override
 	public String toString() {
-		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " ";
 	}
 	
 }

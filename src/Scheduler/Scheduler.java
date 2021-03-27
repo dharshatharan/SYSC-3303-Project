@@ -154,7 +154,7 @@ public class Scheduler implements Runnable {
 	/**
 	 * Gets the next elevator info from the queue that will be sent to the floor
 	 */
-	public synchronized ElevatorInfo getNextElevatorInfo() {
+	public ElevatorInfo getNextElevatorInfo() {
 		return processElevatorInfoThread.dequeueProcessedInfo();
 	}
 	

@@ -35,17 +35,17 @@ public class Stopped extends ElevatorState{
 	 */
 	public void closeDoors() {
 		System.out.println("Doors closed");
-		idle();
+//		idle();
 	}
 	
 	/**
 	 * Sets state to idel when there are no more jobs
 	 */
-	public void idle() {
-		//elevator.changeState();
-		elevator.setState(new Idle(elevator));
-		exit();
-	}
+//	public void idle() {
+//		//elevator.changeState();
+//		elevator.setState(new Idle(elevator));
+//		exit();
+//	}
 	
 	/**
 	 * Sets state to Move when there are jobs
@@ -73,8 +73,8 @@ public class Stopped extends ElevatorState{
 //			elevator.setState(new Idle(elevator));
 //			elevator.setJob(null);
 //		}
-		elevator.setState(new Idle(elevator));
-		elevator.getState().enter();
+//		elevator.setState(new Idle(elevator));
+//		elevator.getElevatorState().enter();
 	}
 
 	/**
@@ -85,6 +85,7 @@ public class Stopped extends ElevatorState{
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
 		openDoors();
+		elevator.startFinishAllJobsInCurFloor();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
@@ -99,10 +100,10 @@ public class Stopped extends ElevatorState{
 	 * Notifies The Scheduler that the elevator has completed a job or moving the elevator to the floor of the first job
 	 */
 	private void notifyElevatorArrival() {
-		if (elevator.getPreJob() == null && elevator.getJob() != null) {
-			ElevatorJob job = elevator.getJob();
-			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, job.getElevatorID(), job.getToFloor(), job.getDirectionSeeking()));
-		}
+//		if (elevator.getPreJob() == null && elevator.getJob() != null) {
+//			ElevatorJob job = elevator.getJob();
+			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection()));
+//		}
 	}
 		
 }

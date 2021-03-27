@@ -21,17 +21,11 @@ public class Elevator extends Thread {
 	private ElevatorSubsystem elevatorSubsystem;
 	private String timer;
     private Direction direction;
-    private int curFlor, destination;
     private ElevatorState state;
-    
-    private ElevatorJob preJob;
-    private ElevatorJob job;
     
     private List<ElevatorJob> jobs;
     private List<ElevatorJob> activeJobs;
-    
-    private int nextDestinationFloor;
-	
+    	
 	/**
 	 * Default constructor
 	 * @param scheduler
@@ -39,8 +33,9 @@ public class Elevator extends Thread {
 	public Elevator(ElevatorSubsystem elevatorSubsystem, String id) {
 		this.id = id;
 		this.elevatorSubsystem = elevatorSubsystem;
-		this.curFlor = 1;
-		this.state = new Idle(this);
+		this.currentFloor = 1;
+		this.direction = Direction.Idle;
+//		this.state = new Idle(this);
 		this.jobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 		this.activeJobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 	}
@@ -51,7 +46,7 @@ public class Elevator extends Thread {
 	@Override
 	public void run() {
 //		ElevatorJob request = null;
-		System.out.println("Starting floor elevator");
+		System.out.println("Starting floor elevator " + id);
 		while(!isInterrupted()) {
 			synchronized (jobs) {
 				synchronized(activeJobs) {
@@ -63,7 +58,8 @@ public class Elevator extends Thread {
 						 return;
 					 }
 //					 request = jobs.get(0);
-					 nextDestinationFloor = getNextBestElevatorDestination();
+					 startFinishAllJobsInCurFloor();
+//					 bestJob = getNextBestElevatorDestination();
 				}
 			 }
 //			processInfo(request);
@@ -75,13 +71,55 @@ public class Elevator extends Thread {
 	
 	public int getNextBestElevatorDestination() {
 		synchronized (jobs) {
-			ElevatorJob bestJob = jobs.get(0);
-			for(ElevatorJob job: jobs) {
-				if(job.getDirectionSeeking() == direction) {
-					if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > curFlor && job.getFromFloor() < bestJob.getFromFloor()) {
-						
+			synchronized(activeJobs) {
+				Integer bestJob = null;
+//				if(direction == Direction.UP) {
+//					for(ElevatorJob job: jobs) {
+//						if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > curFlor && job.getFromFloor() < bestJob) {
+//							bestJob = job.getFromFloor();
+//						}
+//					}
+//				}
+//				bestJob
+//				if (bestJob == null && direction == Direction.Idle) {
+//					bestJob = !activeJobs.isEmpty() ? activeJobs.get(0).getToFloor() : jobs.get(0).getFromFloor();
+//				} else if (bestJob == null) {
+//					bestJob = 
+//				}
+				for(ElevatorJob job: jobs) {
+					if(job.getDirectionSeeking() == direction) {
+						if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > currentFloor){
+							if (bestJob == null || job.getFromFloor() < bestJob)
+								bestJob = job.getFromFloor();
+						} else if (job.getDirectionSeeking() == Direction.DOWN && job.getFromFloor() < currentFloor) {
+							if (bestJob == null || job.getFromFloor() > bestJob)
+								bestJob = job.getFromFloor();
+						}
 					}
 				}
+				for(ElevatorJob job: activeJobs) {
+					if(job.getDirectionSeeking() == direction) {
+						if(job.getDirectionSeeking() == Direction.UP && job.getToFloor() > currentFloor) {
+							if (bestJob == null || job.getToFloor() < bestJob)
+								bestJob = job.getToFloor();
+						} else if (job.getDirectionSeeking() == Direction.DOWN && job.getToFloor() < currentFloor) {
+							if (bestJob == null || job.getToFloor() > bestJob)
+								bestJob = job.getToFloor();
+						}
+					}
+				}
+//				jobs.isEmpty() ? activeJobs.get(0).getToFloor() : jobs.get(0).getFromFloor()
+				if (bestJob != null && bestJob > currentFloor) {
+					direction = Direction.UP;
+				} else if (bestJob != null && bestJob < currentFloor) {
+					direction = Direction.DOWN;
+				} else {
+					direction = Direction.Idle;
+				}
+				if (bestJob == null && direction == Direction.Idle) {
+					bestJob = !activeJobs.isEmpty() ? activeJobs.get(0).getToFloor() : jobs.get(0).getFromFloor();
+				}
+				return bestJob;
 			}
 		}
 	}
@@ -113,8 +151,37 @@ public class Elevator extends Thread {
 	}
 	
 	
-	public void updateJob(ElevatorJob job) {
-		this.job = job;
+//	public void updateJob(ElevatorJob job) {
+//		this.job = job;
+//	}
+	
+	public void addJob(ElevatorJob job) {
+		synchronized (jobs) {
+			jobs.add(job);
+			jobs.notify();
+		}
+	}
+	
+	public void startFinishAllJobsInCurFloor() {
+		synchronized (jobs) {
+			synchronized(activeJobs) {
+				List<ElevatorJob> removeJobs = new LinkedList<>();
+				for(ElevatorJob job: jobs) {
+					if(job.getFromFloor() == currentFloor) {
+						removeJobs.add(job);
+							activeJobs.add(job);
+					}
+				}
+				List<ElevatorJob> removeActiveJobs = new LinkedList<>();
+				for(ElevatorJob job: activeJobs) {
+					if(job.getToFloor() == currentFloor) {
+						removeActiveJobs.add(job);
+					}
+				}
+				jobs.removeAll(removeJobs);
+				activeJobs.removeAll(removeActiveJobs);
+			}
+		}
 	}
 	
 	
@@ -130,36 +197,16 @@ public class Elevator extends Thread {
         return direction;
     }
 
-    public int getCurFloor(){
-        return curFlor;
-    }
-
-    public int getDestination() {
-        return destination;
+    public int getCurrentFloor(){
+        return currentFloor;
     }
     
-    public ElevatorJob getJob() {
-        return job;
-    }
-    
-    public ElevatorJob getPreJob() {
-        return preJob;
-    }
-    
-    public ElevatorState getState() {
+    public ElevatorState getElevatorState() {
         return state;
     }
     
     public ElevatorSubsystem getElevatorSubsystem() {
     	return elevatorSubsystem;
-    }
-    
-    public void setJob(ElevatorJob job) {
-        this.job = job;
-    }
-    
-    public void setPreJob(ElevatorJob job) {
-        this.preJob = job;
     }
 
     public void setTimer(String timer){
@@ -170,16 +217,8 @@ public class Elevator extends Thread {
         this.direction =  direction;
     }
 
-    public void setcurFlor(int curFlor){
-        this.curFlor =  curFlor;
-    }
-
-    public void setDestination(int destination) {
-        this.destination = destination;
-    } 
-    
-    public void setFloor(int floorNumber){
-    	this.curFlor = floorNumber;
+    public void setCurrentFloor(int curFlor){
+        this.currentFloor =  curFlor;
     }
     
     
@@ -190,8 +229,20 @@ public class Elevator extends Thread {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public String getElevatorId() {
 		return id;
+	}
+	
+	public static void main(String[] args) {
+		Elevator elevator = new Elevator(null, "1");
+		elevator.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		elevator.addJob(new ElevatorJob("1", 1, 7, Direction.UP));
+		elevator.addJob(new ElevatorJob("1", 5, 4, Direction.DOWN));
 	}
     
 }

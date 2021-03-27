@@ -14,22 +14,14 @@ public class ElevatorSubsystem implements Runnable{
 	private int numElevators;
 	
 	private List<ElevatorInfo> notifyElevatorInfoList;
-	
-	//private ArrayList<Thread> elevatorThreads;
-	
+		
 	private ElevatorSchedulerComminicator comunicator;
 	
 	public ElevatorSubsystem(int numElevators) {
 		this.numElevators = numElevators;
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
-		this.elevatorJobsDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
-		for (int i = 0; i < numElevators; i++) {
-			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
-			this.elevatorJobsDatabase.put(String.valueOf(i + 1), jobList);
-		}
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
-		this.run();
 		
 	}
 	
@@ -40,8 +32,8 @@ public class ElevatorSubsystem implements Runnable{
 	 * @param elevatorID
 	 * @param job
 	 */
-	public void receiveJob(String elevatorID, ElevatorJob job) {
-		elevators.get(elevatorID).updateJob(job);
+	public void receiveJob(ElevatorJob job) {
+		elevators.get(job.getElevatorID()).addJob(job);
 	}
 
 
@@ -54,16 +46,11 @@ public class ElevatorSubsystem implements Runnable{
 		// TODO Auto-generated method stub
 		
 		for (int i =0; i<numElevators; i++) {
-			Elevator temp = new Elevator(this, i + 1 + "");
-			Thread elevatorThread = new Thread(temp, "ElevatorThread-" +(i+1));
-			elevatorThread.start();
+			Elevator elevator = new Elevator(this, i + 1 + "");	
+			elevators.put(i + 1 +"",elevator);
 			
-			elevators.put(i + 1 +"",temp);
-		}
-		StartJobs sendJob = new StartJobs(this);
-		Thread startJob = new Thread(sendJob, "Start Job");
-		startJob.start();
-		
+			elevator.start();
+		}		
 		Thread receiveElevatorJobThread = new Thread(){
 			   public void run(){
 				   while(true) {
@@ -84,18 +71,9 @@ public class ElevatorSubsystem implements Runnable{
 		   sendElevatorInfoThread.start();
 	}
 	
-	public void addJob(ElevatorJob job) {
-		elevatorJobsDatabase.get(job.getElevatorID()).add(job);
-	}
-	
-	
-	/**
-	 * Getter for the list of Jobs
-	 * @return jobs
-	 */
-	public Map<String, List<ElevatorJob>> getJobList(){
-		return elevatorJobsDatabase;
-	}
+//	public void addJob(ElevatorJob job) {
+////		elevatorJobsDatabase.get(job.getElevatorID()).add(job);
+//	}
 	
 	/**
 	 * Getter for the list of elevators
@@ -133,7 +111,8 @@ public class ElevatorSubsystem implements Runnable{
 	
 	
 	public static void main(String[] args) {
-		new ElevatorSubsystem(2);
+		ElevatorSubsystem es = new ElevatorSubsystem(2);
+		es.run();
 	}
 	
 	

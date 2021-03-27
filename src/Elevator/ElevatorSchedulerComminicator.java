@@ -55,7 +55,7 @@ public class ElevatorSchedulerComminicator {
 			System.exit(1);
 		}
 		
-		System.out.println("Preparing to send elevator info request...\n");
+		System.out.println("Preparing to send elevator Job request...\n");
 		
 		try {
 			receiveElevatorJobSocket.send(receiveElevatorJobPacket);
@@ -80,7 +80,9 @@ public class ElevatorSchedulerComminicator {
 		String received = new String(reply, 0, len);
 		
 		try {
-			elevatorSubsystem.addJob(new ElevatorJob(reply));
+			ElevatorJob job = new ElevatorJob(reply);
+			System.out.println(job);
+			elevatorSubsystem.receiveJob(job);
 		} catch (Exception e) {
 			System.out.println(e);
 			return;

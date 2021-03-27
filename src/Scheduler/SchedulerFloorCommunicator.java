@@ -18,7 +18,7 @@ import Floor.RequestElevatorEvent;
  *
  */
 public class SchedulerFloorCommunicator {
-	private Pattern elevatorInfoRequestPattern = Pattern.compile("^07 [1-9] ");
+	private Pattern elevatorInfoRequestPattern = Pattern.compile("^07 0 ");
 	
 	private Scheduler scheduler;
 	
@@ -113,7 +113,7 @@ public class SchedulerFloorCommunicator {
 		   
 		   Matcher matcher = elevatorInfoRequestPattern.matcher(received);
 		   if (matcher.find()) {
-			   msg = scheduler.getNextReadyJob().getByteArray("08");
+			   msg = scheduler.getNextElevatorInfo().getByteArray("08");
 		      
 			   try {
 				   elevatorInfoSendPacket = new DatagramPacket(msg, msg.length,

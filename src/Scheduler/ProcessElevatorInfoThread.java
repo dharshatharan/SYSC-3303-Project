@@ -39,13 +39,13 @@ public class ProcessElevatorInfoThread extends Thread {
 		synchronized (elevetorInfoProcessed) {
 			while (elevetorInfoProcessed.isEmpty()) {
 				try {
-	                wait();
+					elevetorInfoProcessed.wait();
 	            } catch (InterruptedException e)  {
 	                Thread.currentThread().interrupt(); 
 	            }
 			}
 			ElevatorInfo nextInfo = elevetorInfoProcessed.remove(0);
-			notifyAll();
+			elevetorInfoProcessed.notify();
 			return nextInfo;
 		}
 	}
