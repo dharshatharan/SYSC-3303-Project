@@ -50,7 +50,7 @@ public class Scheduler implements Runnable {
 		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
 			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
-			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i), 1, Direction.UP));
+			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i + 1), 1, Direction.Idle));
 		}
 	}
 	/**

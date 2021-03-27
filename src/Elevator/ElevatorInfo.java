@@ -12,7 +12,7 @@ import Constants.Direction;
  *
  */
 public class ElevatorInfo {
-	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [1-9] [1-2] ");
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [1-9] [1-3] ");
 	
 	private Boolean arrived;
 	private String elevatorID;
@@ -42,7 +42,7 @@ public class ElevatorInfo {
 			this.arrived = sa[1].equals("1");
 	        this.elevatorID = sa[2];
 	    	this.currentFloor = Integer.parseInt(sa[3]);
-	        this.direction = sa[4].equals("1") ? Direction.UP : Direction.DOWN;
+	        this.direction = sa[4].equals("1") ? Direction.UP : sa[4].equals("2") ? Direction.DOWN : Direction.Idle;
 		} else {
 			throw new Exception("Invalid byte array for ElevatorInfo!");
 		}
@@ -89,7 +89,7 @@ public class ElevatorInfo {
 	 * @return strElevatorInfo
 	 */
 	public String toStringForByteArray() {
-		return (arrived ? "1" : "2")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " ";
+		return (arrived ? "1" : "2")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.Idle ? "3" : (direction == Direction.UP ? "1" : "2")) + " ";
 	}
 	
 	/**
