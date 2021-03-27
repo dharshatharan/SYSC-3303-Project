@@ -40,7 +40,7 @@ public class Stopped extends ElevatorState{
 			
 		} else {
 			
-			System.out.println("Doors unable to open");
+			System.out.println("Doors unable to open, attempting to correct...");
 			correctFault(true);
 		}
 		
@@ -50,14 +50,14 @@ public class Stopped extends ElevatorState{
 	 * Simulates the closing doors. starts to process to change state to idel or moving
 	 */
 	public void closeDoors() {
-		if(elevator.getOperationalStatus()) {
+		if(elevator.getOperationalStatus() && elevator.getDoorState().equals(DoorStatus.open)) {
 			
 			System.out.println("Doors closed");
 			elevator.setDoorState(false);
 			
 		} else {
 			
-			System.out.println("Doors unable to open");
+			System.out.println("Doors unable to close, attempting to correct...");
 			correctFault(false);
 		}
 		
@@ -200,9 +200,9 @@ public class Stopped extends ElevatorState{
 		
 	}
 	
+	//Method to try to correct the open door fault
 	public void correctFault(boolean toOpen) {
 		Random random = new Random();
-		//Method to try to correct the open door fault
 		for(int i=0; i<2; i++) {
 			int checkFix = random.nextInt(99) + 1;
 			if(checkFix % 2 == 0) {
@@ -210,6 +210,7 @@ public class Stopped extends ElevatorState{
 			}
 		}
 		if(elevator.getOperationalStatus()) {
+			System.out.println("Fault corrected!");
 			if(toOpen) {
 				try {
 					Thread.sleep(1000);
@@ -225,6 +226,8 @@ public class Stopped extends ElevatorState{
 			}
 		} else {
 			//SHutdown logic
+			
+			
 		}
 	}
 		
