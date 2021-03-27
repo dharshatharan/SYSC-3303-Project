@@ -1,5 +1,6 @@
 package Elevator;
 import Constants.*;
+import java.util.Random;
 import Floor.RequestElevatorEvent;
 import java.util.Date;
 
@@ -31,7 +32,7 @@ public class Stopped extends ElevatorState{
 	 */
 	public void openDoors() {
 		
-		if(elevator.getOperationalStatus()) {
+		if(elevator.getOperationalStatus() && elevator.getDoorState().equals(elevator.doorState.closed)) {
 			
 			System.out.println("Doors open");
 			elevator.setDoorState(true);
@@ -39,13 +40,8 @@ public class Stopped extends ElevatorState{
 		} else {
 			
 			System.out.println("Doors unable to open");
-			
+			correctFault(true);
 		}
-		
-		System.out.println("Doors open");
-		elevator.setDoorState(true);
-		// Sleep or wait for new job or for set time
-		
 		
 	}
 	
@@ -53,8 +49,17 @@ public class Stopped extends ElevatorState{
 	 * Simulates the closing doors. starts to process to change state to idel or moving
 	 */
 	public void closeDoors() {
-		System.out.println("Doors closed");
-		idle();
+		if(elevator.getOperationalStatus()) {
+			
+			System.out.println("Doors closed");
+			elevator.setDoorState(false);
+			
+		} else {
+			
+			System.out.println("Doors unable to open");
+			correctFault(false);
+		}
+		
 	}
 	
 	/**
@@ -123,10 +128,7 @@ public class Stopped extends ElevatorState{
 			}
 		}
 		
-		tryOpenCloseDoor(t0, t1, 2000, true) // timeout set for 2s
-		
-		
-		
+		tryOpenCloseDoor(t0, t1, 2000, true); // timeout set for 2s
 		
 		try {
 			Thread.sleep(1000);
@@ -134,9 +136,28 @@ public class Stopped extends ElevatorState{
 			e1.printStackTrace();
 		}
 		
-		tryOpenCloseDoor(tc0, tc1, 2000, false)
+		Date dc0 = new Date();
+		long tc0 = dc0.getTime();
+		long tc1;
 		
-		closeDoors();
+		if(!checkForFaults()){
+			try {
+				Thread.sleep(1000);
+				Date dc1 = new Date();
+				tc1 = dc1.getTime();
+			}catch(InterruptedException e7) {
+			}	
+		} else {
+			try {
+				Thread.sleep(5000);
+				Date dc2 = new Date();
+				tc1 = dc2.getTime();
+			}catch(InterruptedException e7) {
+			}
+		}
+		
+		tryOpenCloseDoor(tc0, tc1, 2000, false);
+
 		exit();
 			
 	}
@@ -153,31 +174,57 @@ public class Stopped extends ElevatorState{
 	
 	public boolean checkForFaults() {
 		
-		return elevator.getJob().hasFault();
+		return elevator.getJob().getFault();
 		
 	}
 	
 	public void tryOpenCloseDoor(long initTime, long endTime, long timeout, boolean toOpen) {
 		
 		if(endTime < (initTime + timeout)){
+			elevator.setOperationalStatus(true);
 			if(toOpen) {
 				openDoors();
 			}
 			else {
 				closeDoors();
 			}
-			
 		} else {
 			elevator.setOperationalStatus(false);
 			if(toOpen) {
-				
 				openDoors();
-				
 			} else {
 				closeDoors();
 			}
 		}
 		
+	}
+	
+	public void correctFault(boolean toOpen) {
+		Random random = new Random();
+		//Method to try to correct the open door fault
+		for(int i=0; i<2; i++) {
+			int checkFix = random.nextInt(99) + 1;
+			if(checkFix % 2 == 0) {
+				elevator.setOperationalStatus(true);
+			}
+		}
+		if(elevator.getOperationalStatus()) {
+			if(toOpen) {
+				try {
+					Thread.sleep(1000);
+					openDoors();
+				}catch(InterruptedException e7) {
+				}
+			} else {
+				try {
+					Thread.sleep(1000);
+					closeDoors();
+				}catch(InterruptedException e7) {
+				}
+			}
+		} else {
+			//SHutdown logic
+		}
 	}
 		
 }

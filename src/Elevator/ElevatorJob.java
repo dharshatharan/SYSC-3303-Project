@@ -59,7 +59,11 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	        this.fromFloor = Integer.parseInt(sa[2]);
 	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.toFloor = Integer.parseInt(sa[4]);
-	        this.hasFault = Integer.parseInt(sa[5]);
+	        if(Integer.parseInt(sa[5]) == 1) {
+	        	this.hasFault = false;
+	        } else {
+	        	this.hasFault = true;
+	        }
 		} else {
 			throw new Exception("Invalid byte array for ElevatorJob!");
 		}
@@ -117,7 +121,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * Getter for the fault boolean(if this job has a fault- returns true)
 	 */
 	public boolean getFault() {
-		return fault;
+		return hasFault;
 	}
 	
 	
