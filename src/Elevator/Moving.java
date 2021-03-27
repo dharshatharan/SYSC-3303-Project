@@ -123,6 +123,7 @@ public class Moving extends ElevatorState{
 			elevator.setCurrentFloor(elevator.getCurrentFloor() -1);
 			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() + 1) + " to " + elevator.getCurrentFloor() );
 		}
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(false, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection()));
 	}
 
 	/**

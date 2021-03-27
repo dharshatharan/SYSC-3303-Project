@@ -89,7 +89,7 @@ public class ElevatorInfo {
 	 * @return strElevatorInfo
 	 */
 	public String toStringForByteArray() {
-		return (arrived ? "1" : "0")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " ";
+		return (arrived ? "1" : "2")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " ";
 	}
 	
 	/**
