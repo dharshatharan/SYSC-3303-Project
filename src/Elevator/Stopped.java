@@ -31,6 +31,17 @@ public class Stopped extends ElevatorState{
 	 */
 	public void openDoors() {
 		
+		if(elevator.getOperationalStatus()) {
+			
+			System.out.println("Doors open");
+			elevator.setDoorState(true);
+			
+		} else {
+			
+			System.out.println("Doors unable to open");
+			
+		}
+		
 		System.out.println("Doors open");
 		elevator.setDoorState(true);
 		// Sleep or wait for new job or for set time
@@ -100,14 +111,14 @@ public class Stopped extends ElevatorState{
 			try {
 				Thread.sleep(1000);
 				Date d1 = new Date();
-				t1 = d1.getTime()
+				t1 = d1.getTime();
 			}catch(InterruptedException e7) {
 			}	
 		} else {
 			try {
 				Thread.sleep(5000);
 				Date d2 = new Date();
-				t1 = d2.getTime()
+				t1 = d2.getTime();
 			}catch(InterruptedException e7) {
 			}
 		}
@@ -148,7 +159,7 @@ public class Stopped extends ElevatorState{
 	
 	public void tryOpenCloseDoor(long initTime, long endTime, long timeout, boolean toOpen) {
 		
-		if(endTime > (initTime + timeout)){
+		if(endTime < (initTime + timeout)){
 			if(toOpen) {
 				openDoors();
 			}
@@ -158,6 +169,13 @@ public class Stopped extends ElevatorState{
 			
 		} else {
 			elevator.setOperationalStatus(false);
+			if(toOpen) {
+				
+				openDoors();
+				
+			} else {
+				closeDoors();
+			}
 		}
 		
 	}
