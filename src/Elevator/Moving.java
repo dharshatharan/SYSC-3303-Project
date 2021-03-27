@@ -20,7 +20,6 @@ public class Moving extends ElevatorState{
 		stopped
 	}
 	private elevatorSpeed state = elevatorSpeed.stopped;
-	private Direction direction;
 	
 	
 	/**
@@ -38,6 +37,8 @@ public class Moving extends ElevatorState{
 	 * If there's only a single floor, it only moves for the duration of a single floor. 
 	 */
 	public void enter() {
+		
+		
 		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
 		accelerate();
 		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	

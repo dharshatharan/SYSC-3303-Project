@@ -58,6 +58,7 @@ public class ProcessElevatorInfoThread extends Thread {
 				elevatorJobs.remove(elevatorJobs.indexOf(job));
 			}
 		}
+		scheduler.updateElevatorInfo(info.getElevatorID(), info);
 		elevetorInfoProcessed.add(info);
 	}
 	

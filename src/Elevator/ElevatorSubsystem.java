@@ -13,8 +13,6 @@ public class ElevatorSubsystem implements Runnable{
 	private Map<String, Elevator> elevators;
 	private int numElevators;
 	
-	private Map<String, List<ElevatorJob>> jobs;
-	
 	private List<ElevatorInfo> notifyElevatorInfoList;
 	
 	//private ArrayList<Thread> elevatorThreads;
@@ -25,10 +23,10 @@ public class ElevatorSubsystem implements Runnable{
 		this.numElevators = numElevators;
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
-		this.jobs = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
+		this.elevatorJobsDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
 		for (int i = 0; i < numElevators; i++) {
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
-			this.jobs.put(String.valueOf(i + 1), jobList);
+			this.elevatorJobsDatabase.put(String.valueOf(i + 1), jobList);
 		}
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
 		this.run();
@@ -87,7 +85,7 @@ public class ElevatorSubsystem implements Runnable{
 	}
 	
 	public void addJob(ElevatorJob job) {
-		jobs.get(job.getElevatorID()).add(job);
+		elevatorJobsDatabase.get(job.getElevatorID()).add(job);
 	}
 	
 	
@@ -96,7 +94,7 @@ public class ElevatorSubsystem implements Runnable{
 	 * @return jobs
 	 */
 	public Map<String, List<ElevatorJob>> getJobList(){
-		return jobs;
+		return elevatorJobsDatabase;
 	}
 	
 	/**

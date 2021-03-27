@@ -1,5 +1,10 @@
 package Elevator;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import Constants.Direction;
 import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
@@ -10,7 +15,7 @@ import Scheduler.Scheduler;
  * @author Darsh, Quinn
  * @version 03/16/2021
  */
-public class Elevator implements Runnable {
+public class Elevator extends Thread {
 	private String id;
 	private int currentFloor;
 	private ElevatorSubsystem elevatorSubsystem;
@@ -21,6 +26,11 @@ public class Elevator implements Runnable {
     
     private ElevatorJob preJob;
     private ElevatorJob job;
+    
+    private List<ElevatorJob> jobs;
+    private List<ElevatorJob> activeJobs;
+    
+    private int nextDestinationFloor;
 	
 	/**
 	 * Default constructor
@@ -31,6 +41,8 @@ public class Elevator implements Runnable {
 		this.elevatorSubsystem = elevatorSubsystem;
 		this.curFlor = 1;
 		this.state = new Idle(this);
+		this.jobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
+		this.activeJobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 	}
 	
 	/**
@@ -38,10 +50,40 @@ public class Elevator implements Runnable {
 	 */
 	@Override
 	public void run() {
+//		ElevatorJob request = null;
 		System.out.println("Starting floor elevator");
-//		while(true) {
-            state.enter();
-//		}
+		while(!isInterrupted()) {
+			synchronized (jobs) {
+				synchronized(activeJobs) {
+					 try {
+						 while (jobs.isEmpty() && activeJobs.isEmpty())
+							 jobs.wait();
+					 } catch (InterruptedException e) {
+						 System.out.println(e);
+						 return;
+					 }
+//					 request = jobs.get(0);
+					 nextDestinationFloor = getNextBestElevatorDestination();
+				}
+			 }
+//			processInfo(request);
+			state = new Moving(this);
+			state.enter();
+		}
+//            state.enter();
+	}
+	
+	public int getNextBestElevatorDestination() {
+		synchronized (jobs) {
+			ElevatorJob bestJob = jobs.get(0);
+			for(ElevatorJob job: jobs) {
+				if(job.getDirectionSeeking() == direction) {
+					if(job.getDirectionSeeking() == Direction.UP && job.getFromFloor() > curFlor && job.getFromFloor() < bestJob.getFromFloor()) {
+						
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -73,7 +115,6 @@ public class Elevator implements Runnable {
 	
 	public void updateJob(ElevatorJob job) {
 		this.job = job;
-			
 	}
 	
 	
