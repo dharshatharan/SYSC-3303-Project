@@ -26,13 +26,14 @@ public class Stopped extends ElevatorState{
 
 	Direction d = Direction.UP;
 	Date date;
+
 	
 	/**
 	 * Simulates arrival and opens door. Runs set task, wait, closedoor
 	 */
 	public void openDoors() {
 		
-		if(elevator.getOperationalStatus() && elevator.getDoorState().equals(elevator.doorState.closed)) {
+		if(elevator.getOperationalStatus() && elevator.getDoorState().equals(DoorStatus.closed)) {
 			
 			System.out.println("Doors open");
 			elevator.setDoorState(true);

@@ -1,6 +1,7 @@
 package Elevator;
 
 import Constants.Direction;
+import Constants.DoorStatus;
 import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
@@ -23,13 +24,7 @@ public class Elevator implements Runnable {
     private ElevatorJob job;
     private boolean operationalStatus;   //True means it is operational.
     
-    private doorStatus doorState;
-   
-    public enum doorStatus{
-		open,
-		closed;
-	}
-    
+    private DoorStatus doorState;
     
     
 	
@@ -98,7 +93,7 @@ public class Elevator implements Runnable {
         return timer;
     }
 	
-	public doorStatus getDoorState() {
+	public DoorStatus getDoorState() {
 		return doorState;
 	}
 	
