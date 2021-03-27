@@ -18,6 +18,7 @@ public class ElevatorInfo {
 	private String elevatorID;
     private int currentFloor;
     private Direction direction;
+    private int operationalStatus; //1 operational, 2 non-operational
 
     /**
      * Default constructor
@@ -26,11 +27,12 @@ public class ElevatorInfo {
      * @param direction
      * @param destinationFloor
      */
-    public ElevatorInfo(Boolean arrived, String elevatorID, int currentFloor, Direction direction) {
+    public ElevatorInfo(Boolean arrived, String elevatorID, int currentFloor, Direction direction, int operationalStatus) {
         this.arrived = arrived;
         this.elevatorID = elevatorID;
     	this.currentFloor = currentFloor;
         this.direction = direction;
+        this.operationalStatus = operationalStatus;
     }
     
     public ElevatorInfo(byte[] data) throws Exception {
@@ -43,6 +45,7 @@ public class ElevatorInfo {
 	        this.elevatorID = sa[2];
 	    	this.currentFloor = Integer.parseInt(sa[3]);
 	        this.direction = sa[4].equals("1") ? Direction.UP : Direction.DOWN;
+	        this.operationalStatus = Integer.parseInt(sa[4]);
 		} else {
 			throw new Exception("Invalid byte array for ElevatorInfo!");
 		}
@@ -89,7 +92,7 @@ public class ElevatorInfo {
 	 * @return strElevatorInfo
 	 */
 	public String toStringForByteArray() {
-		return (arrived ? "1" : "0")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " ";
+		return (arrived ? "1" : "0")+ " " + elevatorID + " " + currentFloor + " " + (direction == Direction.UP ? "1" : "2") + " " + operationalStatus + " " ;
 	}
 	
 	/**
@@ -98,7 +101,7 @@ public class ElevatorInfo {
 	 */
 	@Override
 	public String toString() {
-		return elevatorID + " " + currentFloor + " " + direction + " " + (arrived ? "ARRIVED" : "");
+		return elevatorID + " " + currentFloor + " " + direction + " " + (arrived ? "ARRIVED" : " ") + operationalStatus + " " ;
 	}
 
 }
