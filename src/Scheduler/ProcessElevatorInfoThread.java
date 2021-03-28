@@ -53,13 +53,20 @@ public class ProcessElevatorInfoThread extends Thread {
 	private void processInfo(ElevatorInfo info) {
 		// TODO: Redo this logic
 		List<ElevatorJob> elevatorJobs = scheduler.getElevatorJobDatabase().get(info.getElevatorID());
+		if (!scheduler.getFaults().get(info.getElevatorID()).isEmpty()&& !(scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor") == null)) {
+			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();
+		}
+       
+		scheduler.startTimer(scheduler, info.getElevatorID(), new Fault("ElevatorbtwFloor"), 120);
 		if (info.getIsArriving() == true) {
+			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();
 			for(ElevatorJob job: elevatorJobs) {
 				if (info.getIsArriving() && job.getToFloor() == info.getCurrentfloor()) {
 					elevatorJobs.remove(elevatorJobs.indexOf(job));
 				}
 			}
 		}
+		
 		scheduler.updateElevatorInfo(info.getElevatorID(), info);
 		synchronized (elevetorInfoProcessed) {
 			elevetorInfoProcessed.add(info);
