@@ -55,7 +55,7 @@ public class ElevatorSchedulerComminicator {
 			System.exit(1);
 		}
 		
-		System.out.println("Preparing to send elevator Job request...\n");
+//		System.out.println("Preparing to send elevator Job request...\n");
 		
 		try {
 			receiveElevatorJobSocket.send(receiveElevatorJobPacket);
@@ -67,7 +67,7 @@ public class ElevatorSchedulerComminicator {
 		byte[] reply = new byte[20];
 		receiveElevatorJobPacket = new DatagramPacket(reply, reply.length);
 		
-		System.out.println("Waiting to receive reply...\n");
+//		System.out.println("Waiting to receive reply...\n");
 		
 		try {
 			receiveElevatorJobSocket.receive(receiveElevatorJobPacket);
@@ -81,7 +81,7 @@ public class ElevatorSchedulerComminicator {
 		
 		try {
 			ElevatorJob job = new ElevatorJob(reply);
-			System.out.println(job);
+//			System.out.println(job);
 			elevatorSubsystem.receiveJob(job);
 		} catch (Exception e) {
 			System.out.println(e);
@@ -99,7 +99,7 @@ public class ElevatorSchedulerComminicator {
 		ElevatorInfo info = elevatorSubsystem.getNextElevatorInfo();
 		byte msg[] = info.getByteArray("01");
 		
-		System.out.println("Preparing to send elevator request to Scheduler...\n");
+//		System.out.println("Preparing to send elevator request to Scheduler...\n");
 		
 		try {
 			sendElevatorInfoPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), 96);
@@ -109,7 +109,7 @@ public class ElevatorSchedulerComminicator {
 			System.exit(1);
 		}
 		
-		System.out.println("Sending elevator request to Scheduler...\n");
+//		System.out.println("Sending elevator request to Scheduler...\n");
 		
 		try {
 			sendElevatorInfoSocket.send(sendElevatorInfoPacket);
@@ -121,7 +121,7 @@ public class ElevatorSchedulerComminicator {
 		byte reply[] = new byte[20];
 		sendElevatorInfoPacket = new DatagramPacket(reply, reply.length);
 		
-		System.out.println("Waiting to receive reply...\n");
+//		System.out.println("Waiting to receive reply...\n");
 		
 		try {
 			sendElevatorInfoSocket.receive(sendElevatorInfoPacket);
@@ -135,7 +135,7 @@ public class ElevatorSchedulerComminicator {
 		
 		Matcher m = elevatorInfoReplyPattern.matcher(received);
 		if(m.find()) {
-			System.out.println("Reply received\n");
+//			System.out.println("Reply received\n");
 		} else {
 			System.out.println("Invalid reply received");
 		}
