@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Constants.Direction;
 import Elevator.ElevatorInfo;
@@ -29,6 +31,7 @@ public class Scheduler implements Runnable {
 	private SchedulerElevatorCommunicator schedulerElevatorCommunicator;
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
 	private Fault fault;
+	private Map<String, HashMap<String, ElevatorTimer>> ElevatorFalutTimers;
 	
 	/**
 	 * Default constructor
@@ -41,10 +44,13 @@ public class Scheduler implements Runnable {
 		
 		this.elevatorJobDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
 		this.elevatorInfoDatabase = Collections.synchronizedMap(new HashMap<String, ElevatorInfo>());
+		this.ElevatorFalutTimers = Collections.synchronizedMap(new HashMap<String, HashMap<String, ElevatorTimer>>());
 		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
+			HashMap<String, ElevatorTimer> timerList = new HashMap<String,ElevatorTimer>();
 			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
 			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i + 1), 1, Direction.Idle, 1));
+			this.ElevatorFalutTimers.put(String.valueOf(i + 1), timerList);
 		}
 	}
 	/**
@@ -181,6 +187,26 @@ public class Scheduler implements Runnable {
 	   recieveElevatorInfoThread.start();
 	   receiveElevatorJobRequestThread.start();
 	   
+	}
+		
+	/**
+	 * Create and Start timmer
+	 * @param scheduler
+	 * @param elevatorID
+	 * @param faultType
+	 * @param seconds
+	 */
+	public void startTimer(Scheduler scheduler, String elevatorID,Fault faultType, int seconds) {
+		ElevatorFalutTimers.get(elevatorID).put(faultType.getFault(), new ElevatorTimer(scheduler, elevatorID, faultType));
+		ElevatorFalutTimers.get(elevatorID).get(faultType.getFault()).startTimer(seconds);
+	}
+	
+	/**
+	 * Getter for Faults list
+	 * @return
+	 */
+	public Map<String, HashMap<String, ElevatorTimer>> getFaults(){
+		return ElevatorFalutTimers;
 	}
 	
 	public static void main(String[] args) {

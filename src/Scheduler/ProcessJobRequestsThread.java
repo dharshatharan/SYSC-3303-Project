@@ -64,6 +64,7 @@ public class ProcessJobRequestsThread extends Thread {
 					readyJobQueue.add(job);
 					readyJobQueue.notify();
 				}
+				//scheduler.startTimer(scheduler, job.getElevatorID(), new Fault("ElevatorbtwFloor"), 120);
 				return;
 			}
 		}
