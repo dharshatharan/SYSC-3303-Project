@@ -39,13 +39,13 @@ public class ProcessElevatorInfoThread extends Thread {
 		synchronized (elevetorInfoProcessed) {
 			while (elevetorInfoProcessed.isEmpty()) {
 				try {
-	                wait();
+					elevetorInfoProcessed.wait();
 	            } catch (InterruptedException e)  {
 	                Thread.currentThread().interrupt(); 
 	            }
 			}
 			ElevatorInfo nextInfo = elevetorInfoProcessed.remove(0);
-			notifyAll();
+			elevetorInfoProcessed.notify();
 			return nextInfo;
 		}
 	}
@@ -53,12 +53,29 @@ public class ProcessElevatorInfoThread extends Thread {
 	private void processInfo(ElevatorInfo info) {
 		// TODO: Redo this logic
 		List<ElevatorJob> elevatorJobs = scheduler.getElevatorJobDatabase().get(info.getElevatorID());
-		for(ElevatorJob job: elevatorJobs) {
-			if (info.getIsArriving() && job.getToFloor() == info.getCurrentfloor()) {
-				elevatorJobs.remove(elevatorJobs.indexOf(job));
-			}
+		if (!scheduler.getFaults().get(info.getElevatorID()).isEmpty()&& !(scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor") == null)) {
+			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();
 		}
-		elevetorInfoProcessed.add(info);
+       
+		if (info.getIsArriving() == true) {
+			for(ElevatorJob job: elevatorJobs) {
+				if (info.getIsArriving() && job.getToFloor() == info.getCurrentfloor()) {
+					elevatorJobs.remove(elevatorJobs.indexOf(job));
+				}
+			}
+		} else {
+			scheduler.startTimer(scheduler, info.getElevatorID(), new Fault("ElevatorbtwFloor"), 5);
+		}
+		if (info.getOperational() == 2) {
+			scheduler.getElevatorJobDatabase().remove(info.getElevatorID());
+			scheduler.getElevatorInfoDatabase().remove(info.getElevatorID());
+		}
+		
+		scheduler.updateElevatorInfo(info.getElevatorID(), info);
+		synchronized (elevetorInfoProcessed) {
+			elevetorInfoProcessed.add(info);
+			elevetorInfoProcessed.notify();
+		}
 	}
 	
 	@Override

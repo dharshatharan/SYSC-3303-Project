@@ -1,7 +1,6 @@
 package Scheduler;
 
 import java.lang.String;
-import Constants.Direction;
 
 /**
  * Stores the faults

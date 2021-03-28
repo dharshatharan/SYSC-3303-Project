@@ -16,12 +16,14 @@ import Floor.RequestElevatorEvent;
  *
  */
 public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
-	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] ");
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] [0-9]");
 	
 	private String elevatorID;
 	private int fromFloor;
 	private int toFloor;
 	private Direction directionSeeking;
+	private int fault;
+	
 	
 
 	/**
@@ -30,11 +32,12 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @param directionSeeking
 	 * 
 	 */
-	public ElevatorJob(String elevatorID, int fromFloor, int toFloor, Direction directionSeeking) {
+	public ElevatorJob(String elevatorID, int fromFloor, int toFloor, Direction directionSeeking, int fault) {
 		this.elevatorID = elevatorID;
 		this.fromFloor = fromFloor;
 		this.toFloor = toFloor;
 		this.directionSeeking = directionSeeking;
+		this.fault = fault;
 	}
 	
 	public ElevatorJob(RequestElevatorEvent event, String elevatorID) {
@@ -42,6 +45,8 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 		this.fromFloor = event.getCurrentfloornumber();
 		this.toFloor = event.getDestinationfloornumber();
 		this.directionSeeking = event.getDirection();
+		this.fault = event.getFault();
+		
 	}
 	
 	public ElevatorJob(byte[] data) throws Exception {
@@ -54,6 +59,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	        this.fromFloor = Integer.parseInt(sa[2]);
 	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.toFloor = Integer.parseInt(sa[4]);
+	        this.fault = Integer.parseInt(sa[5]);
 		} else {
 			throw new Exception("Invalid byte array for ElevatorJob!");
 		}
@@ -108,11 +114,19 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	}
 	
 	/**
+	 * Getter for the fault boolean(if this job has a fault- returns true)
+	 */
+	public int getFault() {
+		return fault;
+	}
+	
+	
+	/**
 	 * prepares a string to be printed to represen the data transferd for the byte array
 	 * @return Information about the job
 	 */
 	public String toStringForByteArray() {
-		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " " + fault + " ";
 	}
 
 	/**
@@ -121,7 +135,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 */
 	@Override
 	public String toString() {
-		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + fromFloor + " ";
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " ";
 	}
 	
 }

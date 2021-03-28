@@ -1,11 +1,12 @@
 package Scheduler;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Constants.Direction;
 import Elevator.ElevatorInfo;
@@ -25,21 +26,17 @@ public class Scheduler implements Runnable {
 	private Map<String, List<ElevatorJob>> elevatorJobDatabase;
 	private Map<String, ElevatorInfo> elevatorInfoDatabase;
 	
-//	private List<ElevatorJob> readyJobsQueue;
-//	private List<ElevatorInfo> elevatorInfoQueue;
 	private ProcessJobRequestsThread processJobRequestsThread;
 	private ProcessElevatorInfoThread processElevatorInfoThread;
 	private SchedulerElevatorCommunicator schedulerElevatorCommunicator;
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
-//	private SchedulerState state;
 	private Fault fault;
+	private Map<String, HashMap<String, ElevatorTimer>> ElevatorFalutTimers;
 	
 	/**
 	 * Default constructor
 	 */	
 	public Scheduler() {
-//		this.state = new ReceiveRequestsAndFaults(this);
-//		this.elevatorInfoQueue = Collections.synchronizedList(new ArrayList<>());
 		this.processJobRequestsThread = new ProcessJobRequestsThread(this);
 		this.processElevatorInfoThread = new ProcessElevatorInfoThread(this);
 		this.schedulerElevatorCommunicator = new SchedulerElevatorCommunicator(this);
@@ -47,10 +44,13 @@ public class Scheduler implements Runnable {
 		
 		this.elevatorJobDatabase = Collections.synchronizedMap(new HashMap<String, List<ElevatorJob>>());
 		this.elevatorInfoDatabase = Collections.synchronizedMap(new HashMap<String, ElevatorInfo>());
+		this.ElevatorFalutTimers = Collections.synchronizedMap(new HashMap<String, HashMap<String, ElevatorTimer>>());
 		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
+			HashMap<String, ElevatorTimer> timerList = new HashMap<String,ElevatorTimer>();
 			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
-			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i), 1, Direction.UP));
+			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i + 1), 1, Direction.Idle, 1));
+			this.ElevatorFalutTimers.put(String.valueOf(i + 1), timerList);
 		}
 	}
 	/**
@@ -60,22 +60,7 @@ public class Scheduler implements Runnable {
 	public synchronized boolean faultExists() {
 		return fault != null;
 	}
-	
-	/**
-	 * sets the state of the scheduler
-	 * @param state
-	 */		
-//	public void setState(SchedulerState state) {
-//		this.state = state;
-//	}
-	/**
-	 * gets the state of the scheduler
-	 * @return state
-	 */	
-//	public SchedulerState getState() {
-//		return state;
-//	}
-//	
+
 	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {
 		return elevatorJobDatabase;
 	}
@@ -129,6 +114,10 @@ public class Scheduler implements Runnable {
 		}
 	}
 	
+	public ProcessJobRequestsThread getProcessJobThread() {
+		return processJobRequestsThread;
+	}
+	
 	/**
 	 *  Sends information for the floorsubsystem
 	 */
@@ -154,7 +143,7 @@ public class Scheduler implements Runnable {
 	/**
 	 * Gets the next elevator info from the queue that will be sent to the floor
 	 */
-	public synchronized ElevatorInfo getNextElevatorInfo() {
+	public ElevatorInfo getNextElevatorInfo() {
 		return processElevatorInfoThread.dequeueProcessedInfo();
 	}
 	
@@ -202,6 +191,26 @@ public class Scheduler implements Runnable {
 	   recieveElevatorInfoThread.start();
 	   receiveElevatorJobRequestThread.start();
 	   
+	}
+		
+	/**
+	 * Create and Start timmer
+	 * @param scheduler
+	 * @param elevatorID
+	 * @param faultType
+	 * @param seconds
+	 */
+	public void startTimer(Scheduler scheduler, String elevatorID,Fault faultType, int seconds) {
+		ElevatorFalutTimers.get(elevatorID).put(faultType.getFault(), new ElevatorTimer(scheduler, elevatorID, faultType));
+		ElevatorFalutTimers.get(elevatorID).get(faultType.getFault()).startTimer(seconds);
+	}
+	
+	/**
+	 * Getter for Faults list
+	 * @return
+	 */
+	public Map<String, HashMap<String, ElevatorTimer>> getFaults(){
+		return ElevatorFalutTimers;
 	}
 	
 	public static void main(String[] args) {

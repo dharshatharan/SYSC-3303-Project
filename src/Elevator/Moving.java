@@ -20,7 +20,6 @@ public class Moving extends ElevatorState{
 		stopped
 	}
 	private elevatorSpeed state = elevatorSpeed.stopped;
-	private Direction direction;
 	
 	
 	/**
@@ -39,15 +38,40 @@ public class Moving extends ElevatorState{
 	 */
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
-		accelerate();
-		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
-			moveAtMaxSpeed();
+				
+		while(!elevator.isInterrupted() && elevator.getOperationalStatus()) {
+			int nextDestination = elevator.getNextBestElevatorDestination();
+			elevator.setDirection((nextDestination > elevator.getCurrentFloor()) ? Direction.UP : Direction.DOWN);
+			if((elevator.getDirection() == Direction.UP && nextDestination == elevator.getCurrentFloor() + 1) || 
+					(elevator.getDirection() == Direction.DOWN && nextDestination == elevator.getCurrentFloor() - 1)) {
+				if(state.equals(elevatorSpeed.stopped)) {
+					accelerate();
+				}
+				deccelerate();
+				break;
+			} else if ((elevator.getDirection() == Direction.UP && nextDestination >= elevator.getCurrentFloor() + 1) || 
+					(elevator.getDirection() == Direction.DOWN && nextDestination <= elevator.getCurrentFloor() - 1)) {
+				if(state.equals(elevatorSpeed.stopped)) {
+					accelerate();
+					moveAtMaxSpeed();
+				} else {
+					moveAtMaxSpeed();
+				}
+			}
 		}
-		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
-			moveAtMaxSpeed();
-			deccelerate();
-		}
+		
 		exit();
+		
+		
+//		accelerate();
+//		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
+//			moveAtMaxSpeed();
+//		}
+//		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
+//			moveAtMaxSpeed();
+//			deccelerate();
+//		}
+//		exit();
 	}
 	
 	
@@ -67,7 +91,6 @@ public class Moving extends ElevatorState{
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			MoveFloors();
 			state = elevatorSpeed.maxSpeed;
 		}
 				
@@ -92,14 +115,15 @@ public class Moving extends ElevatorState{
 	 */
 	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
-			elevator.setFloor( elevator.getCurFloor() +1);
-			System.out.println("Elevator " + elevator.getId() + " went from " + (elevator.getCurFloor() - 1) + " to " + elevator.getCurFloor() );
+			elevator.setCurrentFloor( elevator.getCurrentFloor() +1);
+			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() - 1) + " to " + elevator.getCurrentFloor() );
 			
 		}
 		if (elevator.getDirection().equals(Direction.DOWN)) {
-			elevator.setFloor(elevator.getCurFloor() -1);
-			System.out.println("Elevator " + elevator.getId() + " went from " + (elevator.getCurFloor() + 1) + " to " + elevator.getCurFloor() );
+			elevator.setCurrentFloor(elevator.getCurrentFloor() -1);
+			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() + 1) + " to " + elevator.getCurrentFloor() );
 		}
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(false, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
 	}
 
 	/**
@@ -112,6 +136,7 @@ public class Moving extends ElevatorState{
 			}catch (InterruptedException e) {
 			}
 			System.out.println("Elevator has deccelerated to a stop. Direction: "+ elevator.getDirection());
+			MoveFloors();
 			state = elevatorSpeed.stopped;
 		}
 		
@@ -121,13 +146,6 @@ public class Moving extends ElevatorState{
 	 */	
 	public void exit() {
 		elevator.setState(new Stopped(elevator));
-		elevator.getState().enter();
+		elevator.getElevatorState().enter();
 	}
-	
-	
-	
-	
-	
-	
-
 }

@@ -1,6 +1,12 @@
 package Elevator;
 import Constants.*;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import Floor.RequestElevatorEvent;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A state of the elevator for when it is stoped at a floor. Opens and closes the doors, changes to move or idle
@@ -18,33 +24,92 @@ public class Stopped extends ElevatorState{
 	public Stopped(Elevator elevator) {
 		super(elevator);
 	}
-	
+
 	Direction d = Direction.UP;
+	Date date;
+
+	
 	/**
 	 * Simulates arrival and opens door. Runs set task, wait, closedoor
 	 */
 	public void openDoors() {
-		System.out.println("Doors open");
-		// Sleep or wait for new job or for set time
+		System.out.println("Doors opening...");
+		Timer timer = new Timer(true);
+		TimerTask openTask = new TimerTask() {
+	        public void run() {
+	            if(elevator.getDoorState() != DoorStatus.open) {
+	            	System.out.println("Failed to open doors, retrying...");
+	            	retryOpen();
+	            }
+	        }
+	    };
 		
+		timer.schedule(openTask, 1100);
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		List<ElevatorJob> removeJobs = elevator.startFinishAllJobsInCurFloor();
+		for(ElevatorJob job: removeJobs) {
+			if (job.getFault() == 1) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		elevator.setDoorState(true);
+		
+	}
+	
+	private void retryOpen() {
+		elevator.setDoorState(false);
+		for(int i=0; i < 2; i++) {
+			System.out.println("Retrying to open door: " + (i + 1) + " time");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Shutting down elevator " + elevator.getElevatorId() + " due to door fault>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 2));
+		elevator.setOperationalStatus(false);
+		elevator.interrupt();
+	}
+	
+	private void retryClose() {
+		for(int i=0; i < 2; i++) {
+			System.out.println("Retrying to close door: " + i + 1 + " time");
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+		System.out.println("Shutting down elevator " + elevator.getElevatorId());
+		// communicate shutdown
 	}
 	
 	/**
 	 * Simulates the closing doors. starts to process to change state to idel or moving
 	 */
 	public void closeDoors() {
-		System.out.println("Doors closed");
-		idle();
-	}
-	
-	/**
-	 * Sets state to idel when there are no more jobs
-	 */
-	public void idle() {
-		//elevator.changeState();
-		elevator.setState(new Idle(elevator));
-		exit();
+		System.out.println("Doors closing...");
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		elevator.setDoorState(false);
+		
 	}
 	
 	/**
@@ -63,18 +128,7 @@ public class Stopped extends ElevatorState{
 	 */
 	@Override
 	public void exit() {
-//		if (elevator.getCurFloor() == elevator.getJob().getFromFloor()) {
-//			elevator.setDestination(elevator.getJob().getToFloor());
-//			elevator.setDirection(elevator.getJob().getDirectionSeeking());
-//			elevator.setPreJob(null);
-//			elevator.setState(new Moving(elevator));
-//		}
-//		else {
-//			elevator.setState(new Idle(elevator));
-//			elevator.setJob(null);
-//		}
-		elevator.setState(new Idle(elevator));
-		elevator.getState().enter();
+
 	}
 
 	/**
@@ -84,13 +138,9 @@ public class Stopped extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
-		openDoors();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		closeDoors();
+		 openDoors();
+		 if (elevator.getDoorState() == DoorStatus.open) closeDoors();
+
 		exit();
 			
 	}
@@ -99,10 +149,7 @@ public class Stopped extends ElevatorState{
 	 * Notifies The Scheduler that the elevator has completed a job or moving the elevator to the floor of the first job
 	 */
 	private void notifyElevatorArrival() {
-		if (elevator.getPreJob() == null && elevator.getJob() != null) {
-			ElevatorJob job = elevator.getJob();
-			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, job.getElevatorID(), job.getToFloor(), job.getDirectionSeeking()));
-		}
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
 	}
 		
 }

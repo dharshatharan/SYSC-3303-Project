@@ -8,4 +8,5 @@ package Constants;
 public enum Direction {
 	UP,
 	DOWN,
+	Idle,
 }

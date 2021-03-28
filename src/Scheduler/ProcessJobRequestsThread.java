@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import Constants.Direction;
+import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
 import Floor.RequestElevatorEvent;
 
@@ -36,6 +38,13 @@ public class ProcessJobRequestsThread extends Thread {
 		}
 	}
 	
+	public final void addJobQueue(ElevatorJob job) {
+		synchronized (readyJobQueue) {
+			readyJobQueue.add(job);
+			readyJobQueue.notify();
+		}
+	}
+	
 	public ElevatorJob dequeueReadyJob() {
 		synchronized (readyJobQueue) {
 			while (readyJobQueue.isEmpty()) {
@@ -52,16 +61,42 @@ public class ProcessJobRequestsThread extends Thread {
 	}
 	
 	private void processRequest(RequestElevatorEvent request) {
-		// TODO: Redo this logic
 		System.out.println("Processing Elevator Request");
 		ElevatorJob job;
-		if (scheduler.getElevatorJobDatabase().get("2").size() >= scheduler.getElevatorJobDatabase().get("1").size()) {
-			job = new ElevatorJob(request, "1");
-			scheduler.addJobToElevatorQueue("1", job);
-		} else {
-			job = new ElevatorJob(request, "2");
-			scheduler.addJobToElevatorQueue("2", job);
+		for (ElevatorInfo el: scheduler.getElevatorInfoDatabase().values()) {
+			if (scheduler.getElevatorJobDatabase().get(el.getElevatorID()).isEmpty()) {
+				job = new ElevatorJob(request, el.getElevatorID());
+				scheduler.addJobToElevatorQueue(el.getElevatorID(), job);
+				synchronized (readyJobQueue) {
+					readyJobQueue.add(job);
+					readyJobQueue.notify();
+				}
+				//scheduler.startTimer(scheduler, job.getElevatorID(), new Fault("ElevatorbtwFloor"), 120);
+				return;
+			}
 		}
+		
+		for (ElevatorInfo el: scheduler.getElevatorInfoDatabase().values()) {
+			if (el.getDirection() == request.getDirection()
+					&& ((el.getDirection() == Direction.UP && el.getCurrentfloor() < request.getCurrentfloornumber() - 1)
+					|| (el.getDirection() == Direction.DOWN && el.getCurrentfloor() > request.getCurrentfloornumber() + 1))) {
+				job = new ElevatorJob(request, el.getElevatorID());
+				scheduler.addJobToElevatorQueue(el.getElevatorID(), job);
+				synchronized (readyJobQueue) {
+					readyJobQueue.add(job);
+					readyJobQueue.notify();
+				}
+				return;
+			}
+		}
+		
+		String bestElevator = (String) scheduler.getElevatorInfoDatabase().keySet().toArray()[0];
+		for (ElevatorInfo el: scheduler.getElevatorInfoDatabase().values()) {
+			if (scheduler.getElevatorJobDatabase().get(el.getElevatorID()).size() < scheduler.getElevatorJobDatabase().get(bestElevator).size())
+				bestElevator = el.getElevatorID();
+		}
+		job = new ElevatorJob(request, bestElevator);
+		scheduler.addJobToElevatorQueue(bestElevator, job);
 		synchronized (readyJobQueue) {
 			readyJobQueue.add(job);
 			readyJobQueue.notify();
