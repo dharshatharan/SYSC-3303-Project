@@ -16,13 +16,13 @@ import Floor.RequestElevatorEvent;
  *
  */
 public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
-	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] [1-2]");
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] [0-9]");
 	
 	private String elevatorID;
 	private int fromFloor;
 	private int toFloor;
 	private Direction directionSeeking;
-	private boolean hasFault;
+	private int fault;
 	
 	
 
@@ -32,12 +32,12 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @param directionSeeking
 	 * 
 	 */
-	public ElevatorJob(String elevatorID, int fromFloor, int toFloor, Direction directionSeeking) {
+	public ElevatorJob(String elevatorID, int fromFloor, int toFloor, Direction directionSeeking, int fault) {
 		this.elevatorID = elevatorID;
 		this.fromFloor = fromFloor;
 		this.toFloor = toFloor;
 		this.directionSeeking = directionSeeking;
-		this.hasFault = false;
+		this.fault = fault;
 	}
 	
 	public ElevatorJob(RequestElevatorEvent event, String elevatorID) {
@@ -45,7 +45,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 		this.fromFloor = event.getCurrentfloornumber();
 		this.toFloor = event.getDestinationfloornumber();
 		this.directionSeeking = event.getDirection();
-		this.hasFault = event.getFault();
+		this.fault = event.getFault();
 		
 	}
 	
@@ -59,11 +59,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	        this.fromFloor = Integer.parseInt(sa[2]);
 	    	this.directionSeeking = sa[3].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.toFloor = Integer.parseInt(sa[4]);
-	        if(Integer.parseInt(sa[5]) == 1) {
-	        	this.hasFault = false;
-	        } else {
-	        	this.hasFault = true;
-	        }
+	        this.fault = Integer.parseInt(sa[5]);
 		} else {
 			throw new Exception("Invalid byte array for ElevatorJob!");
 		}
@@ -120,8 +116,8 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	/**
 	 * Getter for the fault boolean(if this job has a fault- returns true)
 	 */
-	public boolean getFault() {
-		return hasFault;
+	public int getFault() {
+		return fault;
 	}
 	
 	
@@ -130,7 +126,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	 * @return Information about the job
 	 */
 	public String toStringForByteArray() {
-		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " ";
+		return elevatorID + " " + fromFloor + " " + (directionSeeking == Direction.UP ? "1" : "2") + " " + toFloor + " " + fault + " ";
 	}
 
 	/**

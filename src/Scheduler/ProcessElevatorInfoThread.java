@@ -60,6 +60,10 @@ public class ProcessElevatorInfoThread extends Thread {
 				}
 			}
 		}
+		if (info.getOperational() == 2) {
+			scheduler.getElevatorJobDatabase().remove(info.getElevatorID());
+			scheduler.getElevatorInfoDatabase().remove(info.getElevatorID());
+		}
 		scheduler.updateElevatorInfo(info.getElevatorID(), info);
 		synchronized (elevetorInfoProcessed) {
 			elevetorInfoProcessed.add(info);

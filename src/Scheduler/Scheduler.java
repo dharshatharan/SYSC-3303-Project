@@ -1,6 +1,5 @@
 package Scheduler;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,21 +24,16 @@ public class Scheduler implements Runnable {
 	private Map<String, List<ElevatorJob>> elevatorJobDatabase;
 	private Map<String, ElevatorInfo> elevatorInfoDatabase;
 	
-//	private List<ElevatorJob> readyJobsQueue;
-//	private List<ElevatorInfo> elevatorInfoQueue;
 	private ProcessJobRequestsThread processJobRequestsThread;
 	private ProcessElevatorInfoThread processElevatorInfoThread;
 	private SchedulerElevatorCommunicator schedulerElevatorCommunicator;
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
-//	private SchedulerState state;
 	private Fault fault;
 	
 	/**
 	 * Default constructor
 	 */	
 	public Scheduler() {
-//		this.state = new ReceiveRequestsAndFaults(this);
-//		this.elevatorInfoQueue = Collections.synchronizedList(new ArrayList<>());
 		this.processJobRequestsThread = new ProcessJobRequestsThread(this);
 		this.processElevatorInfoThread = new ProcessElevatorInfoThread(this);
 		this.schedulerElevatorCommunicator = new SchedulerElevatorCommunicator(this);
@@ -50,7 +44,7 @@ public class Scheduler implements Runnable {
 		for (int i = 0; i < NO_OF_ELEVATORS; i++) {
 			LinkedList<ElevatorJob> jobList = new LinkedList<ElevatorJob>();
 			this.elevatorJobDatabase.put(String.valueOf(i + 1), jobList);
-			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i + 1), 1, Direction.Idle));
+			this.elevatorInfoDatabase.put(String.valueOf(i + 1), new ElevatorInfo(true, String.valueOf(i + 1), 1, Direction.Idle, 1));
 		}
 	}
 	/**
@@ -60,22 +54,7 @@ public class Scheduler implements Runnable {
 	public synchronized boolean faultExists() {
 		return fault != null;
 	}
-	
-	/**
-	 * sets the state of the scheduler
-	 * @param state
-	 */		
-//	public void setState(SchedulerState state) {
-//		this.state = state;
-//	}
-	/**
-	 * gets the state of the scheduler
-	 * @return state
-	 */	
-//	public SchedulerState getState() {
-//		return state;
-//	}
-//	
+
 	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {
 		return elevatorJobDatabase;
 	}

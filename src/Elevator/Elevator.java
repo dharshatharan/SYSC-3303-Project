@@ -51,7 +51,8 @@ public class Elevator extends Thread {
 	public void run() {
 //		ElevatorJob request = null;
 		System.out.println("Starting floor elevator " + id);
-		while(!isInterrupted()) {
+		while(!isInterrupted() && operationalStatus) {
+			System.out.println("-----------------------" + isInterrupted());
 			synchronized (jobs) {
 				synchronized(activeJobs) {
 					 try {
@@ -153,7 +154,7 @@ public class Elevator extends Thread {
 		}
 	}
 	
-	public void startFinishAllJobsInCurFloor() {
+	public List<ElevatorJob> startFinishAllJobsInCurFloor() {
 		synchronized (jobs) {
 			synchronized(activeJobs) {
 				List<ElevatorJob> removeJobs = new LinkedList<>();
@@ -171,6 +172,7 @@ public class Elevator extends Thread {
 				}
 				jobs.removeAll(removeJobs);
 				activeJobs.removeAll(removeActiveJobs);
+				return removeJobs;
 			}
 		}
 	}
@@ -262,8 +264,8 @@ public class Elevator extends Thread {
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		elevator.addJob(new ElevatorJob("1", 1, 7, Direction.UP));
-		elevator.addJob(new ElevatorJob("1", 5, 4, Direction.DOWN));
+		elevator.addJob(new ElevatorJob("1", 1, 7, Direction.UP, 0));
+		elevator.addJob(new ElevatorJob("1", 5, 4, Direction.DOWN, 0));
 	}
     
 }

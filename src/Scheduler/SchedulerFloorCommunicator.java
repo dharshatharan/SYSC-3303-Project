@@ -40,7 +40,7 @@ public class SchedulerFloorCommunicator {
 	}
 	
 	public void recieveElevatorRequest() {
-		   byte msg[] = new byte[9];
+		   byte msg[] = new byte[11];
 		   elevatorRequestReceivePacket = new DatagramPacket(msg, msg.length);
 		   System.out.println("Waiting for RequestElevatorEvent from Floor\n");
 		   

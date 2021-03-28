@@ -12,14 +12,14 @@ import Constants.Direction;
  *
  */
 public class RequestElevatorEvent {
-	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] [1-2] ");
+	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] [0-9] ");
 
     private String time;
     private int currentfloornumber;
     private Direction direction;
     private int destinationfloornumber;
     private int secondsSinceMidnight;
-    private boolean fault;
+    private int fault;
 
     /**
      * Default constructor
@@ -39,11 +39,7 @@ public class RequestElevatorEvent {
         }
         
         this.destinationfloornumber = Integer.parseInt(inputs[3]);
-        this.fault = false;
-        if(inputs[3] == 2) {
-        	this.fault = true;
-        }
-        
+        this.fault = Integer.parseInt(inputs[4]);
         
         String time[] = inputs[0].split(":");
         
@@ -58,7 +54,7 @@ public class RequestElevatorEvent {
      * Test constructor
      * @param job
      */
-    public RequestElevatorEvent(String time, int currentFloorNumber, Direction direction, int destinationFloorNumber, int secondsSinceMidnight) {
+    public RequestElevatorEvent(String time, int currentFloorNumber, Direction direction, int destinationFloorNumber, int secondsSinceMidnight, int fault) {
         this.time = time;
         this.direction = direction;
         this.currentfloornumber = currentFloorNumber;
@@ -75,12 +71,14 @@ public class RequestElevatorEvent {
 	        this.currentfloornumber = Integer.parseInt(sa[1]);
 	    	this.direction = sa[2].equals("1") ? Direction.UP : Direction.DOWN;
 	        this.destinationfloornumber = Integer.parseInt(sa[3]);
+	        this.fault = Integer.parseInt(sa[4]);
 		} else {
 			throw new Exception("Invalid byte array for RequestElevatorEvent!");
 		}
     }
 	
 	public byte[] getByteArray(String byteCode) {
+		System.out.println(this.toStringForByteArray());
     	String s = byteCode + " " + this.toStringForByteArray();
     	return s.getBytes();
     }
@@ -96,7 +94,7 @@ public class RequestElevatorEvent {
 	/**
 	 * Getter for fault
 	 */
-	public boolean getFault() {
+	public int getFault() {
 		return fault;
 	}
 
@@ -133,7 +131,7 @@ public class RequestElevatorEvent {
 	}
 	
 	public String toStringForByteArray() {
-		return  currentfloornumber + " " + (direction == Direction.UP ? "1" : "2") + " " + destinationfloornumber + " ";
+		return  currentfloornumber + " " + (direction == Direction.UP ? "1" : "2") + " " + destinationfloornumber + " " + fault + " ";
 	}
 	
 	
@@ -143,7 +141,7 @@ public class RequestElevatorEvent {
 	 */
 	@Override
 	public String toString() {
-		return time + " " + currentfloornumber + " " + direction + " " + destinationfloornumber;
+		return time + " " + currentfloornumber + " " + direction + " " + destinationfloornumber + " " + (fault != 1 ? "has fault" : "");
 	}
 	
 	// Overriding equals() to compare two RequestElevatorEvent objects

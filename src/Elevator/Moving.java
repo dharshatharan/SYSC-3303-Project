@@ -39,7 +39,8 @@ public class Moving extends ElevatorState{
 	public void enter() {
 		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
 				
-		while(!elevator.isInterrupted()) {
+		while(!elevator.isInterrupted() && elevator.getOperationalStatus()) {
+			System.out.println(elevator.isInterrupted() + "-----------------------");
 			int nextDestination = elevator.getNextBestElevatorDestination();
 			elevator.setDirection((nextDestination > elevator.getCurrentFloor()) ? Direction.UP : Direction.DOWN);
 			if((elevator.getDirection() == Direction.UP && nextDestination == elevator.getCurrentFloor() + 1) || 
@@ -123,7 +124,7 @@ public class Moving extends ElevatorState{
 			elevator.setCurrentFloor(elevator.getCurrentFloor() -1);
 			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() + 1) + " to " + elevator.getCurrentFloor() );
 		}
-		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(false, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection()));
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(false, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
 	}
 
 	/**

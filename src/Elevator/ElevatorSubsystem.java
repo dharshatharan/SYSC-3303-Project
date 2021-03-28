@@ -2,8 +2,6 @@ package Elevator;
 
 import java.util.*;
 
-import Constants.Direction;
-
 /**
  * receives and sends task to given elevators after the information is paresed fomr the scheduler
  * @author Quinn Sondermeyer
@@ -70,10 +68,6 @@ public class ElevatorSubsystem implements Runnable{
 		   receiveElevatorJobThread.start();
 		   sendElevatorInfoThread.start();
 	}
-	
-//	public void addJob(ElevatorJob job) {
-////		elevatorJobsDatabase.get(job.getElevatorID()).add(job);
-//	}
 	
 	/**
 	 * Getter for the list of elevators

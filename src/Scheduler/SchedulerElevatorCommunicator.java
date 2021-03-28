@@ -89,7 +89,7 @@ public class SchedulerElevatorCommunicator {
 	   }
 	
 	public void recieveElevatorInfo() {
-		   byte msg[] = new byte[11];
+		   byte msg[] = new byte[13];
 		   elevatorInfoReceivePacket = new DatagramPacket(msg, msg.length);
 		   System.out.println("Waiting for ElevatorInfo from Elevator...\n");
 		   

@@ -87,6 +87,10 @@ public class ElevatorInfo {
 		return direction;
 	}
 	
+	public int getOperational() {
+		return operationalStatus;
+	}
+	
 	/**
 	 * Returns the informatioon about the elevator in a string 
 	 * @return strElevatorInfo
