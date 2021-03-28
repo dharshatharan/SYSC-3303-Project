@@ -88,6 +88,11 @@ public class Elevator extends Thread {
 								bestJob = job.getFromFloor();
 						}
 					}
+					if(job.getFault() == 9) {
+						System.out.println("Terminating Elevator " + id + " due to floor fault");
+						operationalStatus = false;
+						interrupt();
+					}
 				}
 				for(ElevatorJob job: activeJobs) {
 					if(job.getDirectionSeeking() == direction) {
@@ -97,6 +102,18 @@ public class Elevator extends Thread {
 						} else if (job.getDirectionSeeking() == Direction.DOWN && job.getToFloor() < currentFloor) {
 							if (bestJob == null || job.getToFloor() > bestJob)
 								bestJob = job.getToFloor();
+						}
+					}
+					if(job.getFault() == 9) {
+						System.out.println("Terminating Elevator " + id + " due to floor fault");
+						operationalStatus = false;
+						interrupt();
+					}
+					if(job.getFault() == 3) {
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
 						}
 					}
 				}

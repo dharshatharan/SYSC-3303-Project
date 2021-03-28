@@ -38,6 +38,13 @@ public class ProcessJobRequestsThread extends Thread {
 		}
 	}
 	
+	public final void addJobQueue(ElevatorJob job) {
+		synchronized (readyJobQueue) {
+			readyJobQueue.add(job);
+			readyJobQueue.notify();
+		}
+	}
+	
 	public ElevatorJob dequeueReadyJob() {
 		synchronized (readyJobQueue) {
 			while (readyJobQueue.isEmpty()) {

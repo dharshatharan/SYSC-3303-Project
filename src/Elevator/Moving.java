@@ -40,7 +40,6 @@ public class Moving extends ElevatorState{
 		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
 				
 		while(!elevator.isInterrupted() && elevator.getOperationalStatus()) {
-			System.out.println(elevator.isInterrupted() + "-----------------------");
 			int nextDestination = elevator.getNextBestElevatorDestination();
 			elevator.setDirection((nextDestination > elevator.getCurrentFloor()) ? Direction.UP : Direction.DOWN);
 			if((elevator.getDirection() == Direction.UP && nextDestination == elevator.getCurrentFloor() + 1) || 

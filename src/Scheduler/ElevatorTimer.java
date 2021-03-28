@@ -3,6 +3,9 @@ package Scheduler;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import Constants.Direction;
+import Elevator.ElevatorJob;
+
 
 /**
  * Timer for the Scheduler to use to detect faults in the elevator
@@ -12,7 +15,7 @@ import java.util.TimerTask;
  */
 public class ElevatorTimer{
 
-	Timer time;
+	Timer time = new Timer();
 	Fault faultType;
 	String elevatorID;
 	Scheduler scheduler;
@@ -29,12 +32,14 @@ public class ElevatorTimer{
 		Scheduler scheduler;
 		
 		public RemindTask(Scheduler scheduler, String elevatorID, Fault faultType) {
+			super();
 			this.elevatorID = elevatorID;
 			this.faultType = faultType;
 			this.scheduler = scheduler;
 		}
         public void run() {
             System.out.println("The elevator timer has trigered");
+            scheduler.getProcessJobThread().addJobQueue(new ElevatorJob(elevatorID, 1, 1, Direction.Idle, 9));
         }
     }
 	

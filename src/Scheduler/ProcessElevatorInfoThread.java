@@ -57,14 +57,14 @@ public class ProcessElevatorInfoThread extends Thread {
 			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();
 		}
        
-		scheduler.startTimer(scheduler, info.getElevatorID(), new Fault("ElevatorbtwFloor"), 120);
 		if (info.getIsArriving() == true) {
-			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();
 			for(ElevatorJob job: elevatorJobs) {
 				if (info.getIsArriving() && job.getToFloor() == info.getCurrentfloor()) {
 					elevatorJobs.remove(elevatorJobs.indexOf(job));
 				}
 			}
+		} else {
+			scheduler.startTimer(scheduler, info.getElevatorID(), new Fault("ElevatorbtwFloor"), 5);
 		}
 		if (info.getOperational() == 2) {
 			scheduler.getElevatorJobDatabase().remove(info.getElevatorID());

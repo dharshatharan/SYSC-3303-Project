@@ -77,7 +77,7 @@ public class Stopped extends ElevatorState{
 				e1.printStackTrace();
 			}
 		}
-		System.out.println("Shutting down elevator " + elevator.getElevatorId());
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Shutting down elevator " + elevator.getElevatorId() + " due to door fault>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 2));
 		elevator.setOperationalStatus(false);
 		elevator.interrupt();
@@ -100,29 +100,7 @@ public class Stopped extends ElevatorState{
 	 * Simulates the closing doors. starts to process to change state to idel or moving
 	 */
 	public void closeDoors() {
-//		if(elevator.getOperationalStatus() && elevator.getDoorState().equals(DoorStatus.open)) {
-//			
-//			System.out.println("Doors closed");
-//			elevator.setDoorState(false);
-//			
-//		} else {
-//			
-//			System.out.println("Doors unable to close, attempting to correct...");
-//			correctFault(false);
-//		}
 		System.out.println("Doors closing...");
-		
-//		Timer timer = new Timer(true);
-//		TimerTask closeTask = new TimerTask() {
-//	        public void run() {
-//	            if(elevator.getDoorState() != DoorStatus.closed) {
-//	            	System.out.println("Failed to close doors, retrying...");
-//	            	retryClose();
-//	            }
-//	        }
-//	    };
-//		
-//		timer.schedule(closeTask, 1100);
 		
 		try {
 			Thread.sleep(1000);
@@ -132,27 +110,7 @@ public class Stopped extends ElevatorState{
 		
 		elevator.setDoorState(false);
 		
-//		List<ElevatorJob> removeJobs = elevator.startFinishAllJobsInCurFloor();
-//		for(ElevatorJob job: removeJobs) {
-//			if (job.getFault() == 1) {
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e1) {
-//					e1.printStackTrace();
-//				}
-//			}
-//		}
-		
 	}
-	
-	/**
-	 * Sets state to idel when there are no more jobs
-	 */
-//	public void idle() {
-//		//elevator.changeState();
-//		elevator.setState(new Idle(elevator));
-//		exit();
-//	}
 	
 	/**
 	 * Sets state to Move when there are jobs
@@ -170,18 +128,7 @@ public class Stopped extends ElevatorState{
 	 */
 	@Override
 	public void exit() {
-//		if (elevator.getCurFloor() == elevator.getJob().getFromFloor()) {
-//			elevator.setDestination(elevator.getJob().getToFloor());
-//			elevator.setDirection(elevator.getJob().getDirectionSeeking());
-//			elevator.setPreJob(null);
-//			elevator.setState(new Moving(elevator));
-//		}
-//		else {
-//			elevator.setState(new Idle(elevator));
-//			elevator.setJob(null);
-//		}
-//		elevator.setState(new Idle(elevator));
-//		elevator.getElevatorState().enter();
+
 	}
 
 	/**
@@ -193,58 +140,6 @@ public class Stopped extends ElevatorState{
 		notifyElevatorArrival();
 		 openDoors();
 		 if (elevator.getDoorState() == DoorStatus.open) closeDoors();
-//		List<ElevatorJob> removeJobs = elevator.startFinishAllJobsInCurFloor();
-		
-		
-//		Date d0 = new Date();
-//		long t0 = d0.getTime();
-//		long t1;
-//		
-//		if(!checkForFaults()){
-//			try {
-//				Thread.sleep(1000);
-//				Date d1 = new Date();
-//				t1 = d1.getTime();
-//			}catch(InterruptedException e7) {
-//			}	
-//		} else {
-//			try {
-//				Thread.sleep(5000);
-//				Date d2 = new Date();
-//				t1 = d2.getTime();
-//			}catch(InterruptedException e7) {
-//			}
-//		}
-//		
-//		tryOpenCloseDoor(t0, t1, 2000, true); // timeout set for 2s
-//		
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
-//		
-//		Date dc0 = new Date();
-//		long tc0 = dc0.getTime();
-//		long tc1;
-//		
-//		if(!checkForFaults()){
-//			try {
-//				Thread.sleep(1000);
-//				Date dc1 = new Date();
-//				tc1 = dc1.getTime();
-//			}catch(InterruptedException e7) {
-//			}	
-//		} else {
-//			try {
-//				Thread.sleep(5000);
-//				Date dc2 = new Date();
-//				tc1 = dc2.getTime();
-//			}catch(InterruptedException e7) {
-//			}
-//		}
-//		
-//		tryOpenCloseDoor(tc0, tc1, 2000, false);
 
 		exit();
 			
@@ -254,71 +149,8 @@ public class Stopped extends ElevatorState{
 	 * Notifies The Scheduler that the elevator has completed a job or moving the elevator to the floor of the first job
 	 */
 	private void notifyElevatorArrival() {
-//		if (elevator.getPreJob() == null && elevator.getJob() != null) {
-//			ElevatorJob job = elevator.getJob();
-			elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
-//		}
+		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(true, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
 	}
-//	
-//	public boolean checkForFaults() {
-//		
-//		return elevator.getJob().getFault();
-//		
-//	}
-//	
-//	public void tryOpenCloseDoor(long initTime, long endTime, long timeout, boolean toOpen) {
-//		
-//		if(endTime < (initTime + timeout)){
-//			elevator.setOperationalStatus(true);
-//			if(toOpen) {
-//				openDoors();
-//			}
-//			else {
-//				closeDoors();
-//			}
-//		} else {
-//			elevator.setOperationalStatus(false);
-//			if(toOpen) {
-//				openDoors();
-//			} else {
-//				closeDoors();
-//			}
-//		}
-//		
-//	}
-//	
-//	//Method to try to correct the open door fault
-//	public void correctFault(boolean toOpen) {
-//		Random random = new Random();
-//		for(int i=0; i<2; i++) {
-//			int checkFix = random.nextInt(99) + 1;
-//			if(checkFix % 2 == 0) {
-//				elevator.setOperationalStatus(true);
-//			}
-//		}
-//		if(elevator.getOperationalStatus()) {
-//			System.out.println("Fault corrected!");
-//			if(toOpen) {
-//				try {
-//					Thread.sleep(1000);
-//					openDoors();
-//				}catch(InterruptedException e7) {
-//				}
-//			} else {
-//				try {
-//					Thread.sleep(1000);
-//					closeDoors();
-//				}catch(InterruptedException e7) {
-//				}
-//			}
-//		} else {
-//			if (!elevator.getOperationalStatus()){ //if true ?
-//				
-//				System.out.println("This Elevator should be suspended as the door is Faulty.");
-//				this.wait();
-//			}
-//		}
-//	}
 		
 }
 	

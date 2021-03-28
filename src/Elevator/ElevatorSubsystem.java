@@ -31,6 +31,11 @@ public class ElevatorSubsystem implements Runnable{
 	 * @param job
 	 */
 	public void receiveJob(ElevatorJob job) {
+		if (job.getFault() == 9) {
+			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Terminated elevator " + job.getElevatorID() + " because of floor error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			elevators.get(job.getElevatorID()).setOperationalStatus(false);
+			elevators.get(job.getElevatorID()).interrupt();
+		}
 		elevators.get(job.getElevatorID()).addJob(job);
 	}
 

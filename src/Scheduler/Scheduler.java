@@ -114,6 +114,10 @@ public class Scheduler implements Runnable {
 		}
 	}
 	
+	public ProcessJobRequestsThread getProcessJobThread() {
+		return processJobRequestsThread;
+	}
+	
 	/**
 	 *  Sends information for the floorsubsystem
 	 */
