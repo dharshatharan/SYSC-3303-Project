@@ -61,17 +61,6 @@ public class Moving extends ElevatorState{
 		}
 		
 		exit();
-		
-		
-//		accelerate();
-//		while(Math.abs(elevator.getCurFloor() - elevator.getDestination()) >1) { //While the floor is less  than one away	
-//			moveAtMaxSpeed();
-//		}
-//		if(Math.abs(elevator.getCurFloor() - elevator.getDestination()) == 1) {
-//			moveAtMaxSpeed();
-//			deccelerate();
-//		}
-//		exit();
 	}
 	
 	
@@ -81,11 +70,11 @@ public class Moving extends ElevatorState{
 	public void accelerate() {
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
-				System.out.println("The elevator is accelerating "+ elevator.getDirection());
+				System.out.println("The elevator " + elevator.getElevatorId() + " is accelerating "+ elevator.getDirection());
 				Thread.sleep(300);
 			}catch (InterruptedException e){
 			}
-			System.out.println("Elevator has now accelerated to max speed");
+			System.out.println("Elevator " + elevator.getElevatorId() + " has now accelerated to max speed");
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -135,7 +124,7 @@ public class Moving extends ElevatorState{
 				Thread.sleep(1000);
 			}catch (InterruptedException e) {
 			}
-			System.out.println("Elevator has deccelerated to a stop. Direction: "+ elevator.getDirection());
+			System.out.println("Elevator " + elevator.getElevatorId() + " has deccelerated to a stop. Direction: "+ elevator.getDirection());
 			MoveFloors();
 			state = elevatorSpeed.stopped;
 		}
