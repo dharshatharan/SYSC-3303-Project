@@ -37,7 +37,6 @@ public class ElevatorInfo {
     
     public ElevatorInfo(byte[] data) throws Exception {
     	String s = new String(data);
-    	System.out.println(s);
 		Matcher matcher = elevatorInfoPattern.matcher(s);
 		if (matcher.find()) {
 			String[] sa = s.split(" ");

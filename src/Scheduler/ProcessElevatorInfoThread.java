@@ -51,7 +51,7 @@ public class ProcessElevatorInfoThread extends Thread {
 	}
 	
 	private void processInfo(ElevatorInfo info) {
-		// TODO: Redo this logic
+		System.out.println("Processing Elevator Info");
 		List<ElevatorJob> elevatorJobs = scheduler.getElevatorJobDatabase().get(info.getElevatorID());
 		if (!scheduler.getFaults().get(info.getElevatorID()).isEmpty()&& !(scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor") == null)) {
 			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();

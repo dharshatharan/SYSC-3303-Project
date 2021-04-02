@@ -33,7 +33,7 @@ public class Stopped extends ElevatorState{
 	 * Simulates arrival and opens door. Runs set task, wait, closedoor
 	 */
 	public void openDoors() {
-		System.out.println("Doors opening...");
+		System.out.println("Doors opening..." + elevator.getElevatorId());
 		Timer timer = new Timer(true);
 		TimerTask openTask = new TimerTask() {
 	        public void run() {
@@ -100,7 +100,7 @@ public class Stopped extends ElevatorState{
 	 * Simulates the closing doors. starts to process to change state to idel or moving
 	 */
 	public void closeDoors() {
-		System.out.println("Doors closing...");
+		System.out.println("Doors closing..." + elevator.getElevatorId());
 		
 		try {
 			Thread.sleep(1000);

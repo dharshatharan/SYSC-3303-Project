@@ -41,10 +41,10 @@ public class SchedulerElevatorCommunicator {
 	public void receiveElevatorJobRequest() {
 		   byte msg[] = new byte[3];
 		   elevatorJobSendPacket = new DatagramPacket(msg, msg.length);
-		   System.out.println("Host: Waiting for Packet.\n");
+//		   System.out.println("Host: Waiting for Packet.\n");
 		   
 		   try {        
-			   System.out.println("Waiting for ElevatorJob Request..."); // so we know we're waiting
+//			   System.out.println("Waiting for ElevatorJob Request..."); // so we know we're waiting
 			   elevatorJobRequestSocket.receive(elevatorJobSendPacket);
 		   } catch (IOException e) {
 			   System.out.print("IO Exception: likely:");
@@ -55,11 +55,11 @@ public class SchedulerElevatorCommunicator {
 		   
 //		   printDetails(false, false, jobSendPacket);
 		   
-		   System.out.println("Received ElevatorJob Request from Elevator");
-		   System.out.println();
+//		   System.out.println("Received ElevatorJob Request from Elevator");
+//		   System.out.println();
 		   
 		   String received = new String(msg,0,elevatorJobSendPacket.getLength());   
-		   System.out.println(received + "\n");
+//		   System.out.println(received + "\n");
 		   
 		   Matcher matcher = elevatorJobRequestPattern.matcher(received);
 		   if (matcher.find()) {
@@ -74,8 +74,8 @@ public class SchedulerElevatorCommunicator {
 			   }
 		      
 	//		   printDetails(true, true, requestDataPacket);
-			   System.out.println("Sent ElevatorJob to Elevator");
-			   System.out.println();
+//			   System.out.println("Sent ElevatorJob to Elevator");
+//			   System.out.println();
 			   
 			   try {
 				   elevatorJobRequestSocket.send(elevatorJobSendPacket);
@@ -91,10 +91,10 @@ public class SchedulerElevatorCommunicator {
 	public void recieveElevatorInfo() {
 		   byte msg[] = new byte[13];
 		   elevatorInfoReceivePacket = new DatagramPacket(msg, msg.length);
-		   System.out.println("Waiting for ElevatorInfo from Elevator...\n");
+//		   System.out.println("Waiting for ElevatorInfo from Elevator...\n");
 		   
 		   try {        
-			   System.out.println("Waiting..."); // so we know we're waiting
+//			   System.out.println("Waiting..."); // so we know we're waiting
 			   elevatorInfoReceiveSocket.receive(elevatorInfoReceivePacket);
 		   } catch (IOException e) {
 			   System.out.print("IO Exception: likely:");
@@ -106,7 +106,7 @@ public class SchedulerElevatorCommunicator {
 //		   printDetails(false, false, receiveAckPacket);
 		   
 		   String received = new String(msg,0,elevatorInfoReceivePacket.getLength());   
-		   System.out.println(received + "\n");
+//		   System.out.println(received + "\n");
 		   
 		   try {
 			   scheduler.addElevatorInfo(new ElevatorInfo(msg));
@@ -126,8 +126,8 @@ public class SchedulerElevatorCommunicator {
 		   }
 	      
 //		   printDetails(true, true, receiveAckPacket);
-		   System.out.println("Recieved ElevatorInfo from Elevator");
-		   System.out.println();
+//		   System.out.println("Recieved ElevatorInfo from Elevator");
+//		   System.out.println();
 		   
 		   try {
 			   elevatorInfoReceiveSocket.send(elevatorInfoReceivePacket);

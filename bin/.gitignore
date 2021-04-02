@@ -1,4 +1,8 @@
-/Scheduler/
-/Floor/
+/.classpath
+/.project
 /Constants/
 /Elevator/
+/Floor/
+/Scheduler/
+/Tests/
+/input.txt

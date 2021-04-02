@@ -49,7 +49,7 @@ public class FloorSchedulerCommunicator {
 	public void sendElevatorRequest(RequestElevatorEvent job) {
 		byte msg[] = job.getByteArray("01");
 		
-		System.out.println("Preparing to send elevator request to Scheduler...\n");
+//		System.out.println("Preparing to send elevator request to Scheduler...\n");
 		
 		try {
 			sendElevatorRequestPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), 77);
@@ -59,7 +59,7 @@ public class FloorSchedulerCommunicator {
 			System.exit(1);
 		}
 		
-		System.out.println("Sending elevator request to Scheduler...\n");
+//		System.out.println("Sending elevator request to Scheduler...\n");
 		
 		try {
 			sendElevatorRequestSocket.send(sendElevatorRequestPacket);
@@ -71,7 +71,7 @@ public class FloorSchedulerCommunicator {
 		byte reply[] = new byte[3];
 		replyElevatorRequestPacket = new DatagramPacket(reply, reply.length);
 		
-		System.out.println("Waiting to receive reply...\n");
+//		System.out.println("Waiting to receive reply...\n");
 		
 		try {
 			sendElevatorRequestSocket.receive(replyElevatorRequestPacket);
@@ -85,7 +85,7 @@ public class FloorSchedulerCommunicator {
 		
 		Matcher m = elevatorRequestReplyPattern.matcher(received);
 		if(m.find()) {
-			System.out.println("Reply received\n");
+//			System.out.println("Reply received\n");
 		} else {
 			System.out.println("Invalid reply received");
 		}
@@ -108,7 +108,7 @@ public class FloorSchedulerCommunicator {
 			System.exit(1);
 		}
 		
-		System.out.println("Preparing to send elevator info request...\n");
+//		System.out.println("Preparing to send elevator info request...\n");
 		
 		try {
 			receiveElevatorInfoSocket.send(receiveElevatorInfoPacket);
@@ -120,7 +120,7 @@ public class FloorSchedulerCommunicator {
 		byte[] reply = new byte[20];
 		replyElevatorInfoPacket = new DatagramPacket(reply, reply.length);
 		
-		System.out.println("Waiting to receive reply...\n");
+//		System.out.println("Waiting to receive reply...\n");
 		
 		try {
 			receiveElevatorInfoSocket.receive(replyElevatorInfoPacket);
