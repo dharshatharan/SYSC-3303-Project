@@ -8,9 +8,9 @@ import java.util.*;
  * @version 03/13/2021
  */
 public class ElevatorSubsystem implements Runnable{	
-	private Map<String, Elevator> elevators;
+	private static Map<String, Elevator> elevators;
 	private int numElevators;
-	private static guiElevator guiElevator; 
+	private static guiElevator gui; 
 	private List<ElevatorInfo> notifyElevatorInfoList;
 	private ElevatorSchedulerComminicator comunicator;
 	
@@ -20,7 +20,7 @@ public class ElevatorSubsystem implements Runnable{
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
-		guiElevator guiElevator = new guiElevator(this);
+		this.gui= new guiElevator(this);
 		
 	}
 	
@@ -113,34 +113,34 @@ public class ElevatorSubsystem implements Runnable{
 	public static void main(String[] args) {
 		ElevatorSubsystem es = new ElevatorSubsystem(2);
 		es.run();
-		GUIThread.start();
 		try{Thread.sleep(500);
 		}catch(InterruptedException e) {}
 		//t1.start();
-		mapUpdate.start();
+		GUIThread.start();
+		GUIThread2.start();
 	}
 	
-	static Thread GUIThread = new Thread() {
+	static Thread GUIThread = new Thread("GUITHREAD---") {
 		public void run() {
 			while(true) {
-			try {this.sleep(50);
-			}catch (InterruptedException e) {}
-			guiElevator.makeGUI();
-			guiElevator.f.revalidate();
-			guiElevator.f.repaint();
+			//gui.makeGUI(elevators);
+			}
+		}
+};
+
+	static Thread GUIThread2 = new Thread() {
+		public void run() {
+			while(true) {
+				try {GUIThread2.sleep(50);
+				}catch (InterruptedException e) {}
+				gui.makeGUI(elevators);
+				gui.f.revalidate();
+				gui.f.repaint();
 			}
 		}
 	};
 	
-	
-	static Thread mapUpdate = new Thread() {
-		public void run() {
-			while(true) {
-				guiElevator.updateMap();
-			}
-		}
-	};
-	
+
 	
 	
 	
