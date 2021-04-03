@@ -10,16 +10,17 @@ import java.util.*;
 public class ElevatorSubsystem implements Runnable{	
 	private Map<String, Elevator> elevators;
 	private int numElevators;
-	
+	private static guiElevator guiElevator; 
 	private List<ElevatorInfo> notifyElevatorInfoList;
 	private ElevatorSchedulerComminicator comunicator;
-	guiElevator guiElevator = new guiElevator(this);
+	
 	
 	public ElevatorSubsystem(int numElevators) {
 		this.numElevators = numElevators;
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
+		guiElevator guiElevator = new guiElevator(this);
 		
 	}
 	
@@ -112,7 +113,47 @@ public class ElevatorSubsystem implements Runnable{
 	public static void main(String[] args) {
 		ElevatorSubsystem es = new ElevatorSubsystem(2);
 		es.run();
+		GUIThread.start();
+		try{Thread.sleep(500);
+		}catch(InterruptedException e) {}
+		//t1.start();
+		mapUpdate.start();
 	}
+	
+	static Thread GUIThread = new Thread() {
+		public void run() {
+			while(true) {
+			try {this.sleep(50);
+			}catch (InterruptedException e) {}
+			guiElevator.makeGUI();
+			guiElevator.f.revalidate();
+			guiElevator.f.repaint();
+			}
+		}
+	};
+	
+	
+	static Thread mapUpdate = new Thread() {
+		public void run() {
+			while(true) {
+				guiElevator.updateMap();
+			}
+		}
+	};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
