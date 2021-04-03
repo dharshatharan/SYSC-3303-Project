@@ -28,7 +28,6 @@ public class guiElevator{
 		l2 = new JLabel("Elevator 2");
 		l3 = new JLabel("Elevator 3");
 		l4 = new JLabel("Elevator 4");
-		System.out.println("--------------------------------------------------------------IM RUNNING1");
 		direction1 = new JTextField();
 		operational1 = new JTextField();
 		status1 = new JTextField();
@@ -37,14 +36,14 @@ public class guiElevator{
 		operational2 = new JTextField();
 		status2 = new JTextField();
 		cfloor2 = new JTextField();
-		//direction3 = new JTextField();
-		//operational3 = new JTextField();
-		//status3 = new JTextField();
-		//cfloor3 = new JTextField();
-		//direction4 = new JTextField();
-		//operational4 = new JTextField();
-		//status4 = new JTextField();
-		//cfloor4 = new JTextField();
+		direction3 = new JTextField();
+		operational3 = new JTextField();
+		status3 = new JTextField();
+		cfloor3 = new JTextField();
+		direction4 = new JTextField();
+		operational4 = new JTextField();
+		status4 = new JTextField();
+		cfloor4 = new JTextField();
 		
 		
 		
@@ -93,7 +92,7 @@ public class guiElevator{
 		operational1.setBounds(50,150, 100,30);
 		status1.setBounds(50,200, 100,30);
 		cfloor1.setBounds(50,250, 100,30);
-		System.out.println("--------------------------------------------------------------IM RUNNING2");
+		
 		
 		
 		
@@ -122,9 +121,9 @@ public class guiElevator{
 		
 		try {
 			if (temp2.equals(null)|| temp2.isEmpty()) {
+				temp2 = "empty";
 			}}catch (NullPointerException e) {}
-		temp2 = "empty";
-			
+		
 		status2.setText(temp2);
 		
 
@@ -140,52 +139,105 @@ public class guiElevator{
 		status2.setBounds(200,200, 100,30);
 		cfloor2.setBounds(200,250, 100,30);
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
 		//Elevator 3
-		//l3.setBounds(350,50, 100,30);
-		//
-		//if(!getElevatorInfo(3).equals(null)) {
-			//direction3.setText(getElevatorInfo(3).getDirection().toString());
-			//operational3.setText(String.valueOf(getElevatorInfo(3).getOperationalStatus()));
-			//status3.setText(getElevatorInfo(3).getStateToString());
-			//cfloor3.setText(Integer.toString(getElevatorInfo(3).getCurrentFloor()));
-		//}
-		//if(getElevatorInfo(3).equals(null)) {
-			//direction3.setText("Null");
-			//operational3.setText("Null");
-			//status3.setText("Null");
-			//cfloor3.setText("Null");
-		//}
-		//
-		//direction3.setBounds(350,100, 100,30);
-		//operational3.setBounds(350,150, 100,30);
-		//status3.setBounds(350,200, 100,30);
-		//cfloor3.setBounds(350,250, 100,30);
+		l3.setBounds(350,50, 100,30);
+		Elevator elevator3 =getElevatorInfo(3,elevatorMap);
+		
+		String temp3;
+		temp3 = elevator3.getDirection().toString();
+		if (temp3.isEmpty() || temp3.equals(null)) {
+			temp3 = "empty";
+		}
+		direction3.setText(temp3);
+		
+		temp3 = String.valueOf(elevator3.getOperationalStatus());
+		if (temp3.isEmpty() || temp3.equals(null)) {
+			temp3 = "empty";
+		}
+		operational3.setText(temp3);
+		
+		try {temp3 = elevator3.getStateToString();
+		}catch (NullPointerException e) {temp3=null;}
+		
+		try {
+			if (temp3.equals(null)|| temp3.isEmpty()) {
+				temp3 = "empty";
+			}}catch (NullPointerException e) {}
+		
+		status3.setText(temp3);
+		
+
+		temp3 = Integer.toString(elevator3.getCurrentFloor());
+		if (temp3.isEmpty() || temp3.equals(null)) {
+			temp3 = "empty";
+		}
+		cfloor3.setText(temp3);
+		
+		direction3.setBounds(350,100, 100,30);
+		operational3.setBounds(350,150, 100,30);
+		status3.setBounds(350,200, 100,30);
+		cfloor3.setBounds(350,250, 100,30);
+		
+
+		
 		
 		//Elevator 4
-		//l4.setBounds(500,50, 100,30);
-		//
-		//if(!getElevatorInfo(4).equals(null)) {
-			//direction4.setText(getElevatorInfo(4).getDirection().toString());
-			//operational4.setText(String.valueOf(getElevatorInfo(4).getOperationalStatus()));
-			//status4.setText(getElevatorInfo(4).getStateToString());
-			//cfloor4.setText(Integer.toString(getElevatorInfo(4).getCurrentFloor()));
-		//}
-		//if(getElevatorInfo(4).equals(null)) {
-			//direction4.setText("Null");
-			//operational4.setText("Null");
-			//status4.setText("Null");
-			//cfloor4.setText("Null");
-		//}
-		//
-		//direction4.setBounds(500,100, 100,30);
-		//operational4.setBounds(500,150, 100,30);
-		//status4.setBounds(500,200, 100,30);
-		//cfloor4.setBounds(500,250, 100,30);
+		l4.setBounds(500,50, 100,30);
+		Elevator elevator4 =getElevatorInfo(4,elevatorMap);
+		
+		String temp4;
+		temp4 = elevator4.getDirection().toString();
+		if (temp4.isEmpty() || temp4.equals(null)) {
+			temp4 = "empty";
+		}
+		direction4.setText(temp4);
+		
+		temp4 = String.valueOf(elevator4.getOperationalStatus());
+		if (temp4.isEmpty() || temp4.equals(null)) {
+			temp4 = "empty";
+		}
+		operational4.setText(temp4);
+		
+		try {temp4 = elevator4.getStateToString();
+		}catch (NullPointerException e) {temp4=null;}
+		
+		try {
+			if (temp4.equals(null)|| temp4.isEmpty()) {
+				temp4 = "empty";
+			}}catch (NullPointerException e) {}
+		
+		status4.setText(temp4);
+		
+
+		temp4 = Integer.toString(elevator4.getCurrentFloor());
+		if (temp4.isEmpty() || temp4.equals(null)) {
+			temp4 = "empty";
+		}
+		cfloor4.setText(temp4);
 		
 		
 		
-		System.out.println("--------------------------------------------------------------IM RUNNING3");
-		f.add(l1); f.add(l2); //f.add(l3); f.add(l4); 
+		direction4.setBounds(500,100, 100,30);
+		operational4.setBounds(500,150, 100,30);
+		status4.setBounds(500,200, 100,30);
+		cfloor4.setBounds(500,250, 100,30);
+		*/
+		
+		
+
+		f.add(l1); f.add(l2); f.add(l3); f.add(l4); 
 		f.add(direction1); f.add(status1); f.add(cfloor1); f.add(operational1);
 		f.add(direction2); f.add(status2); f.add(cfloor2); f.add(operational2);
 		//f.add(direction3); f.add(status3); f.add(cfloor3); f.add(operational3);
@@ -201,11 +253,10 @@ public class guiElevator{
 	
 	
 	public static Elevator getElevatorInfo(int id, Map<String, Elevator> elevatorMap){
-		System.out.println("--------------------------------------------------------------IM RUNNING4");
+
 		for(Map.Entry<String,Elevator> entry: elevatorMap.entrySet()) {
 			if(entry.getKey() != null) {
 				if(Integer.parseInt(entry.getKey()) == id) {
-					System.out.println("Im running-------------------------------Retrun statemnetbreak");
 					return entry.getValue();
 			}
 		}

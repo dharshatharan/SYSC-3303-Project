@@ -117,21 +117,14 @@ public class ElevatorSubsystem implements Runnable{
 		}catch(InterruptedException e) {}
 		//t1.start();
 		GUIThread.start();
-		GUIThread2.start();
 	}
 	
-	static Thread GUIThread = new Thread("GUITHREAD---") {
-		public void run() {
-			while(true) {
-			//gui.makeGUI(elevators);
-			}
-		}
-};
+	
 
-	static Thread GUIThread2 = new Thread() {
+	static Thread GUIThread = new Thread() {
 		public void run() {
 			while(true) {
-				try {GUIThread2.sleep(50);
+				try {GUIThread.sleep(50);
 				}catch (InterruptedException e) {}
 				gui.makeGUI(elevators);
 				gui.f.revalidate();
