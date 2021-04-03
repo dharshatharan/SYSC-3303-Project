@@ -1,10 +1,14 @@
 package Elevator;
-
+/**
+ * @Author Bailey Lyster
+ * @Version 04/03/2021
+ */
 import java.util.Map;
 
 import javax.swing.*; 
 
 public class guiElevator{
+	
 
 	static ElevatorSubsystem elevators;
 	static JFrame f = new JFrame();
@@ -146,17 +150,6 @@ public class guiElevator{
 		operational2.setBounds(300,150, 100,30);
 		status2.setBounds(300,200, 100,30);
 		cfloor2.setBounds(300,250, 100,30);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		/*
 		//Elevator 3

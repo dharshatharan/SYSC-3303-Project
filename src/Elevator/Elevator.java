@@ -13,7 +13,7 @@ import Scheduler.Scheduler;
 /**
  * An elevator that cycles through states completing Jobs
  * 
- * @author Darsh, Quinn
+ * @author Darsh, Quinn, Bailey
  * @version 03/16/2021
  */
 public class Elevator extends Thread {
