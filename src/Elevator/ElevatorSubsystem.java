@@ -12,8 +12,8 @@ public class ElevatorSubsystem implements Runnable{
 	private int numElevators;
 	
 	private List<ElevatorInfo> notifyElevatorInfoList;
-		
 	private ElevatorSchedulerComminicator comunicator;
+	guiElevator guiElevator = new guiElevator(this);
 	
 	public ElevatorSubsystem(int numElevators) {
 		this.numElevators = numElevators;

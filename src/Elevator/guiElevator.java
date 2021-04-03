@@ -13,6 +13,10 @@ public class guiElevator{
 	
 	
 	
+	public guiElevator(ElevatorSubsystem e) {
+		this.elevators = e;
+	}
+	
 	public static void main(String args[]) {
 		makeGUI();
 		t1.start();

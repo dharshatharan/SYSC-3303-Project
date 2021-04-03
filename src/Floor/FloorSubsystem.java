@@ -85,7 +85,7 @@ public class FloorSubsystem implements Runnable{
      * Retrives the information from a txt file
      */
     public void parse() {
-        File simulation = new File("./src/input.txt");
+        File simulation = new File("/src/input.txt");
         try {
             Scanner sc = new Scanner(simulation);
             while(sc.hasNextLine()) {
