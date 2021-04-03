@@ -19,7 +19,7 @@ public class guiElevator{
 
 	
 	public static void makeGUI(Map<String, Elevator> elevatorMap) {
-		JLabel l1,l2,l3,l4;
+		JLabel l1,l2,l3,l4,l5,l6,l7,l8;
 		JTextField direction1, direction2, direction3, direction4;
 		JTextField operational1, operational2, operational3, operational4;
 		JTextField status1, status2, status3, status4;
@@ -28,6 +28,11 @@ public class guiElevator{
 		l2 = new JLabel("Elevator 2");
 		l3 = new JLabel("Elevator 3");
 		l4 = new JLabel("Elevator 4");
+		l5 = new JLabel("Direction");
+		l6 = new JLabel("Operational");
+		l7 = new JLabel("State");
+		l8 = new JLabel("Floor");		
+		
 		direction1 = new JTextField();
 		operational1 = new JTextField();
 		status1 = new JTextField();
@@ -44,13 +49,16 @@ public class guiElevator{
 		operational4 = new JTextField();
 		status4 = new JTextField();
 		cfloor4 = new JTextField();
-		
+		l5.setBounds(50,100, 100, 30);
+		l6.setBounds(50,150, 100,30);
+		l7.setBounds(50,200, 100,30);
+		l8.setBounds(50,250, 100,30);
 		
 		
 		
 		
 		//Elevator 1
-		l1.setBounds(50,50, 100,30);
+		l1.setBounds(150,50, 100,30);
 		Elevator elevator1 = getElevatorInfo(1,elevatorMap);
 		while(elevator1 ==null) {
 			elevator1 = getElevatorInfo(1,elevatorMap);
@@ -88,16 +96,16 @@ public class guiElevator{
 		
 		
 		//
-		direction1.setBounds(50,100, 100,30);
-		operational1.setBounds(50,150, 100,30);
-		status1.setBounds(50,200, 100,30);
-		cfloor1.setBounds(50,250, 100,30);
+		direction1.setBounds(150,100, 100,30);
+		operational1.setBounds(150,150, 100,30);
+		status1.setBounds(150,200, 100,30);
+		cfloor1.setBounds(150,250, 100,30);
 		
 		
 		
 		
 		//Elevator 2
-		l2.setBounds(200,50, 100,30);
+		l2.setBounds(300,50, 100,30);
 		//
 		Elevator elevator2 =getElevatorInfo(2,elevatorMap);
 		while(elevator2 ==null) {
@@ -134,10 +142,10 @@ public class guiElevator{
 		cfloor2.setText(temp2);
 		
 		//
-		direction2.setBounds(200,100, 100,30);
-		operational2.setBounds(200,150, 100,30);
-		status2.setBounds(200,200, 100,30);
-		cfloor2.setBounds(200,250, 100,30);
+		direction2.setBounds(300,100, 100,30);
+		operational2.setBounds(300,150, 100,30);
+		status2.setBounds(300,200, 100,30);
+		cfloor2.setBounds(300,250, 100,30);
 		
 		
 		
@@ -237,7 +245,7 @@ public class guiElevator{
 		
 		
 
-		f.add(l1); f.add(l2); f.add(l3); f.add(l4); 
+		f.add(l1); f.add(l2); f.add(l3); f.add(l4); f.add(l5);f.add(l6);f.add(l6);f.add(l7);f.add(l8);
 		f.add(direction1); f.add(status1); f.add(cfloor1); f.add(operational1);
 		f.add(direction2); f.add(status2); f.add(cfloor2); f.add(operational2);
 		//f.add(direction3); f.add(status3); f.add(cfloor3); f.add(operational3);
