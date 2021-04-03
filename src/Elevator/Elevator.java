@@ -265,6 +265,21 @@ public class Elevator extends Thread {
     public void setState(ElevatorState state) {
     	this.state = state;
     }
+    
+    public String getStateToString() {
+    	if(state instanceof Stopped) {
+    		return "Stopped";
+    	}
+    	if(state instanceof Moving) {
+    		return "Moving";
+    	}
+    	return null;
+    }
+    
+    
+  
+
+    
 
 	/**
 	 * @return the id
