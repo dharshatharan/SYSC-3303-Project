@@ -17,8 +17,9 @@ public class guiElevator{
 		this.elevators = e;
 	}
 	
+	
+	
 	public static void main(String args[]) {
-		makeGUI();
 		t1.start();
 		mapUpdate.start();
 }
@@ -138,9 +139,11 @@ public class guiElevator{
 	
 	public static Elevator getElevatorInfo(int id){
 		Elevator temp = null;
+		System.out.println("IM RUNNING");
 		for(Map.Entry<String, Elevator> entry: elevatorMap.entrySet()) {
 			if(Integer.parseInt(entry.getKey()) == id) {
 				temp = entry.getValue();
+				System.out.println("IM RUNNING");
 			}
 		}
 		return temp;
