@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Elevator.ElevatorInfo;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Dharsh
@@ -47,7 +49,7 @@ public class SchedulerElevatorCommunicator {
 //			   System.out.println("Waiting for ElevatorJob Request..."); // so we know we're waiting
 			   elevatorJobRequestSocket.receive(elevatorJobSendPacket);
 		   } catch (IOException e) {
-			   System.out.print("IO Exception: likely:");
+			   System.out.print(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": IO Exception: likely:");
 			   System.out.println("Receive Socket Timed Out.\n" + e);
 			   e.printStackTrace();
 			   System.exit(1);
@@ -84,7 +86,7 @@ public class SchedulerElevatorCommunicator {
 				   System.exit(1);
 			   }
 		   } else {
-			   System.out.println("Invalid Job Request From Elevator\n");
+			   System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Invalid Job Request From Elevator\n");
 		   }
 	   }
 	
@@ -97,7 +99,7 @@ public class SchedulerElevatorCommunicator {
 //			   System.out.println("Waiting..."); // so we know we're waiting
 			   elevatorInfoReceiveSocket.receive(elevatorInfoReceivePacket);
 		   } catch (IOException e) {
-			   System.out.print("IO Exception: likely:");
+			   System.out.print(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": IO Exception: likely:");
 			   System.out.println("Receive Socket Timed Out.\n" + e);
 			   e.printStackTrace();
 			   System.exit(1);
@@ -111,7 +113,7 @@ public class SchedulerElevatorCommunicator {
 		   try {
 			   scheduler.addElevatorInfo(new ElevatorInfo(msg));
 		   } catch (Exception e) {
-			   System.out.println(e);
+			   System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) +": "+ e);
 			   return;
 		   }
 

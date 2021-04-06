@@ -1,6 +1,8 @@
 package Elevator;
 
 import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * receives and sends task to given elevators after the information is paresed fomr the scheduler
@@ -8,18 +10,19 @@ import java.util.*;
  * @version 03/13/2021
  */
 public class ElevatorSubsystem implements Runnable{	
-	private Map<String, Elevator> elevators;
+	private static Map<String, Elevator> elevators;
 	private int numElevators;
-	
+	private static guiElevator gui; 
 	private List<ElevatorInfo> notifyElevatorInfoList;
-		
 	private ElevatorSchedulerComminicator comunicator;
+	
 	
 	public ElevatorSubsystem(int numElevators) {
 		this.numElevators = numElevators;
 		elevators = new HashMap<String,Elevator>();
 		comunicator = new ElevatorSchedulerComminicator(this);
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
+		this.gui= new guiElevator(this);
 		
 	}
 	
@@ -32,7 +35,7 @@ public class ElevatorSubsystem implements Runnable{
 	 */
 	public void receiveJob(ElevatorJob job) {
 		if (job.getFault() == 9) {
-			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Terminated elevator " + job.getElevatorID() + " because of floor error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": <<<<<<<<<<<<<<<<<<<<<<<<<<<<<Terminated elevator " + job.getElevatorID() + " because of floor error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			elevators.get(job.getElevatorID()).setOperationalStatus(false);
 			elevators.get(job.getElevatorID()).interrupt();
 		}
@@ -110,9 +113,42 @@ public class ElevatorSubsystem implements Runnable{
 	
 	
 	public static void main(String[] args) {
-		ElevatorSubsystem es = new ElevatorSubsystem(2);
+		ElevatorSubsystem es = new ElevatorSubsystem(4);
 		es.run();
+		try{Thread.sleep(500);
+		}catch(InterruptedException e) {}
+		//t1.start();
+		GUIThread.start();
 	}
+	
+	
+
+	static Thread GUIThread = new Thread() {
+		public void run() {
+			while(true) {
+				try {GUIThread.sleep(50);
+				}catch (InterruptedException e) {}
+				gui.makeGUI(elevators);
+				gui.f.revalidate();
+				gui.f.repaint();
+			}
+		}
+	};
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

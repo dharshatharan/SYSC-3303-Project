@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 import Constants.Direction;
 import Floor.RequestElevatorEvent;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Stores the informatoin about each job created for the elevator to exicute
  * @author Dharsh
@@ -51,7 +54,7 @@ public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
 	
 	public ElevatorJob(byte[] data) throws Exception {
     	String s = new String(data);
-    	System.out.println(s);
+    	System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": " + s);
 		Matcher matcher = elevatorInfoPattern.matcher(s);
 		if (matcher.find()) {
 			String[] sa = s.split(" ");

@@ -10,10 +10,13 @@ import Constants.DoorStatus;
 import Floor.RequestElevatorEvent;
 import Scheduler.Scheduler;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * An elevator that cycles through states completing Jobs
  * 
- * @author Darsh, Quinn
+ * @author Darsh, Quinn, Bailey
  * @version 03/16/2021
  */
 public class Elevator extends Thread {
@@ -50,9 +53,8 @@ public class Elevator extends Thread {
 	@Override
 	public void run() {
 //		ElevatorJob request = null;
-		System.out.println("Starting floor elevator " + id);
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Starting floor elevator " + id);
 		while(!isInterrupted() && operationalStatus) {
-			System.out.println("-----------------------" + isInterrupted());
 			synchronized (jobs) {
 				synchronized(activeJobs) {
 					 try {
@@ -89,7 +91,7 @@ public class Elevator extends Thread {
 						}
 					}
 					if(job.getFault() == 9) {
-						System.out.println("Terminating Elevator " + id + " due to floor fault");
+						System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) +": Terminating Elevator " + id + " due to floor fault");
 						operationalStatus = false;
 						interrupt();
 					}
@@ -105,7 +107,7 @@ public class Elevator extends Thread {
 						}
 					}
 					if(job.getFault() == 9) {
-						System.out.println("Terminating Elevator " + id + " due to floor fault");
+						System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) +": Terminating Elevator " + id + " due to floor fault");
 						operationalStatus = false;
 						interrupt();
 					}
@@ -137,26 +139,26 @@ public class Elevator extends Thread {
 	 * Simulates closing Doors
 	 */
 	public void closeDoors() {
-		System.out.println("Doors Closing");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + this.getElevatorId() + " Doors Closing");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Doors Closed");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + this.getElevatorId() + " Doors Closed");
 	}
 	
 	/**
 	 * Simulates closing Doors
 	 */
 	public void openDoors() {
-		System.out.println("Doors Opening");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + this.getElevatorId() + " Doors Opening");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Doors opened");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + this.getElevatorId() + " Doors opened");
 	}
 	
 	
@@ -265,6 +267,21 @@ public class Elevator extends Thread {
     public void setState(ElevatorState state) {
     	this.state = state;
     }
+    
+    public String getStateToString() {
+    	if(state instanceof Stopped) {
+    		return "Stopped";
+    	}
+    	if(state instanceof Moving) {
+    		return "Moving";
+    	}
+    	return null;
+    }
+    
+    
+  
+
+    
 
 	/**
 	 * @return the id

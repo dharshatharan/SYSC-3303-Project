@@ -8,8 +8,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import Elevator.ElevatorInfo;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /*
  * Class to facilitate the communication between the FloorSubsystem and the Scheduler
@@ -135,7 +136,7 @@ public class FloorSchedulerCommunicator {
 		try {
 			floorSubsystem.addElevatorInfo(new ElevatorInfo(reply));
 		} catch (Exception e) {
-			System.out.println("Invalid byte array!");
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Invalid byte array!");
 			return;
 		}
 		

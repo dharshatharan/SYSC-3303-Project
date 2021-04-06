@@ -5,6 +5,8 @@ import java.util.TimerTask;
 
 import Constants.Direction;
 import Elevator.ElevatorJob;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -38,7 +40,7 @@ public class ElevatorTimer{
 			this.scheduler = scheduler;
 		}
         public void run() {
-            System.out.println("The elevator timer has trigered");
+            System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": The elevator timer has trigered");
             scheduler.getProcessJobThread().addJobQueue(new ElevatorJob(elevatorID, 1, 1, Direction.Idle, 9));
         }
     }

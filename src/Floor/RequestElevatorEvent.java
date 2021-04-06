@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 import Constants.Direction;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Stores the informatoin about each Elevator call for the schedulaer to use
  * @author Alexander
@@ -64,7 +67,7 @@ public class RequestElevatorEvent {
     
     public RequestElevatorEvent(byte[] data) throws Exception {
     	String s = new String(data);
-    	System.out.println(s);
+    	System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": "+s);
 		Matcher matcher = elevatorRequestPattern.matcher(s);
 		if (matcher.find()) {
 			String[] sa = s.split(" ");
@@ -78,7 +81,7 @@ public class RequestElevatorEvent {
     }
 	
 	public byte[] getByteArray(String byteCode) {
-		System.out.println(this.toStringForByteArray());
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": " + this.toStringForByteArray());
     	String s = byteCode + " " + this.toStringForByteArray();
     	return s.getBytes();
     }

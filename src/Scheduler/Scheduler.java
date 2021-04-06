@@ -12,6 +12,8 @@ import Constants.Direction;
 import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
 import Floor.RequestElevatorEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Receives input from the floors and the elevator(s), then sends information to the aprorpiate thread and waits for more information to come in
@@ -21,7 +23,7 @@ import Floor.RequestElevatorEvent;
  */
 
 public class Scheduler implements Runnable {
-	private final int NO_OF_ELEVATORS = 2;
+	private final int NO_OF_ELEVATORS = 4;
 	
 	private Map<String, List<ElevatorJob>> elevatorJobDatabase;
 	private Map<String, ElevatorInfo> elevatorInfoDatabase;
@@ -32,6 +34,7 @@ public class Scheduler implements Runnable {
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
 	private Fault fault;
 	private Map<String, HashMap<String, ElevatorTimer>> ElevatorFalutTimers;
+	private LocalDateTime startTime;
 	
 	/**
 	 * Default constructor
@@ -59,6 +62,15 @@ public class Scheduler implements Runnable {
 	 */	
 	public synchronized boolean faultExists() {
 		return fault != null;
+	}
+	
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+	
+	public LocalDateTime setStartTime() {
+		startTime = LocalDateTime.now();
+		return startTime;
 	}
 
 	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {
@@ -153,7 +165,7 @@ public class Scheduler implements Runnable {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Starting floor scheduler");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Starting floor scheduler");
 		processJobRequestsThread.start();
 		processElevatorInfoThread.start();
 		
