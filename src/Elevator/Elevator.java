@@ -55,7 +55,6 @@ public class Elevator extends Thread {
 //		ElevatorJob request = null;
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Starting floor elevator " + id);
 		while(!isInterrupted() && operationalStatus) {
-			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": -----------------------" + isInterrupted() + "-----------------------");
 			synchronized (jobs) {
 				synchronized(activeJobs) {
 					 try {

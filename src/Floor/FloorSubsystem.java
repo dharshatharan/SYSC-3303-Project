@@ -9,7 +9,8 @@ import Constants.Direction;
 import Elevator.ElevatorInfo;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter; 
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit; 
 
 
 /**
@@ -26,6 +27,8 @@ public class FloorSubsystem implements Runnable{
     private Direction direction;
     private int curFlor, destination;
     private FloorSchedulerCommunicator floorComm;
+    private int completedJobs = 0;
+    private LocalDateTime startTime;
 
     /**
      * Default Constructor
@@ -62,27 +65,30 @@ public class FloorSubsystem implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	   
+	   startTime = LocalDateTime.now();
+	   System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(startTime) + ": First request made!");
     	
-    	while(true) {
-    		for(RequestElevatorEvent job: floorjobs) {
-    			if(count == job.getSecondsSinceMidnight()) {
-    				floorComm.sendElevatorRequest(job);
-//    				System.out.println("Floor has been notified that the Elevator for Job " + job.toString());
-    			}
-    		}
-    		if(count == 86400) {
-    			count = 0;
-    		} else {
-    		count++;
-    		}
-    		try {
-				Thread.sleep(100);
+	   while(true) {
+			for(RequestElevatorEvent job: floorjobs) {
+				if(count == job.getSecondsSinceMidnight()) {
+					floorComm.sendElevatorRequest(job);
+	//    				System.out.println("Floor has been notified that the Elevator for Job " + job.toString());
+				}
+			}
+			if(count == 86400) {
+				count = 0;
+			} else {
+			count++;
+			}
+			try {
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+	   }
     		
-    	}
     }
 
     /**
@@ -125,6 +131,13 @@ public class FloorSubsystem implements Runnable{
     
     public void addElevatorInfo(ElevatorInfo info) {
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Floor Subsytem has noticed: " + info.toString());
+		if (info.getIsArriving()) {
+			completedJobs++;
+			if(completedJobs == floorjobs.size()) {
+				System.out.println( DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now())
+						+ "The system took a total of" +  ChronoUnit.MILLIS.between(startTime, LocalDateTime.now()));
+			}
+		}
 	}
     
     public static void main(String[] args) {

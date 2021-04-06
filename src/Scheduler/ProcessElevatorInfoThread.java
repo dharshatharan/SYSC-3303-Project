@@ -11,6 +11,7 @@ import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Dharsh
@@ -20,6 +21,7 @@ public class ProcessElevatorInfoThread extends Thread {
 	private Scheduler scheduler;
 	private List<ElevatorInfo> elevetorInfoUnprocessed;
 	private List<ElevatorInfo> elevetorInfoProcessed;
+	private int completedJobs = 0;
 
 	/**
 	 * 
@@ -63,6 +65,11 @@ public class ProcessElevatorInfoThread extends Thread {
 			for(ElevatorJob job: elevatorJobs) {
 				if (info.getIsArriving() && job.getToFloor() == info.getCurrentfloor()) {
 					elevatorJobs.remove(elevatorJobs.indexOf(job));
+					completedJobs++;
+					if (completedJobs == 9) {
+						System.out.println( DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now())
+								+ ": The system took a total of " +  ChronoUnit.MILLIS.between(scheduler.getStartTime(), LocalDateTime.now()) + " milliseconds");
+					}
 				}
 			}
 		} else {

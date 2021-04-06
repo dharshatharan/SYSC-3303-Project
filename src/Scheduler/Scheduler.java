@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
  */
 
 public class Scheduler implements Runnable {
-	private final int NO_OF_ELEVATORS = 2;
+	private final int NO_OF_ELEVATORS = 4;
 	
 	private Map<String, List<ElevatorJob>> elevatorJobDatabase;
 	private Map<String, ElevatorInfo> elevatorInfoDatabase;
@@ -34,6 +34,7 @@ public class Scheduler implements Runnable {
 	private SchedulerFloorCommunicator schedulerFloorCommunicator;
 	private Fault fault;
 	private Map<String, HashMap<String, ElevatorTimer>> ElevatorFalutTimers;
+	private LocalDateTime startTime;
 	
 	/**
 	 * Default constructor
@@ -61,6 +62,15 @@ public class Scheduler implements Runnable {
 	 */	
 	public synchronized boolean faultExists() {
 		return fault != null;
+	}
+	
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+	
+	public LocalDateTime setStartTime() {
+		startTime = LocalDateTime.now();
+		return startTime;
 	}
 
 	public Map<String, List<ElevatorJob>> getElevatorJobDatabase() {

@@ -63,6 +63,9 @@ public class ProcessJobRequestsThread extends Thread {
 	}
 	
 	private void processRequest(RequestElevatorEvent request) {
+		if (scheduler.getStartTime() == null) {
+			scheduler.setStartTime();
+		}
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Processing Elevator Request");
 		ElevatorJob job;
 		for (ElevatorInfo el: scheduler.getElevatorInfoDatabase().values()) {

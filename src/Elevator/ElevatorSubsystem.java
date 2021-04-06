@@ -113,7 +113,7 @@ public class ElevatorSubsystem implements Runnable{
 	
 	
 	public static void main(String[] args) {
-		ElevatorSubsystem es = new ElevatorSubsystem(2);
+		ElevatorSubsystem es = new ElevatorSubsystem(4);
 		es.run();
 		try{Thread.sleep(500);
 		}catch(InterruptedException e) {}

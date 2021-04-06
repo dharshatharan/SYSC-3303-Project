@@ -151,9 +151,8 @@ public class guiElevator{
 		status2.setBounds(300,200, 100,30);
 		cfloor2.setBounds(300,250, 100,30);
 		
-		/*
 		//Elevator 3
-		l3.setBounds(350,50, 100,30);
+		l3.setBounds(450,50, 100,30);
 		Elevator elevator3 =getElevatorInfo(3,elevatorMap);
 		
 		String temp3;
@@ -186,16 +185,16 @@ public class guiElevator{
 		}
 		cfloor3.setText(temp3);
 		
-		direction3.setBounds(350,100, 100,30);
-		operational3.setBounds(350,150, 100,30);
-		status3.setBounds(350,200, 100,30);
-		cfloor3.setBounds(350,250, 100,30);
+		direction3.setBounds(450,100, 100,30);
+		operational3.setBounds(450,150, 100,30);
+		status3.setBounds(450,200, 100,30);
+		cfloor3.setBounds(450,250, 100,30);
 		
 
 		
 		
 		//Elevator 4
-		l4.setBounds(500,50, 100,30);
+		l4.setBounds(600,50, 100,30);
 		Elevator elevator4 =getElevatorInfo(4,elevatorMap);
 		
 		String temp4;
@@ -230,19 +229,18 @@ public class guiElevator{
 		
 		
 		
-		direction4.setBounds(500,100, 100,30);
-		operational4.setBounds(500,150, 100,30);
-		status4.setBounds(500,200, 100,30);
-		cfloor4.setBounds(500,250, 100,30);
-		*/
+		direction4.setBounds(600,100, 100,30);
+		operational4.setBounds(600,150, 100,30);
+		status4.setBounds(600,200, 100,30);
+		cfloor4.setBounds(600,250, 100,30);
 		
 		
 
 		f.add(l1); f.add(l2); f.add(l3); f.add(l4); f.add(l5);f.add(l6);f.add(l6);f.add(l7);f.add(l8);
 		f.add(direction1); f.add(status1); f.add(cfloor1); f.add(operational1);
 		f.add(direction2); f.add(status2); f.add(cfloor2); f.add(operational2);
-		//f.add(direction3); f.add(status3); f.add(cfloor3); f.add(operational3);
-		//f.add(direction4); f.add(status4); f.add(cfloor4); f.add(operational4);
+		f.add(direction3); f.add(status3); f.add(cfloor3); f.add(operational3);
+		f.add(direction4); f.add(status4); f.add(cfloor4); f.add(operational4);
 	    f.setSize(800,500);
 	    f.setLayout(null);  
 	    f.setVisible(true);
