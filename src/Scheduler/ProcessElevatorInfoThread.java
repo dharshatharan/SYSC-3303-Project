@@ -9,6 +9,8 @@ import java.util.List;
 
 import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Dharsh
@@ -51,7 +53,7 @@ public class ProcessElevatorInfoThread extends Thread {
 	}
 	
 	private void processInfo(ElevatorInfo info) {
-		System.out.println("Processing Elevator Info");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Processing Elevator Info");
 		List<ElevatorJob> elevatorJobs = scheduler.getElevatorJobDatabase().get(info.getElevatorID());
 		if (!scheduler.getFaults().get(info.getElevatorID()).isEmpty()&& !(scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor") == null)) {
 			scheduler.getFaults().get(info.getElevatorID()).get("ElevatorbtwFloor").getTimer().cancel();

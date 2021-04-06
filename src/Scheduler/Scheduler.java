@@ -12,6 +12,8 @@ import Constants.Direction;
 import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
 import Floor.RequestElevatorEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Receives input from the floors and the elevator(s), then sends information to the aprorpiate thread and waits for more information to come in
@@ -153,7 +155,7 @@ public class Scheduler implements Runnable {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Starting floor scheduler");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Starting floor scheduler");
 		processJobRequestsThread.start();
 		processElevatorInfoThread.start();
 		

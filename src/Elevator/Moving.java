@@ -1,5 +1,11 @@
 package Elevator;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import Constants.Direction;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A state of the elevator, while moving between floors simulates the downtime.
@@ -37,7 +43,7 @@ public class Moving extends ElevatorState{
 	 * If there's only a single floor, it only moves for the duration of a single floor. 
 	 */
 	public void enter() {
-		System.out.println("---------------------Elevator State changed to: MOVING-STATE---------------------");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": ---------------------Elevator State changed to: MOVING-STATE---------------------");
 				
 		while(!elevator.isInterrupted() && elevator.getOperationalStatus()) {
 			int nextDestination = elevator.getNextBestElevatorDestination();
@@ -70,11 +76,11 @@ public class Moving extends ElevatorState{
 	public void accelerate() {
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
-				System.out.println("The elevator " + elevator.getElevatorId() + " is accelerating "+ elevator.getDirection());
+				System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": The elevator " + elevator.getElevatorId() + " is accelerating "+ elevator.getDirection());
 				Thread.sleep(300);
 			}catch (InterruptedException e){
 			}
-			System.out.println("Elevator " + elevator.getElevatorId() + " has now accelerated to max speed");
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + elevator.getElevatorId() + " has now accelerated to max speed");
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -105,14 +111,15 @@ public class Moving extends ElevatorState{
 	private void MoveFloors() {
 		if(elevator.getDirection().equals(Direction.UP)) {
 			elevator.setCurrentFloor( elevator.getCurrentFloor() +1);
-			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() - 1) + " to " + elevator.getCurrentFloor() );
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() - 1) + " to " + elevator.getCurrentFloor() );
 			
 		}
 		if (elevator.getDirection().equals(Direction.DOWN)) {
 			elevator.setCurrentFloor(elevator.getCurrentFloor() -1);
-			System.out.println("Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() + 1) + " to " + elevator.getCurrentFloor() );
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + elevator.getElevatorId() + " went from " + (elevator.getCurrentFloor() + 1) + " to " + elevator.getCurrentFloor() );
 		}
 		elevator.getElevatorSubsystem().addElevatorInfoList(new ElevatorInfo(false, elevator.getElevatorId(), elevator.getCurrentFloor(), elevator.getDirection(), 1));
+
 	}
 
 	/**
@@ -124,7 +131,7 @@ public class Moving extends ElevatorState{
 				Thread.sleep(1000);
 			}catch (InterruptedException e) {
 			}
-			System.out.println("Elevator " + elevator.getElevatorId() + " has deccelerated to a stop. Direction: "+ elevator.getDirection());
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + elevator.getElevatorId() + " has deccelerated to a stop. Direction: "+ elevator.getDirection());
 			MoveFloors();
 			state = elevatorSpeed.stopped;
 		}

@@ -1,6 +1,8 @@
 package Elevator;
 
 import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * receives and sends task to given elevators after the information is paresed fomr the scheduler
@@ -33,7 +35,7 @@ public class ElevatorSubsystem implements Runnable{
 	 */
 	public void receiveJob(ElevatorJob job) {
 		if (job.getFault() == 9) {
-			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Terminated elevator " + job.getElevatorID() + " because of floor error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": <<<<<<<<<<<<<<<<<<<<<<<<<<<<<Terminated elevator " + job.getElevatorID() + " because of floor error>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			elevators.get(job.getElevatorID()).setOperationalStatus(false);
 			elevators.get(job.getElevatorID()).interrupt();
 		}

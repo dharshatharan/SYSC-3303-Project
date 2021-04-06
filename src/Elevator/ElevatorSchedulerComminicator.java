@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,7 +86,7 @@ public class ElevatorSchedulerComminicator {
 //			System.out.println(job);
 			elevatorSubsystem.receiveJob(job);
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) +": "+ e);
 			return;
 		}
 		
@@ -137,7 +139,7 @@ public class ElevatorSchedulerComminicator {
 		if(m.find()) {
 //			System.out.println("Reply received\n");
 		} else {
-			System.out.println("Invalid reply received");
+			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Invalid reply received");
 		}
 		
 	}

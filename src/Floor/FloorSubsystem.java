@@ -8,6 +8,10 @@ import java.util.Scanner;
 import Constants.Direction;
 import Elevator.ElevatorInfo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter; 
+
+
 /**
  * A class to handle the input from a file listing all the floors the elevator(s) have to visit
  * @author Alexander
@@ -39,7 +43,7 @@ public class FloorSubsystem implements Runnable{
      */
     @Override
     public void run() {
-    	System.out.println("Starting floor run");
+    	System.out.println( DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Starting floor run");
     	int count = 0;
     	
 		Thread requestElevatorInfoThread = new Thread(){
@@ -85,7 +89,7 @@ public class FloorSubsystem implements Runnable{
      * Retrieves the information from a txt file
      */
     public void parse() {
-        File simulation = new File("C:\\Users\\Bailey\\Documents\\GitHub\\SYSC-3303-Project\\src\\input.txt");
+        File simulation = new File(".\\src\\input.txt");
         try {
             Scanner sc = new Scanner(simulation);
             while(sc.hasNextLine()) {
@@ -94,7 +98,7 @@ public class FloorSubsystem implements Runnable{
             sc.close();
             }
         catch (FileNotFoundException ex) {
-            System.out.println("Error: File not found!");
+            System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Error: File not found!");
         }
     }
     
@@ -120,7 +124,7 @@ public class FloorSubsystem implements Runnable{
     }
     
     public void addElevatorInfo(ElevatorInfo info) {
-		System.out.println("Floor Subsytem has noticed: " + info.toString());
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Floor Subsytem has noticed: " + info.toString());
 	}
     
     public static void main(String[] args) {

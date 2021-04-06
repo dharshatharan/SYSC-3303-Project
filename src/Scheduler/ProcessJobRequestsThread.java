@@ -11,6 +11,8 @@ import Constants.Direction;
 import Elevator.ElevatorInfo;
 import Elevator.ElevatorJob;
 import Floor.RequestElevatorEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Dharsh
@@ -61,7 +63,7 @@ public class ProcessJobRequestsThread extends Thread {
 	}
 	
 	private void processRequest(RequestElevatorEvent request) {
-		System.out.println("Processing Elevator Request");
+		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Processing Elevator Request");
 		ElevatorJob job;
 		for (ElevatorInfo el: scheduler.getElevatorInfoDatabase().values()) {
 			if (scheduler.getElevatorJobDatabase().get(el.getElevatorID()).isEmpty()) {
