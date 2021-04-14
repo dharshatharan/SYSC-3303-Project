@@ -12,7 +12,7 @@ import Constants.Direction;
  *
  */
 public class ElevatorInfo {
-	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [1-9] [1-3] ");
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-2] [1-9] [0-9]{1,2} [1-3] ");
 	
 	private Boolean arrived;
 	private String elevatorID;
