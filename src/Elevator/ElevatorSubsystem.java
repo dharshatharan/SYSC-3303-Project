@@ -125,10 +125,11 @@ public class ElevatorSubsystem implements Runnable{
 
 	static Thread GUIThread = new Thread() {
 		public void run() {
+			gui.makeGUI();
 			while(true) {
-				try {GUIThread.sleep(50);
+				try {GUIThread.sleep(5);
 				}catch (InterruptedException e) {}
-				gui.makeGUI(elevators);
+				gui.updateGUI(elevators);
 				gui.f.revalidate();
 				gui.f.repaint();
 			}
