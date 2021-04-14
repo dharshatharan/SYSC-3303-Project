@@ -68,7 +68,7 @@ public class ProcessElevatorInfoThread extends Thread {
 //					elevatorJobs.remove(elevatorJobs.indexOf(job));
 					jobsToRemove.add(job);
 					completedJobs++;
-					if (completedJobs == 9) {
+					if (completedJobs == 20) {
 						System.out.println( DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now())
 								+ ": The system took a total of " +  ChronoUnit.MILLIS.between(scheduler.getStartTime(), LocalDateTime.now()) + " milliseconds");
 					}

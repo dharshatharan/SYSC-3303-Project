@@ -41,10 +41,12 @@ public class Elevator extends Thread {
 		this.id = id;
 		this.elevatorSubsystem = elevatorSubsystem;
 		this.currentFloor = 1;
+		this.doorState = DoorStatus.closed;
 		this.direction = Direction.Idle;
 		this.operationalStatus = true;
 		this.jobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
 		this.activeJobs = Collections.synchronizedList(new LinkedList<ElevatorJob>());
+		this.state = new Stopped(this);
 	}
 	
 	/**
