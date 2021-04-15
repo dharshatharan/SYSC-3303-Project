@@ -62,6 +62,16 @@ public class ProcessJobRequestsThread extends Thread {
 		}
 	}
 	
+	public boolean hasJob() {
+		synchronized (readyJobQueue) {
+			if (readyJobQueue.isEmpty()) {
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	
 	private void processRequest(RequestElevatorEvent request) {
 		if (scheduler.getStartTime() == null) {
 			scheduler.setStartTime();
