@@ -34,11 +34,10 @@ public class FloorSubsystem implements Runnable{
      * Default Constructor
      * @param schedular
      */
-    public FloorSubsystem() {
+    public FloorSubsystem(String filename) {
     	this.floorComm = new FloorSchedulerCommunicator(this);
     	this.floorjobs = new ArrayList<>();
-        parse();
-        this.run();
+        parse(filename);
     }
 
     /**
@@ -94,8 +93,8 @@ public class FloorSubsystem implements Runnable{
     /**
      * Retrieves the information from a txt file
      */
-    public void parse() {
-        File simulation = new File(".\\src\\input.txt");
+    public void parse(String filename) {
+        File simulation = new File(filename);
         try {
             Scanner sc = new Scanner(simulation);
             while(sc.hasNextLine()) {
@@ -129,6 +128,10 @@ public class FloorSubsystem implements Runnable{
         return destination;
     }
     
+    public List<RequestElevatorEvent> getFloorJobs() {
+    	return floorjobs;
+    }
+    
     public void addElevatorInfo(ElevatorInfo info) {
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Floor Subsytem has noticed: " + info.toString());
 		if (info.getIsArriving()) {
@@ -141,7 +144,8 @@ public class FloorSubsystem implements Runnable{
 	}
     
     public static void main(String[] args) {
-		new FloorSubsystem();
+		FloorSubsystem f = new FloorSubsystem(".\\src\\input.txt");
+		f.run();
 	}
 
 }

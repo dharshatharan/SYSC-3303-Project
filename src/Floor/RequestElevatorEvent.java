@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
  *
  */
 public class RequestElevatorEvent {
-	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [1-9] [1-2] [1-9] [0-9] ");
+	private Pattern elevatorRequestPattern = Pattern.compile("^0[1-9] [0-9]{1,2} [1-2] [0-9]{1,2} [0-9] ");
 
     private String time;
     private int currentfloornumber;

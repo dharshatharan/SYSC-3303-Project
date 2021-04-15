@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
  *
  */
 public class ElevatorJob implements java.lang.Comparable<ElevatorJob> {
-	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [1-9] [1-2] [1-9] [0-9]");
+	private Pattern elevatorInfoPattern = Pattern.compile("^0[1-9] [1-9] [0-9]{1,2} [1-2] [0-9]{1,2} [0-9]");
 	
 	private String elevatorID;
 	private int fromFloor;
