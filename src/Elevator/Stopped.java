@@ -68,6 +68,7 @@ public class Stopped extends ElevatorState{
 		
 		elevator.setDoorState(true);
 		
+		
 	}
 	
 	private void retryOpen() {
@@ -142,6 +143,11 @@ public class Stopped extends ElevatorState{
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": ---------------------Elevator State changed to: STOPPED-STATE---------------------");
 		notifyElevatorArrival();
 		 openDoors();
+		 try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 		 if (elevator.getDoorState() == DoorStatus.open) closeDoors();
 
 		exit();

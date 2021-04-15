@@ -77,7 +77,7 @@ public class Moving extends ElevatorState{
 		if(!state.equals(elevatorSpeed.maxSpeed)) {
 			try {
 				System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": The elevator " + elevator.getElevatorId() + " is accelerating "+ elevator.getDirection());
-				Thread.sleep(300);
+				Thread.sleep(500);
 			}catch (InterruptedException e){
 			}
 			System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Elevator " + elevator.getElevatorId() + " has now accelerated to max speed");
@@ -97,7 +97,7 @@ public class Moving extends ElevatorState{
 	 */
 	public void moveAtMaxSpeed() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(800);
 		}catch (InterruptedException e) {
 			//Will include arrival sensors HERE in the future!
 		}

@@ -28,7 +28,6 @@ public class FloorSubsystem implements Runnable{
     private int curFlor, destination;
     private FloorSchedulerCommunicator floorComm;
     private int completedJobs = 0;
-    private LocalDateTime startTime;
 
     /**
      * Default Constructor
@@ -64,9 +63,6 @@ public class FloorSubsystem implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	   
-	   startTime = LocalDateTime.now();
-	   System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(startTime) + ": First request made!");
     	
 	   while(true) {
 			for(RequestElevatorEvent job: floorjobs) {
@@ -134,13 +130,6 @@ public class FloorSubsystem implements Runnable{
     
     public void addElevatorInfo(ElevatorInfo info) {
 		System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now()) + ": Floor Subsytem has noticed: " + info.toString());
-		if (info.getIsArriving()) {
-			completedJobs++;
-			if(completedJobs == floorjobs.size()) {
-				System.out.println( DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now())
-						+ "The system took a total of" +  ChronoUnit.MILLIS.between(startTime, LocalDateTime.now()));
-			}
-		}
 	}
     
     public static void main(String[] args) {

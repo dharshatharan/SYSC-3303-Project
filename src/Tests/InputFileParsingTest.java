@@ -36,7 +36,7 @@ public class InputFileParsingTest {
 		}
 		List<RequestElevatorEvent> floorJobs = floor.getFloorJobs();
 		assertTrue(floorJobs.get(0).equals(new RequestElevatorEvent("00:00:1", 2, Direction.UP, 7, 1, 0)));
-		assertTrue(floorJobs.get(0).equals(new RequestElevatorEvent("00:00:2", 3, Direction.UP, 8, 2, 0)));
+		assertTrue(floorJobs.get(1).equals(new RequestElevatorEvent("00:00:2", 3, Direction.UP, 8, 2, 0)));
 	}
 
 }

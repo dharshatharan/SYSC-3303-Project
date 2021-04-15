@@ -23,7 +23,6 @@ public class ElevatorSubsystem implements Runnable{
 		comunicator = new ElevatorSchedulerComminicator(this);
 		notifyElevatorInfoList = Collections.synchronizedList(new LinkedList<ElevatorInfo>());
 		this.gui= new guiElevator(this);
-		
 	}
 	
 	
